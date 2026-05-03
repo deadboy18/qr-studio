@@ -11,7 +11,7 @@
     <img src="https://img.shields.io/badge/🔗_Live_Demo-06b6d4?style=for-the-badge" alt="Live Demo" />
   </a>
   &nbsp;
-  <img src="https://img.shields.io/github/license/deadboy18/qr-studio?style=for-the-badge&color=22c55e" alt="License" />
+  <img src="https://img.shields.io/badge/license-MIT-22c55e?style=for-the-badge" alt="License" />
   &nbsp;
   <img src="https://img.shields.io/github/stars/deadboy18/qr-studio?style=for-the-badge&color=f59e0b" alt="Stars" />
   &nbsp;
@@ -75,7 +75,15 @@ cd qr-studio
 # Open index.html in any browser. Done.
 ```
 
-No dependencies to install. No build step. No configuration. It's a single HTML file.
+No dependencies to install. No build step. No configuration.
+
+```
+qr-studio/
+├── index.html     ← the entire app (single file)
+├── worker.js      ← Cloudflare Worker for ChromaCode favicon proxy (optional)
+├── README.md
+└── LICENSE
+```
 
 ### Option 3: Deploy to GitHub Pages
 1. Fork this repository
