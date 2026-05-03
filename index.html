@@ -767,10 +767,13 @@ function ccFileToImg(f){return new Promise((res,rej)=>{const r=new FileReader();
 function ccFetchImg(src){return new Promise(res=>{fetch(src,{signal:AbortSignal.timeout(5000)}).then(r=>r.ok?r.blob():null).then(b=>{if(!b||b.size<50){res(null);return}const u=URL.createObjectURL(b);const i=new Image();i.onload=()=>i.naturalWidth<2?res(null):res(i);i.onerror=()=>{URL.revokeObjectURL(u);res(null)};i.src=u}).catch(()=>res(null))})}
 
 // Try multiple CORS proxies
+// ⬇️ SET YOUR CLOUDFLARE WORKER URL HERE (deploy cf-worker.js to workers.cloudflare.com)
+const MY_PROXY = ''; // e.g. 'https://qr-proxy.yourname.workers.dev'
 const CORS_PROXIES=[
+  ...(MY_PROXY ? [url => MY_PROXY + '?url=' + encodeURIComponent(url)] : []),
   url=>'https://api.allorigins.win/raw?url='+encodeURIComponent(url),
-  url=>'https://corsproxy.io/?'+encodeURIComponent(url),
-  url=>'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(url)
+  url=>'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(url),
+  url=>'https://corsproxy.io/?'+encodeURIComponent(url)
 ];
 async function ccFetchWithProxies(url){
   // Try direct first
@@ -824,10 +827,12 @@ function ccBuildSVG(v){const{qr,sz,grid}=v;const darkMin=+document.getElementByI
   const seq=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
   let idx=0;
   document.addEventListener('keydown',e=>{
-    if(!e.key)return;
-    const k=e.key.length===1?e.key.toLowerCase():e.key;
-    if(k===seq[idx]){idx++;if(idx===seq.length){idx=0;confettiBurst()}}
-    else{idx=k===seq[0]?1:0}
+    try{
+      if(!e||!e.key||typeof e.key!=='string')return;
+      const k=e.key.length===1?e.key.toLowerCase():e.key;
+      if(k===seq[idx]){idx++;if(idx===seq.length){idx=0;confettiBurst()}}
+      else{idx=k===seq[0]?1:0}
+    }catch{}
   });
 })();
 
