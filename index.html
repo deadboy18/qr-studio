@@ -204,7 +204,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
       <!-- WiFi -->
       <div class="dp" id="dp-wifi">
         <div class="field"><label>Network name (SSID)</label><input class="inp" id="wifi-ssid" placeholder="MyWiFi"><div class="val-msg" id="v-wifi-ssid"></div></div>
-        <div class="field"><label>Password</label><input class="inp" id="wifi-pass" type="password" placeholder="Min 8 characters"><div class="val-msg" id="v-wifi-pass"></div></div>
+        <div class="field"><label>Password</label><div style="position:relative"><input class="inp" id="wifi-pass" type="password" placeholder="Min 8 characters" style="padding-right:42px"><button type="button" id="wifi-eye" onclick="toggleWifiEye()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);font-size:1.1rem;padding:4px;line-height:1" title="Show/hide password">👁️‍🗨️</button></div><div class="val-msg" id="v-wifi-pass"></div></div>
         <div class="row r2">
           <div class="field"><label>Encryption</label><select class="inp" id="wifi-enc"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="">None</option></select></div>
           <div class="field" style="display:flex;align-items:flex-end;padding-bottom:2px"><label class="chk"><input type="checkbox" id="wifi-hidden"> Hidden network</label></div>
@@ -489,6 +489,9 @@ stdLogoFi.onchange=e=>loadStdLogo(e.target.files[0]);
 function loadStdLogo(f){if(!f||!f.type.startsWith('image/'))return;const r=new FileReader();r.onload=e=>{stdLogoData=e.target.result;const img=new Image();img.onload=()=>{stdLogoImg=img;liveGenerate()};img.src=stdLogoData;document.getElementById('std-logo-preview').src=stdLogoData;document.getElementById('std-logo-strip').style.display='flex';document.getElementById('std-logo-prompt').textContent=f.name};r.readAsDataURL(f)}
 function clearStdLogo(){stdLogoData=null;stdLogoImg=null;document.getElementById('std-logo-strip').style.display='none';document.getElementById('std-logo-prompt').textContent='Tap to upload';stdLogoFi.value='';liveGenerate()}
 
+// WiFi password eye toggle
+function toggleWifiEye(){const inp=document.getElementById('wifi-pass');const btn=document.getElementById('wifi-eye');if(inp.type==='password'){inp.type='text';btn.textContent='🙈';btn.title='Hide password'}else{inp.type='password';btn.textContent='👁️‍🗨️';btn.title='Show password'}}
+
 // ═══════ COLOR PRESETS + CONTRAST ═══════
 document.getElementById('color-presets').onclick=e=>{const p=e.target.closest('.preset');if(!p)return;document.getElementById('std-fg').value=p.dataset.fg;document.getElementById('std-bg').value=p.dataset.bg;checkContrast();liveGenerate()};
 document.getElementById('std-fg').addEventListener('input',()=>{checkContrast();liveGenerate()});
@@ -652,14 +655,42 @@ function generateStandard(){
   const totalModules=modules+quietModules*2;
   const scale=Math.max(1,Math.floor(res/totalModules));
   const realSize=totalModules*scale;
-  canvas.width=canvas.height=realSize;
+
+  // WiFi info to bake into image
+  const curType=document.querySelector('.pill.on')?.dataset.type||'url';
+  let wifiLines=[];
+  if(curType==='wifi'){
+    if(document.getElementById('wifi-show-ssid').checked){const v=document.getElementById('wifi-ssid').value.trim();if(v)wifiLines.push('📶  '+v)}
+    if(document.getElementById('wifi-show-pass').checked){const v=document.getElementById('wifi-pass').value;if(v)wifiLines.push('🔑  '+v)}
+    if(document.getElementById('wifi-show-enc').checked){const v=document.getElementById('wifi-enc').value||'Open';wifiLines.push('🔒  '+v)}
+  }
+  const lineH=Math.round(realSize*.06);
+  const textPad=wifiLines.length?Math.round(lineH*.6):0;
+  const extraH=wifiLines.length?(wifiLines.length*lineH+textPad*2):0;
+
+  canvas.width=realSize;canvas.height=realSize+extraH;
   const ctx=canvas.getContext('2d');
-  ctx.fillStyle=bg;ctx.fillRect(0,0,realSize,realSize);
+  ctx.fillStyle=bg;ctx.fillRect(0,0,canvas.width,canvas.height);
   ctx.fillStyle=fg;
   const offset=quietModules*scale;
   for(let r=0;r<modules;r++)for(let c=0;c<modules;c++)if(qr.isDark(r,c))ctx.fillRect(offset+c*scale,offset+r*scale,scale,scale);
   if(outline){const gap=Math.max(4,Math.round(realSize*.02));ctx.strokeStyle=fg;ctx.lineWidth=Math.max(3,Math.round(realSize*.012));ctx.strokeRect(gap,gap,realSize-gap*2,realSize-gap*2)}
   if(stdLogoImg){const logoSize=(modules*scale)*.22;const x=offset+(modules*scale-logoSize)/2;const pad=logoSize*.1;ctx.fillStyle=bg;ctx.beginPath();ctx.roundRect(x-pad,x-pad,logoSize+pad*2,logoSize+pad*2,8);ctx.fill();ctx.drawImage(stdLogoImg,x,x,logoSize,logoSize)}
+
+  // Draw WiFi info text onto canvas
+  if(wifiLines.length){
+    const fontSize=Math.round(lineH*.55);
+    ctx.font=`500 ${fontSize}px "DM Sans",system-ui,sans-serif`;
+    ctx.fillStyle=fg;ctx.textAlign='center';ctx.textBaseline='top';
+    // Separator line
+    const sepY=realSize+textPad*.3;
+    ctx.strokeStyle=fg;ctx.globalAlpha=.2;ctx.lineWidth=Math.max(1,Math.round(realSize*.003));
+    ctx.beginPath();ctx.moveTo(realSize*.15,sepY);ctx.lineTo(realSize*.85,sepY);ctx.stroke();
+    ctx.globalAlpha=1;
+    wifiLines.forEach((line,i)=>{
+      ctx.fillText(line,realSize/2,realSize+textPad+i*lineH);
+    });
+  }
 
   const frame=document.getElementById('std-frame');
   frame.className='qr-tmpl-frame';
@@ -868,6 +899,24 @@ function matrixRain(){
     @keyframes btnPulse{from{box-shadow:0 0 8px var(--accent)}to{box-shadow:0 0 24px #ec4899,0 0 48px #8b5cf6}}
   `;document.head.appendChild(s);
 })();
+
+// Console easter egg hints
+console.log(
+  '%c🎨 QR Studio %cby deadboy18',
+  'font-size:20px;font-weight:bold;color:#06b6d4;text-shadow:0 0 8px rgba(6,182,212,.5);',
+  'font-size:14px;color:#a1a1aa;'
+);
+console.log('%c🥚 Psst... there are hidden easter eggs!','font-size:12px;color:#f59e0b;font-style:italic;');
+console.log(
+  '%c  ⬆⬆⬇⬇⬅➡⬅➡🅱🅰  %c Konami Code → 🎉\n'+
+  '%c  📱 Triple-tap the title   %c → 🌈 Party Mode\n'+
+  '%c  📱 Shake your phone       %c → 🎊 Confetti\n'+
+  '%c  ⌨️  Type "matrix" in URL  %c → 💊 Red pill',
+  'color:#22c55e;font-family:monospace;font-size:11px;','color:#a1a1aa;font-size:11px;',
+  'color:#22c55e;font-family:monospace;font-size:11px;','color:#a1a1aa;font-size:11px;',
+  'color:#22c55e;font-family:monospace;font-size:11px;','color:#a1a1aa;font-size:11px;',
+  'color:#22c55e;font-family:monospace;font-size:11px;','color:#a1a1aa;font-size:11px;'
+);
 </script>
 </body>
 </html>
