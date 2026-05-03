@@ -96,6 +96,7 @@ No dependencies to install. No build step. No configuration. It's a single HTML 
 | **Typography** | DM Sans + JetBrains Mono (Google Fonts) |
 | **Build System** | None. It's one file. |
 | **Backend** | None. It's client-side. |
+| **CORS Proxy** | [Cloudflare Worker](https://workers.cloudflare.com) (optional, for ChromaCode favicons) |
 | **Tracking** | None. We respect your privacy. |
 
 ---
@@ -114,6 +115,39 @@ No dependencies to install. No build step. No configuration. It's a single HTML 
 | **Location** | `geo:48.8584,2.2945` | Maps & coordinates |
 | **Calendar** | iCalendar (`.ics`) format | Events with time, location |
 | **vCard** | vCard 3.0 format | Full contact cards |
+
+---
+
+## ChromaCode Favicon Proxy (Optional)
+
+ChromaCode's **Favicon** tab auto-fetches site icons to blend into the QR code. Because browsers block cross-origin image requests (CORS), this requires a proxy. Without one, the **Upload** and **Image URL** tabs still work perfectly.
+
+A free [Cloudflare Worker](https://workers.cloudflare.com) acts as your own personal CORS proxy (100,000 requests/day free).
+
+### Setup (2 minutes)
+
+1. Sign up at [workers.cloudflare.com](https://workers.cloudflare.com) (free)
+2. Click **Create Worker** → **Start with Hello World!**
+3. Name it `qr-proxy`
+4. Click **Edit Code**, delete everything, paste the contents of [`worker.js`](worker.js)
+5. Click **Deploy**
+6. Test it — visit your worker URL with a test favicon:
+   ```
+   https://qr-proxy.YOUR-SUBDOMAIN.workers.dev/?url=https://www.google.com/favicon.ico
+   ```
+   You should see the Google favicon image.
+7. Open `index.html`, find this line and set your worker URL:
+   ```javascript
+   const MY_PROXY = ''; // ← paste your worker URL here
+   ```
+   ```javascript
+   const MY_PROXY = 'https://qr-proxy.YOUR-SUBDOMAIN.workers.dev';
+   ```
+8. Push to GitHub — done. ChromaCode favicon fetching now works for any site.
+
+### Without the proxy
+
+Public CORS proxies (`allorigins.win`, `codetabs.com`) are used as fallbacks. They work for most sites but may be slow or block certain domains. The Upload tab always works regardless.
 
 ---
 
