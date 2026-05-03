@@ -757,11 +757,18 @@ async function ccLoadImg(url){const tab=ccActiveTab();if(tab==='upl'){if(!ccUplo
     `https://${d}/apple-touch-icon.png`,
     `https://${d}/favicon.ico`
   ];
-  // Try each source via Image element first (fastest), then via proxy fetch
-  for(const s of sources){
-    const img=await ccImgLoad(s);if(img){try{const c=document.createElement('canvas');c.width=c.height=2;const cx=c.getContext('2d');cx.drawImage(img,0,0);cx.getImageData(0,0,1,1);return img}catch{}}
-    const fetched=await ccFetchWithProxies(s);if(fetched)return fetched;
-  }
+  // Race all sources in parallel — first usable image wins
+  try{
+    const result=await Promise.any(sources.map(s=>new Promise(async(res,rej)=>{
+      // Try Image element first
+      const img=await ccImgLoad(s);
+      if(img){try{const c=document.createElement('canvas');c.width=c.height=2;const cx=c.getContext('2d');cx.drawImage(img,0,0);cx.getImageData(0,0,1,1);return res(img)}catch{}}
+      // Try proxy fetch
+      const fetched=await ccFetchWithProxies(s);
+      fetched?res(fetched):rej();
+    })));
+    return result;
+  }catch{}
   throw`Cannot load favicon for ${d}. Try the Upload or Image URL tab instead.`}
 function ccFileToImg(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=r.result};r.onerror=rej;r.readAsDataURL(f)})}
 function ccFetchImg(src){return new Promise(res=>{fetch(src,{signal:AbortSignal.timeout(5000)}).then(r=>r.ok?r.blob():null).then(b=>{if(!b||b.size<50){res(null);return}const u=URL.createObjectURL(b);const i=new Image();i.onload=()=>i.naturalWidth<2?res(null):res(i);i.onerror=()=>{URL.revokeObjectURL(u);res(null)};i.src=u}).catch(()=>res(null))})}
@@ -788,7 +795,7 @@ async function ccFetchWithProxies(url){
 }
 
 // Try loading image via Image element (for CORS-friendly sources)
-function ccImgLoad(src){return new Promise(res=>{const i=new Image();i.crossOrigin='anonymous';i.onload=()=>i.naturalWidth<2?res(null):res(i);i.onerror=()=>res(null);i.src=src;setTimeout(()=>res(null),5000)})}function ccExtractColors(img){const c=document.createElement('canvas');c.width=c.height=64;const ctx=c.getContext('2d');ctx.drawImage(img,0,0,64,64);const d=ctx.getImageData(0,0,64,64).data;const bk={};for(let i=0;i<d.length;i+=4){if(d[i+3]<128)continue;const k=`${Math.round(d[i]/24)*24},${Math.round(d[i+1]/24)*24},${Math.round(d[i+2]/24)*24}`;bk[k]=(bk[k]||0)+1}return Object.entries(bk).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([k])=>{const[r,g,b]=k.split(',').map(Number);return{r,g,b}})}
+function ccImgLoad(src){return new Promise(res=>{const i=new Image();i.crossOrigin='anonymous';i.onload=()=>i.naturalWidth<2?res(null):res(i);i.onerror=()=>res(null);i.src=src;setTimeout(()=>res(null),2500)})}function ccExtractColors(img){const c=document.createElement('canvas');c.width=c.height=64;const ctx=c.getContext('2d');ctx.drawImage(img,0,0,64,64);const d=ctx.getImageData(0,0,64,64).data;const bk={};for(let i=0;i<d.length;i+=4){if(d[i+3]<128)continue;const k=`${Math.round(d[i]/24)*24},${Math.round(d[i+1]/24)*24},${Math.round(d[i+2]/24)*24}`;bk[k]=(bk[k]||0)+1}return Object.entries(bk).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([k])=>{const[r,g,b]=k.split(',').map(Number);return{r,g,b}})}
 function ccImgToGrid(img,sz){const c=document.createElement('canvas');c.width=c.height=sz;const ctx=c.getContext('2d');const iw=img.naturalWidth,ih=img.naturalHeight,sc=Math.max(sz/iw,sz/ih),sw=iw*sc,sh=ih*sc;ctx.drawImage(img,(sz-sw)/2,(sz-sh)/2,sw,sh);return ctx.getImageData(0,0,sz,sz)}
 function ccPx(g,c,r){const i=(r*g.width+c)*4;return{r:g.data[i],g:g.data[i+1],b:g.data[i+2],a:g.data[i+3]}}
 function ccLum(r,g,b){return(.299*r+.587*g+.114*b)/255}
