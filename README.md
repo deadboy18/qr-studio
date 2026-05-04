@@ -22,7 +22,7 @@
 
 ## What is QR Studio?
 
-QR Studio is a professional-grade QR code generator that runs entirely in your browser. It supports **10 data types**, **ChromaCode image-blended mosaic codes**, **live preview**, and exports to **PNG & SVG** — all from a single HTML file with zero backend.
+QR Studio is a professional-grade QR code generator that runs entirely in your browser. It supports **11 data types** (including 🇲🇾 DuitNow), **ChromaCode image-blended mosaic codes**, a full **QR scanner with DuitNow EMV breakdown**, **live preview**, and exports to **PNG & SVG** — all from a single HTML file with zero backend.
 
 Most QR generators are bloated SaaS tools that paywall basic features, plaster watermarks on your codes, or require accounts just to download a PNG. QR Studio does none of that.
 
@@ -31,7 +31,7 @@ Most QR generators are bloated SaaS tools that paywall basic features, plaster w
 ## Features
 
 ### Standard Mode
-- **10 Data Types** — URL, Text, WiFi, Email, Phone, SMS, WhatsApp, Location, Calendar Event, vCard contact
+- **11 Data Types** — URL, Text, WiFi, Email, Phone, SMS, WhatsApp, Location, Calendar Event, vCard, 🇲🇾 DuitNow
 - **Live Preview** — QR code updates instantly as you type, no "Generate" button needed
 - **Full Customization** — foreground/background colors, 7 presets, contrast warnings
 - **Center Logo Overlay** — upload any image as a center logo with automatic padding
@@ -44,6 +44,17 @@ Most QR generators are bloated SaaS tools that paywall basic features, plaster w
 - **Resolution Control** — export at 256px, 512px, 1024px, or 2048px
 - **SVG Export** — infinitely scalable vector output for print
 
+### 🇲🇾 DuitNow QR Generator
+- **EMV QR String Builder** — generates structurally valid DuitNow EMV QR codes per [PayNet QR Spec v1.5](https://docs.developer.paynet.my/docs/duitNow-QR/integration/QR-generation-specification/merchant-presented-mode/qr-data-object)
+- **70 Acquirers** — full dropdown of all banks, e-wallets, and payment providers from PayNet's official registry
+- **Auto CRC-16** — checksum calculated per ISO/IEC 13239, verified against all 4 PayNet spec examples
+- **DuitNow Branded Output** — renders in the official pink frame with "MALAYSIA NATIONAL QR" banner
+- **Static / Dynamic Toggle** — choose between reusable (11) or one-time (12) QR codes
+- **MCC Categories** — 25+ common merchant category codes
+- **Additional Data Fields** — reference label, terminal, bill number, store label
+
+> ⚠️ **Note:** Generated QR codes have correct EMV format and CRC but **won't process real payments** — the Merchant/QR ID must be registered with an acquirer bank through PayNet. This is useful for developers testing EMV parsers or learning how DuitNow QR is structured. See [natsu90's research](https://github.com/natsu90/emvqr/issues/1).
+
 ### ChromaCode Mode
 - **Image-Blended Mosaic QR** — QR codes that visually incorporate a brand image while remaining scannable
 - **Auto Favicon Fetch** — enter a URL and ChromaCode automatically pulls the site's favicon
@@ -52,6 +63,22 @@ Most QR generators are bloated SaaS tools that paywall basic features, plaster w
 - **Advanced Tuning** — dot shape (circle/rounded/square), dark dot range, ghost strength, ghost threshold
 - **Auto-Tune** — intelligently adjusts parameters based on image characteristics
 - **Palette Extraction** — extracts and displays the dominant colors from the source image
+
+### 🇲🇾 Scanner — DuitNow QR Breakdown
+- **Camera, File & Paste** — scan QR codes via camera, image upload, or clipboard paste
+- **DuitNow EMV Decoder** — full field-by-field breakdown of DuitNow and JomPAY QR codes
+- **70 Acquirer Lookup** — identifies banks/wallets by Acquirer ID from [PayNet's official list](https://docs.developer.paynet.my/docs/duitNow-QR/integration/QR-generation-specification/merchant-presented-mode/qr-data-object#acquirer-id-id-01)
+- **CRC-16 Verification** — validates checksum with ✓ Valid / ✕ Invalid and expected value on mismatch
+- **300+ MCC Codes** — human-readable merchant category labels
+- **JomPAY Detection** — identifies JomPAY QR codes (acquirer 898989) and shows Biller Code
+- **Tip & Convenience Fee** — decodes EMV IDs 55, 56, 57
+- **Merchant Channel Decoding** — decodes the 3-character field (ID 62.11) into media type, transaction location, and merchant presence per PayNet Tables 3–5
+- **Data Integrity Check** — displays SHA-256 hash (ID 82) when present
+- **Language Template** — shows alternate language merchant name/city (ID 64)
+- **Additional Data Fields** — bill number, mobile, store label, loyalty, reference, customer label, terminal, purpose, consumer data request, merchant tax ID, RRN (Ref-1/Ref-2), geo coordinates
+- **22 Currency Codes** — MYR, USD, SGD, THB, IDR, CNY, GBP, EUR, JPY, AUD, HKD, KRW, and more
+- **Regenerate Clean QR** — rebuild a scannable DuitNow-branded QR from decoded data with adjustable print sizes (sticker → A4) and font size controls for merchant name & bank
+- **QR Safety Analysis** — flags suspicious URLs, warns on open WiFi, crypto addresses, and payment QR codes
 
 ### General
 - **Dark / Light Theme** — with persistent preference
@@ -100,7 +127,10 @@ qr-studio/
 |-------|-----------|
 | **Markup & Logic** | Vanilla HTML, CSS, JavaScript |
 | **QR Engine** | [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) (1.4.4) |
+| **QR Scanner** | [jsQR](https://github.com/cozmo/jsQR) (1.4.0, lazy-loaded) |
 | **ChromaCode Algorithm** | [Toms Nimanis / IT Linden](https://github.com/TomsNimanis/chromacode) |
+| **DuitNow EMV Spec** | [PayNet QR Spec v1.5](https://docs.developer.paynet.my/docs/duitNow-QR/integration/QR-generation-specification/merchant-presented-mode/qr-data-object) |
+| **DuitNow Research** | [natsu90](https://github.com/natsu90/duitnowqr-test) |
 | **Typography** | DM Sans + JetBrains Mono (Google Fonts) |
 | **Build System** | None. It's one file. |
 | **Backend** | None. It's client-side. |
@@ -123,6 +153,7 @@ qr-studio/
 | **Location** | `geo:48.8584,2.2945` | Maps & coordinates |
 | **Calendar** | iCalendar (`.ics`) format | Events with time, location |
 | **vCard** | vCard 3.0 format | Full contact cards |
+| **🇲🇾 DuitNow** | EMV QR (TLV) format | DuitNow payment QR codes |
 
 ---
 
@@ -178,6 +209,8 @@ Since the entire app is a single HTML file, contributing is as simple as editing
 **Created by [deadboy18](https://github.com/deadboy18)**
 
 ChromaCode algorithm by [Toms Nimanis / IT Linden](https://github.com/TomsNimanis/chromacode)
+
+DuitNow EMV research by [natsu90](https://github.com/natsu90/duitnowqr-test) · Acquirer data from [PayNet QR Spec v1.5](https://docs.developer.paynet.my/docs/duitNow-QR/integration/QR-generation-specification/merchant-presented-mode/qr-data-object) · [PayNet Developer Docs](https://docs.developer.paynet.my/docs)
 
 Special thanks to [VenimK](https://github.com/VenimK) ❤️
 
