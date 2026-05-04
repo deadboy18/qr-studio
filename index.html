@@ -5,23 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>QR Studio — Generate & Brand QR Codes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<link rel="prefetch" href="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js" as="script">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root,[data-theme="dark"]{
-  --bg:#09090b;--surface:#18181b;--surface2:#27272a;--border:#3f3f46;
-  --text:#fafafa;--text2:#a1a1aa;--text3:#71717a;
-  --accent:#06b6d4;--accent2:#22d3ee;--accent-glow:rgba(6,182,212,.12);
-  --qr-card-bg:#ffffff;--err:#ef4444;--ok:#22c55e;--warn:#f59e0b;
-  --radius:10px;--radius-lg:16px;
-}
-[data-theme="light"]{
-  --bg:#f4f4f5;--surface:#ffffff;--surface2:#e4e4e7;--border:#d4d4d8;
-  --text:#18181b;--text2:#52525b;--text3:#71717a;
-  --accent:#0891b2;--accent2:#06b6d4;--accent-glow:rgba(8,145,178,.1);
-  --qr-card-bg:#ffffff;--err:#dc2626;--ok:#16a34a;--warn:#d97706;
-}
+:root,[data-theme="dark"]{--bg:#09090b;--surface:#18181b;--surface2:#27272a;--border:#3f3f46;--text:#fafafa;--text2:#a1a1aa;--text3:#71717a;--accent:#06b6d4;--accent2:#22d3ee;--accent-glow:rgba(6,182,212,.12);--qr-card-bg:#fff;--err:#ef4444;--ok:#22c55e;--warn:#f59e0b;--radius:10px;--radius-lg:16px}
+[data-theme="light"]{--bg:#f4f4f5;--surface:#fff;--surface2:#e4e4e7;--border:#d4d4d8;--text:#18181b;--text2:#52525b;--text3:#71717a;--accent:#0891b2;--accent2:#06b6d4;--accent-glow:rgba(8,145,178,.1);--qr-card-bg:#fff;--err:#dc2626;--ok:#16a34a;--warn:#d97706}
 html{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;font-size:15px;transition:background .3s,color .3s}
 body{min-height:100dvh;display:flex;flex-direction:column}
 input,select,textarea,button{font-family:inherit;font-size:inherit}
@@ -30,7 +23,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
 .hdr{text-align:center;padding:40px 0 28px;position:relative}
 .hdr h1{font-family:'JetBrains Mono',monospace;font-size:clamp(1.6rem,4vw,2.2rem);font-weight:600;letter-spacing:-.04em;margin-bottom:6px}
 .hdr h1 span{color:var(--accent)}
-.hdr p{color:var(--text2);font-size:.88rem;font-weight:400}
+.hdr p{color:var(--text2);font-size:.88rem}
 .theme-toggle{position:absolute;top:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px;display:flex;gap:2px}
 .theme-toggle button{width:32px;height:32px;border:none;border-radius:50%;background:transparent;cursor:pointer;font-size:1rem;color:var(--text3);transition:all .2s;display:flex;align-items:center;justify-content:center}
 .theme-toggle button.on{background:var(--accent);color:#fff}
@@ -39,12 +32,12 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
 .mode-btn.on{color:#fff;background:var(--accent)}
 .mode-btn:not(.on):hover{color:var(--text);background:var(--surface2)}
 .mode-btn .sub{font-size:.72rem;color:inherit;opacity:.65;display:block;margin-top:2px;font-weight:400}
-.sec{display:none}.sec.on{display:block}
+.sec{display:none;content-visibility:hidden}.sec.on{display:block;content-visibility:visible}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px;transition:background .3s,border-color .3s}
 .card-title{font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:14px}
 .field{margin-bottom:14px}.field:last-child{margin-bottom:0}
 .field label{display:block;font-size:.8rem;color:var(--text2);margin-bottom:5px;font-weight:500}
-.inp{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:11px 14px;color:var(--text);font-size:.88rem;outline:none;transition:border-color .2s,box-shadow .2s,background .3s}
+.inp{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:11px 14px;color:var(--text);font-size:.88rem;outline:none;transition:border-color .2s,box-shadow .2s}
 .inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
 .inp::placeholder{color:var(--text3)}
 .inp.invalid{border-color:var(--err)!important;box-shadow:0 0 0 3px rgba(239,68,68,.15)!important}
@@ -52,56 +45,46 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
 textarea.inp{resize:vertical;min-height:70px}
 select.inp{cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2371717a' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
 input[type=color].inp{height:40px;padding:4px 6px;cursor:pointer}
-.val-msg{font-size:.72rem;margin-top:4px;min-height:1em;transition:color .2s}
-.val-msg.err{color:var(--err)}.val-msg.ok{color:var(--ok)}.val-msg.warn{color:var(--warn)}
+.val-msg{font-size:.72rem;margin-top:4px;min-height:1em}.val-msg.err{color:var(--err)}.val-msg.ok{color:var(--ok)}.val-msg.warn{color:var(--warn)}
 .row{display:grid;gap:12px}.r2{grid-template-columns:1fr 1fr}.r3{grid-template-columns:1fr 1fr 1fr}
-.phone-row{display:flex;gap:8px}
-.phone-row select{width:120px;flex-shrink:0}
-.phone-row input{flex:1}
+.phone-row{display:flex;gap:8px}.phone-row select{width:120px;flex-shrink:0}.phone-row input{flex:1}
 .type-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
 .pill{padding:7px 14px;border-radius:20px;font-size:.78rem;font-weight:500;background:var(--bg);border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:all .2s;white-space:nowrap}
 .pill.on{background:var(--accent);border-color:var(--accent);color:#fff}
 .pill:not(.on):hover{border-color:var(--text3);color:var(--text)}
 .dp{display:none}.dp.on{display:block}
 .tip{position:relative;display:inline-flex;align-items:center;gap:4px;cursor:help}
-.tip .tip-icon{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--surface2);color:var(--text3);font-size:.65rem;font-weight:700;border:1px solid var(--border);flex-shrink:0}
-.tip .tip-text{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 14px;border-radius:8px;font-size:.75rem;font-weight:400;line-height:1.45;width:300px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,.25);pointer-events:none}
+.tip .tip-icon{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--surface2);color:var(--text3);font-size:.65rem;font-weight:700;border:1px solid var(--border)}
+.tip .tip-text{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 14px;border-radius:8px;font-size:.75rem;line-height:1.45;width:300px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,.25);pointer-events:none}
 .tip .tip-text::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--text)}
-.tip:hover .tip-text,.tip:focus .tip-text{display:block}
+.tip:hover .tip-text{display:block}
 .chk{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--text2);cursor:pointer}
 .chk input{accent-color:var(--accent);width:16px;height:16px}
-input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:2px;background:var(--border);outline:none;margin-top:4px}
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;border-radius:2px;background:var(--border);outline:none;margin-top:4px}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid var(--bg)}
-.range-row{display:flex;align-items:center;gap:10px}
-.range-row input[type=range]{flex:1}
+.range-row{display:flex;align-items:center;gap:10px}.range-row input[type=range]{flex:1}
 .rv{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--accent);min-width:34px;text-align:right}
 .presets{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .preset{width:32px;height:32px;border-radius:6px;border:2px solid var(--border);cursor:pointer;position:relative;overflow:hidden;transition:border-color .2s}
 .preset:hover,.preset.on{border-color:var(--accent)}
 .preset .fg{position:absolute;bottom:2px;left:2px;width:10px;height:10px;border-radius:2px}
-.contrast-warn{display:none;font-size:.75rem;color:var(--warn);margin-top:8px;align-items:center;gap:4px}
-.contrast-warn.show{display:flex}
-
-/* Link display */
+.contrast-warn{display:none;font-size:.75rem;color:var(--warn);margin-top:8px;align-items:center;gap:4px}.contrast-warn.show{display:flex}
 .link-box{display:none;margin-top:12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:.76rem;word-break:break-all;color:var(--text2);position:relative;line-height:1.5}
 .link-box.on{display:block}
 .link-box .link-label{font-family:'DM Sans',sans-serif;font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;font-weight:600}
 .link-box .link-val{color:var(--accent);user-select:all}
 .link-box .copy-btn{position:absolute;top:8px;right:8px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:.7rem;color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:all .2s}
 .link-box .copy-btn:hover{border-color:var(--accent);color:var(--accent)}
-
-/* Preview */
 .preview-area{display:none}.preview-area.on{display:block}
 .qr-tmpl-frame{max-width:400px;margin:0 auto 16px;padding:20px;border-radius:var(--radius-lg);transition:all .3s;background:var(--qr-card-bg);box-shadow:0 8px 40px rgba(0,0,0,.3)}
 .qr-tmpl-frame canvas{display:block;width:100%;height:auto;border-radius:6px}
-.qr-tmpl-frame.t-christmas{border-radius:50%;background:radial-gradient(circle,#22c55e 0%,#16a34a 30%,#15803d 60%,#166534 100%);box-shadow:0 0 0 6px #dc2626,0 0 0 12px #fbbf24,0 0 0 18px #22c55e}
+.qr-tmpl-frame.t-christmas{border-radius:50%;background:radial-gradient(circle,#22c55e,#16a34a 30%,#15803d 60%,#166534);box-shadow:0 0 0 6px #dc2626,0 0 0 12px #fbbf24,0 0 0 18px #22c55e}
 .qr-tmpl-frame.t-halloween{border-radius:16px;background:linear-gradient(135deg,#ea580c,#dc2626 50%,#7c2d12);box-shadow:0 8px 32px rgba(234,88,12,.4);transform:rotate(-2deg)}
-.qr-tmpl-frame.t-newyear{border-radius:8px;background:linear-gradient(45deg,#1e40af,#3b82f6 25%,#60a5fa 50%,#93c5fd 75%,#dbeafe);box-shadow:0 0 20px rgba(59,130,246,.5),0 0 40px rgba(147,197,253,.3)}
+.qr-tmpl-frame.t-newyear{border-radius:8px;background:linear-gradient(45deg,#1e40af,#3b82f6 25%,#60a5fa 50%,#93c5fd 75%,#dbeafe);box-shadow:0 0 20px rgba(59,130,246,.5)}
 .qr-tmpl-frame.t-easter{border-radius:50%;background:radial-gradient(circle,#fef3c7,#fde68a 30%,#f59e0b 60%,#d97706);box-shadow:0 0 0 8px #ec4899,0 0 0 16px #8b5cf6,0 0 0 24px #06b6d4}
 .qr-tmpl-frame.t-valentine{border-radius:12px;background:linear-gradient(135deg,#ec4899,#f472b6 30%,#fb7185 60%,#f43f5e);box-shadow:0 8px 32px rgba(236,72,153,.3)}
 .qr-tmpl-frame.t-stpatricks{border-radius:8px;background:linear-gradient(45deg,#16a34a,#22c55e 25%,#4ade80 50%,#86efac 75%,#dcfce7);box-shadow:0 0 15px rgba(34,197,94,.4)}
 .qr-tmpl-frame.t-birthday{border-radius:16px;background:linear-gradient(135deg,#f59e0b,#fbbf24 25%,#fde047 50%,#fef3c7 75%,#fff);box-shadow:0 8px 32px rgba(245,158,11,.3);transform:rotate(1deg)}
-
 .dl-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
 .dl-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 22px;color:var(--text);font-weight:500;font-size:.82rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
 .dl-btn:hover{border-color:var(--accent);color:var(--accent)}
@@ -115,8 +98,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
 .logo-strip img{width:36px;height:36px;border-radius:6px;object-fit:contain;border:1px solid var(--border)}
 .logo-strip .remove{font-size:.72rem;color:var(--accent);cursor:pointer;font-weight:500}
 .sep{border:none;border-top:1px solid var(--border);margin:16px 0}
-
-/* ChromaCode */
 .src-tabs{display:flex;gap:2px;background:var(--bg);border-radius:var(--radius);padding:3px;margin-bottom:14px}
 .src-tab{flex:1;text-align:center;padding:8px;font-size:.78rem;font-weight:500;border-radius:calc(var(--radius) - 3px);cursor:pointer;color:var(--text3);transition:all .2s}
 .src-tab.on{background:var(--surface2);color:var(--text)}
@@ -124,8 +105,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
 .status{font-size:.78rem;color:var(--text3);font-family:'JetBrains Mono',monospace;text-align:center;min-height:1.2em;margin:8px 0 16px}.status.err{color:var(--err)}
 .qr-frame{background:#fff;border-radius:var(--radius-lg);padding:16px;max-width:440px;margin:0 auto 16px;box-shadow:0 8px 40px rgba(0,0,0,.4)}
 .qr-frame canvas{display:block;width:100%;height:auto;border-radius:8px}
-.carousel{display:flex;gap:10px;overflow-x:auto;padding:6px 0 16px;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
-.carousel::-webkit-scrollbar{height:4px}.carousel::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.carousel{display:flex;gap:10px;overflow-x:auto;padding:6px 0 16px;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
 .vcard{flex:0 0 100px;cursor:pointer;scroll-snap-align:start;transition:transform .2s}
 .vcard.sel{transform:scale(1.05)}
 .vcard .vthumb{background:#fff;border-radius:var(--radius);padding:5px;border:2px solid transparent;transition:border-color .2s}
@@ -148,202 +128,75 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
 .spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .5s linear infinite;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
 .footer{margin-top:auto;padding:20px;text-align:center;font-size:.72rem;color:var(--text3);border-top:1px solid var(--border);line-height:1.8}
-.footer a{color:var(--text2);text-decoration:none}
-.footer a:hover{color:var(--accent)}
-@media(max-width:600px){
-  .shell{padding:16px 14px 48px}.hdr{padding:28px 0 20px}
-  .r2,.r3{grid-template-columns:1fr 1fr}.card{padding:16px}
-  .type-pills{gap:5px}.pill{padding:6px 11px;font-size:.74rem}
-  .qr-tmpl-frame,.qr-frame{max-width:100%}
-  .theme-toggle{position:static;margin:0 auto 12px;width:fit-content}.hdr{padding-top:8px}
-  .phone-row select{width:100px}
-  .tip .tip-text{width:220px;left:0;transform:none}
-}
+.footer a{color:var(--text2);text-decoration:none}.footer a:hover{color:var(--accent)}
+@media(max-width:600px){.shell{padding:16px 14px 48px}.hdr{padding:28px 0 20px}.r2,.r3{grid-template-columns:1fr 1fr}.card{padding:16px}.type-pills{gap:5px}.pill{padding:6px 11px;font-size:.74rem}.qr-tmpl-frame,.qr-frame{max-width:100%}.theme-toggle{position:static;margin:0 auto 12px;width:fit-content}.hdr{padding-top:8px}.phone-row select{width:100px}.tip .tip-text{width:220px;left:0;transform:none}}
+.party-mode .hdr h1{animation:rainbow 2s linear infinite}
+.party-mode .card,.party-mode .mode-bar{border-image:linear-gradient(90deg,#ec4899,#f59e0b,#22c55e,#3b82f6,#8b5cf6,#ec4899) 1;animation:borderShift 3s linear infinite}
+.party-mode .gen-btn,.party-mode .mode-btn.on{animation:btnPulse 1s ease-in-out infinite alternate}
+@keyframes rainbow{0%{color:#ec4899}20%{color:#f59e0b}40%{color:#22c55e}60%{color:#3b82f6}80%{color:#8b5cf6}100%{color:#ec4899}}
+@keyframes borderShift{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+@keyframes btnPulse{from{box-shadow:0 0 8px var(--accent)}to{box-shadow:0 0 24px #ec4899,0 0 48px #8b5cf6}}
 </style>
 </head>
 <body>
 <div class="shell">
   <div class="hdr">
     <div class="theme-toggle">
-      <button onclick="setTheme('light')" title="Light" id="theme-light">☀️</button>
-      <button class="on" onclick="setTheme('dark')" title="Dark" id="theme-dark">🌙</button>
+      <button onclick="setTheme('light')" id="theme-light">☀️</button>
+      <button class="on" onclick="setTheme('dark')" id="theme-dark">🌙</button>
     </div>
     <h1>QR <span>Studio</span></h1>
     <p>Standard & branded QR codes, zero bloat</p>
   </div>
-
   <div class="mode-bar">
     <button class="mode-btn on" data-mode="standard" onclick="setMode('standard')">Standard<span class="sub">Classic QR codes</span></button>
     <button class="mode-btn" data-mode="chroma" onclick="setMode('chroma')">ChromaCode<span class="sub">Image-blended mosaic</span></button>
+    <button class="mode-btn" data-mode="scanner" onclick="setMode('scanner')">Scanner<span class="sub">Read & decode QR</span></button>
   </div>
 
   <!-- ══════ STANDARD ══════ -->
   <div class="sec on" id="sec-standard">
     <div class="type-pills" id="type-pills">
-      <div class="pill on" data-type="url">URL</div>
-      <div class="pill" data-type="text">Text</div>
-      <div class="pill" data-type="wifi">WiFi</div>
-      <div class="pill" data-type="email">Email</div>
-      <div class="pill" data-type="phone">Phone</div>
-      <div class="pill" data-type="sms">SMS</div>
-      <div class="pill" data-type="whatsapp">WhatsApp</div>
-      <div class="pill" data-type="location">Location</div>
-      <div class="pill" data-type="calendar">Calendar</div>
-      <div class="pill" data-type="vcard">vCard</div>
+      <div class="pill on" data-type="url">URL</div><div class="pill" data-type="text">Text</div><div class="pill" data-type="wifi">WiFi</div><div class="pill" data-type="email">Email</div><div class="pill" data-type="phone">Phone</div><div class="pill" data-type="sms">SMS</div><div class="pill" data-type="whatsapp">WhatsApp</div><div class="pill" data-type="location">Location</div><div class="pill" data-type="calendar">Calendar</div><div class="pill" data-type="vcard">vCard</div>
     </div>
-
     <div class="card">
-      <!-- URL -->
-      <div class="dp on" id="dp-url">
-        <div class="field"><input class="inp" id="in-url" placeholder="https://example.com" spellcheck="false"><div class="val-msg" id="v-url"></div></div>
-      </div>
-      <!-- Text -->
-      <div class="dp" id="dp-text">
-        <div class="field"><textarea class="inp" id="in-text" placeholder="Enter any text or message…"></textarea><div class="val-msg" id="v-text"></div></div>
-      </div>
-      <!-- WiFi -->
+      <div class="dp on" id="dp-url"><div class="field"><input class="inp" id="in-url" placeholder="https://example.com" spellcheck="false"><div class="val-msg" id="v-url"></div></div></div>
+      <div class="dp" id="dp-text"><div class="field"><textarea class="inp" id="in-text" placeholder="Enter any text or message…"></textarea></div></div>
       <div class="dp" id="dp-wifi">
         <div class="field"><label>Network name (SSID)</label><input class="inp" id="wifi-ssid" placeholder="MyWiFi"><div class="val-msg" id="v-wifi-ssid"></div></div>
-        <div class="field"><label>Password</label><div style="position:relative"><input class="inp" id="wifi-pass" type="password" placeholder="Min 8 characters" style="padding-right:42px"><button type="button" id="wifi-eye" onclick="toggleWifiEye()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);font-size:1.1rem;padding:4px;line-height:1" title="Show/hide password">👁️‍🗨️</button></div><div class="val-msg" id="v-wifi-pass"></div></div>
-        <div class="row r2">
-          <div class="field"><label>Encryption</label><select class="inp" id="wifi-enc"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="">None</option></select></div>
-          <div class="field" style="display:flex;align-items:flex-end;padding-bottom:2px"><label class="chk"><input type="checkbox" id="wifi-hidden"> Hidden network</label></div>
-        </div>
-        <hr class="sep">
-        <div class="card-title">Display below QR code</div>
-        <div class="row r3">
-          <div class="field"><label class="chk"><input type="checkbox" id="wifi-show-ssid" checked> Show SSID</label></div>
-          <div class="field"><label class="chk"><input type="checkbox" id="wifi-show-pass"> Show Password</label></div>
-          <div class="field"><label class="chk"><input type="checkbox" id="wifi-show-enc"> Show Encryption</label></div>
-        </div>
+        <div class="field"><label>Password</label><div style="position:relative"><input class="inp" id="wifi-pass" type="password" placeholder="Min 8 characters" style="padding-right:42px"><button type="button" id="wifi-eye" onclick="toggleWifiEye()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);font-size:1.1rem;padding:4px;line-height:1">👁️‍🗨️</button></div><div class="val-msg" id="v-wifi-pass"></div></div>
+        <div class="row r2"><div class="field"><label>Encryption</label><select class="inp" id="wifi-enc"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="">None</option></select></div><div class="field" style="display:flex;align-items:flex-end;padding-bottom:2px"><label class="chk"><input type="checkbox" id="wifi-hidden"> Hidden network</label></div></div>
+        <hr class="sep"><div class="card-title">Display below QR code</div>
+        <div class="row r3"><div class="field"><label class="chk"><input type="checkbox" id="wifi-show-ssid" checked> Show SSID</label></div><div class="field"><label class="chk"><input type="checkbox" id="wifi-show-pass"> Show Password</label></div><div class="field"><label class="chk"><input type="checkbox" id="wifi-show-enc"> Show Encryption</label></div></div>
       </div>
-      <!-- Email -->
-      <div class="dp" id="dp-email">
-        <div class="field"><label>Email address</label><input class="inp" id="em-to" placeholder="hello@example.com"><div class="val-msg" id="v-em-to"></div></div>
-        <div class="field"><label>Subject</label><input class="inp" id="em-sub" placeholder="Subject line"></div>
-        <div class="field"><label>Body</label><textarea class="inp" id="em-body" placeholder="Email body…"></textarea></div>
-      </div>
-      <!-- Phone -->
-      <div class="dp" id="dp-phone">
-        <div class="field"><label>Phone number</label>
-          <div class="phone-row"><select class="inp" id="ph-cc"></select><input class="inp" id="in-phone" placeholder="555 123 4567"></div>
-          <div class="val-msg" id="v-phone"></div>
-        </div>
-      </div>
-      <!-- SMS -->
-      <div class="dp" id="dp-sms">
-        <div class="field"><label>Phone number</label>
-          <div class="phone-row"><select class="inp" id="sms-cc"></select><input class="inp" id="sms-phone" placeholder="555 123 4567"></div>
-          <div class="val-msg" id="v-sms-phone"></div>
-        </div>
-        <div class="field"><label>Message (optional)</label><textarea class="inp" id="sms-msg" placeholder="Pre-filled SMS text…"></textarea></div>
-      </div>
-      <!-- WhatsApp -->
-      <div class="dp" id="dp-whatsapp">
-        <div class="field"><label>Phone number</label>
-          <div class="phone-row"><select class="inp" id="wa-cc"></select><input class="inp" id="wa-phone" placeholder="5551234567"></div>
-          <div class="val-msg" id="v-wa-phone"></div>
-        </div>
-        <div class="field"><label>Pre-filled message (optional)</label><textarea class="inp" id="wa-msg" placeholder="Hi! I saw your site…"></textarea></div>
-        <div style="font-size:.73rem;color:var(--text3);margin-top:6px;line-height:1.5">Uses the official <code>wa.me</code> link. Enter the local number without leading zero.</div>
-      </div>
-      <!-- Location -->
-      <div class="dp" id="dp-location">
-        <div class="field"><label>Location name or address</label><input class="inp" id="loc-name" placeholder="Eiffel Tower, Paris"><div class="val-msg" id="v-loc"></div></div>
-        <div class="row r2">
-          <div class="field"><label>Latitude (optional)</label><input class="inp" id="loc-lat" placeholder="48.8584"></div>
-          <div class="field"><label>Longitude (optional)</label><input class="inp" id="loc-lng" placeholder="2.2945"></div>
-        </div>
-        <div style="font-size:.73rem;color:var(--text3);margin-top:4px">If lat/lng are provided, a geo: link is created. Otherwise, a Google Maps search link.</div>
-      </div>
-      <!-- Calendar -->
-      <div class="dp" id="dp-calendar">
-        <div class="field"><label>Event title</label><input class="inp" id="cal-title" placeholder="Team Meeting"><div class="val-msg" id="v-cal-title"></div></div>
-        <div class="field"><label>Description</label><textarea class="inp" id="cal-desc" placeholder="Agenda…"></textarea></div>
-        <div class="field"><label>Location</label><input class="inp" id="cal-loc" placeholder="Conference Room A"></div>
-        <div class="row r2">
-          <div class="field"><label>Start date</label><input class="inp" type="date" id="cal-sd"><div class="val-msg" id="v-cal-sd"></div></div>
-          <div class="field"><label>Start time</label><input class="inp" type="time" id="cal-st"></div>
-        </div>
-        <div class="row r2">
-          <div class="field"><label>End date</label><input class="inp" type="date" id="cal-ed"></div>
-          <div class="field"><label>End time</label><input class="inp" type="time" id="cal-et"></div>
-        </div>
-        <div class="field"><label class="chk"><input type="checkbox" id="cal-allday"> All-day event</label></div>
-      </div>
-      <!-- vCard -->
-      <div class="dp" id="dp-vcard">
-        <div class="row r2">
-          <div class="field"><label>First name</label><input class="inp" id="vc-fn" placeholder="Jane"></div>
-          <div class="field"><label>Last name</label><input class="inp" id="vc-ln" placeholder="Smith"></div>
-        </div>
-        <div class="val-msg" id="v-vc-name"></div>
-        <div class="field"><label>Phone</label>
-          <div class="phone-row"><select class="inp" id="vc-cc"></select><input class="inp" id="vc-phone" placeholder="555 123 4567"></div>
-        </div>
-        <div class="field"><label>Email</label><input class="inp" id="vc-email" placeholder="jane@example.com"><div class="val-msg" id="v-vc-email"></div></div>
-        <div class="field"><label>Organization</label><input class="inp" id="vc-org" placeholder="Acme Inc."></div>
-        <div class="field"><label>Website</label><input class="inp" id="vc-url" placeholder="https://example.com"><div class="val-msg" id="v-vc-url"></div></div>
-      </div>
+      <div class="dp" id="dp-email"><div class="field"><label>Email address</label><input class="inp" id="em-to" placeholder="hello@example.com"><div class="val-msg" id="v-em-to"></div></div><div class="field"><label>Subject</label><input class="inp" id="em-sub" placeholder="Subject line"></div><div class="field"><label>Body</label><textarea class="inp" id="em-body" placeholder="Email body…"></textarea></div></div>
+      <div class="dp" id="dp-phone"><div class="field"><label>Phone number</label><div class="phone-row"><select class="inp" id="ph-cc"></select><input class="inp" id="in-phone" placeholder="555 123 4567"></div><div class="val-msg" id="v-phone"></div></div></div>
+      <div class="dp" id="dp-sms"><div class="field"><label>Phone number</label><div class="phone-row"><select class="inp" id="sms-cc"></select><input class="inp" id="sms-phone" placeholder="555 123 4567"></div><div class="val-msg" id="v-sms-phone"></div></div><div class="field"><label>Message (optional)</label><textarea class="inp" id="sms-msg" placeholder="Pre-filled SMS text…"></textarea></div></div>
+      <div class="dp" id="dp-whatsapp"><div class="field"><label>Phone number</label><div class="phone-row"><select class="inp" id="wa-cc"></select><input class="inp" id="wa-phone" placeholder="5551234567"></div><div class="val-msg" id="v-wa-phone"></div></div><div class="field"><label>Pre-filled message (optional)</label><textarea class="inp" id="wa-msg" placeholder="Hi! I saw your site…"></textarea></div></div>
+      <div class="dp" id="dp-location"><div class="field"><label>Location name or address</label><input class="inp" id="loc-name" placeholder="Eiffel Tower, Paris"><div class="val-msg" id="v-loc"></div></div><div class="row r2"><div class="field"><label>Latitude</label><input class="inp" id="loc-lat" placeholder="48.8584"></div><div class="field"><label>Longitude</label><input class="inp" id="loc-lng" placeholder="2.2945"></div></div></div>
+      <div class="dp" id="dp-calendar"><div class="field"><label>Event title</label><input class="inp" id="cal-title" placeholder="Team Meeting"><div class="val-msg" id="v-cal-title"></div></div><div class="field"><label>Description</label><textarea class="inp" id="cal-desc" placeholder="Agenda…"></textarea></div><div class="field"><label>Location</label><input class="inp" id="cal-loc" placeholder="Conference Room A"></div><div class="row r2"><div class="field"><label>Start date</label><input class="inp" type="date" id="cal-sd"><div class="val-msg" id="v-cal-sd"></div></div><div class="field"><label>Start time</label><input class="inp" type="time" id="cal-st"></div></div><div class="row r2"><div class="field"><label>End date</label><input class="inp" type="date" id="cal-ed"></div><div class="field"><label>End time</label><input class="inp" type="time" id="cal-et"></div></div><div class="field"><label class="chk"><input type="checkbox" id="cal-allday"> All-day event</label></div></div>
+      <div class="dp" id="dp-vcard"><div class="row r2"><div class="field"><label>First name</label><input class="inp" id="vc-fn" placeholder="Jane"></div><div class="field"><label>Last name</label><input class="inp" id="vc-ln" placeholder="Smith"></div></div><div class="val-msg" id="v-vc-name"></div><div class="field"><label>Phone</label><div class="phone-row"><select class="inp" id="vc-cc"></select><input class="inp" id="vc-phone" placeholder="555 123 4567"></div></div><div class="field"><label>Email</label><input class="inp" id="vc-email" placeholder="jane@example.com"><div class="val-msg" id="v-vc-email"></div></div><div class="field"><label>Organization</label><input class="inp" id="vc-org" placeholder="Acme Inc."></div><div class="field"><label>Website</label><input class="inp" id="vc-url" placeholder="https://example.com"><div class="val-msg" id="v-vc-url"></div></div></div>
     </div>
-
-    <!-- Link display -->
-    <div class="link-box" id="std-link-box">
-      <div class="link-label">Encoded data</div>
-      <div class="link-val" id="std-link-val"></div>
-      <button class="copy-btn" onclick="copyLink()">Copy</button>
-    </div>
-
-    <!-- Style -->
+    <div class="link-box" id="std-link-box"><div class="link-label">Encoded data</div><div class="link-val" id="std-link-val"></div><button class="copy-btn" onclick="copyLink()">Copy</button></div>
     <div class="card">
       <div class="card-title">Style & Colors</div>
       <div class="row r3">
         <div class="field"><label>QR color</label><input type="color" class="inp" id="std-fg" value="#000000"></div>
         <div class="field"><label>Background</label><input type="color" class="inp" id="std-bg" value="#ffffff"></div>
-        <div class="field">
-          <label><span class="tip">Error correction <span class="tip-icon">?</span>
-            <span class="tip-text"><strong>Higher = more reliable.</strong> Your QR code stores backup data so it still scans even if partially damaged or covered.<br><br><strong>L (7%)</strong> — Smallest QR, least protection. Use when the code won't be damaged and size matters most.<br><strong>M (15%)</strong> — Good default for most uses.<br><strong>Q (25%)</strong> — Recommended when adding a center logo.<br><strong>H (30%)</strong> — Maximum recovery. Best for print, stickers, or logo overlays. Produces the densest code.</span>
-          </span></label>
-          <select class="inp" id="std-ecc"><option value="L">Low (7%)</option><option value="M" selected>Medium (15%)</option><option value="Q">Quartile (25%)</option><option value="H">High (30%)</option></select>
-        </div>
+        <div class="field"><label><span class="tip">Error correction <span class="tip-icon">?</span><span class="tip-text"><strong>Higher = more reliable.</strong> Your QR stores backup data so it scans even if damaged.<br><br><strong>L (7%)</strong> — Smallest QR, least protection.<br><strong>M (15%)</strong> — Good default.<br><strong>Q (25%)</strong> — Recommended with logos.<br><strong>H (30%)</strong> — Maximum recovery, densest code.</span></span></label><select class="inp" id="std-ecc"><option value="L">Low (7%)</option><option value="M" selected>Medium (15%)</option><option value="Q">Quartile (25%)</option><option value="H">High (30%)</option></select></div>
       </div>
-      <div class="presets" id="color-presets">
-        <div class="preset" data-fg="#000000" data-bg="#ffffff" title="Classic" style="background:#ffffff"><div class="fg" style="background:#000000"></div></div>
-        <div class="preset" data-fg="#ffffff" data-bg="#000000" title="Inverted" style="background:#000000"><div class="fg" style="background:#ffffff"></div></div>
-        <div class="preset" data-fg="#1a365d" data-bg="#e2e8f0" title="Navy" style="background:#e2e8f0"><div class="fg" style="background:#1a365d"></div></div>
-        <div class="preset" data-fg="#7c2d12" data-bg="#fef3c7" title="Brown" style="background:#fef3c7"><div class="fg" style="background:#7c2d12"></div></div>
-        <div class="preset" data-fg="#166534" data-bg="#dcfce7" title="Green" style="background:#dcfce7"><div class="fg" style="background:#166534"></div></div>
-        <div class="preset" data-fg="#7e22ce" data-bg="#f3e8ff" title="Purple" style="background:#f3e8ff"><div class="fg" style="background:#7e22ce"></div></div>
-        <div class="preset" data-fg="#0369a1" data-bg="#e0f2fe" title="Blue" style="background:#e0f2fe"><div class="fg" style="background:#0369a1"></div></div>
-      </div>
-      <div class="contrast-warn" id="contrast-warn">⚠ Low contrast — may affect scanning reliability</div>
+      <div class="presets" id="color-presets"><div class="preset" data-fg="#000000" data-bg="#ffffff" style="background:#fff"><div class="fg" style="background:#000"></div></div><div class="preset" data-fg="#ffffff" data-bg="#000000" style="background:#000"><div class="fg" style="background:#fff"></div></div><div class="preset" data-fg="#1a365d" data-bg="#e2e8f0" style="background:#e2e8f0"><div class="fg" style="background:#1a365d"></div></div><div class="preset" data-fg="#7c2d12" data-bg="#fef3c7" style="background:#fef3c7"><div class="fg" style="background:#7c2d12"></div></div><div class="preset" data-fg="#166534" data-bg="#dcfce7" style="background:#dcfce7"><div class="fg" style="background:#166534"></div></div><div class="preset" data-fg="#7e22ce" data-bg="#f3e8ff" style="background:#f3e8ff"><div class="fg" style="background:#7e22ce"></div></div><div class="preset" data-fg="#0369a1" data-bg="#e0f2fe" style="background:#e0f2fe"><div class="fg" style="background:#0369a1"></div></div></div>
+      <div class="contrast-warn" id="contrast-warn">⚠ Low contrast — may affect scanning</div>
       <hr class="sep">
-      <div class="row r3">
-        <div class="field"><label>Resolution</label>
-          <select class="inp" id="std-res"><option value="256">256px</option><option value="512" selected>512px</option><option value="1024">1024px</option><option value="2048">2048px</option></select>
-        </div>
-        <div class="field"><label>Template</label>
-          <select class="inp" id="std-tmpl"><option value="classic">Classic</option><option value="christmas">🎄 Christmas</option><option value="halloween">🎃 Halloween</option><option value="newyear">🎆 New Year</option><option value="easter">🥚 Easter</option><option value="valentine">💝 Valentine</option><option value="stpatricks">☘️ St. Patrick's</option><option value="birthday">🎂 Birthday</option></select>
-        </div>
-        <div class="field"><label>Center logo</label>
-          <div class="dz" id="std-logo-dz" style="padding:8px;font-size:.74rem"><span id="std-logo-prompt">Tap to upload</span><input type="file" id="std-logo-fi" accept="image/*"></div>
-        </div>
-      </div>
+      <div class="row r3"><div class="field"><label>Resolution</label><select class="inp" id="std-res"><option value="256">256px</option><option value="512" selected>512px</option><option value="1024">1024px</option><option value="2048">2048px</option></select></div><div class="field"><label>Template</label><select class="inp" id="std-tmpl"><option value="classic">Classic</option><option value="christmas">🎄 Christmas</option><option value="halloween">🎃 Halloween</option><option value="newyear">🎆 New Year</option><option value="easter">🥚 Easter</option><option value="valentine">💝 Valentine</option><option value="stpatricks">☘️ St. Patrick's</option><option value="birthday">🎂 Birthday</option></select></div><div class="field"><label>Center logo</label><div class="dz" id="std-logo-dz" style="padding:8px;font-size:.74rem"><span id="std-logo-prompt">Tap to upload</span><input type="file" id="std-logo-fi" accept="image/*"></div></div></div>
       <div id="std-logo-strip" class="logo-strip" style="display:none"><img id="std-logo-preview"><span class="remove" onclick="clearStdLogo()">✕ Remove</span></div>
       <hr class="sep">
       <div class="field"><label>Stroke width — <span class="rv" id="stroke-val">0%</span></label><input type="range" id="std-stroke" min="0" max="13" value="0"></div>
-      <div class="row r2" style="margin-top:8px">
-        <div class="field"><label class="chk"><input type="checkbox" id="std-outline"> Add outline border</label></div>
-        <div class="field"><label class="chk"><input type="checkbox" id="std-invert"> Invert colors</label></div>
-      </div>
+      <div class="row r2" style="margin-top:8px"><div class="field"><label class="chk"><input type="checkbox" id="std-outline"> Add outline</label></div><div class="field"><label class="chk"><input type="checkbox" id="std-invert"> Invert colors</label></div></div>
     </div>
-
-    <!-- Standard preview (always visible) -->
     <div class="preview-area" id="std-preview-area">
       <div class="qr-tmpl-frame" id="std-frame"><canvas id="std-canvas"></canvas></div>
-      <div id="wifi-info-display" style="display:none;max-width:400px;margin:0 auto 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;font-size:.85rem;text-align:center">
-        <div id="wifi-info-items" style="display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.78rem"></div>
-      </div>
+      <div id="wifi-info-display" style="display:none;max-width:400px;margin:0 auto 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;text-align:center"><div id="wifi-info-items" style="display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.78rem"></div></div>
       <div class="dl-row">
         <button class="dl-btn" onclick="dlStdPNG()"><svg class="dl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG</button>
         <button class="dl-btn" onclick="dlStdSVG()"><svg class="dl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>SVG</button>
@@ -354,43 +207,23 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
 
   <!-- ══════ CHROMACODE ══════ -->
   <div class="sec" id="sec-chroma">
-    <div class="card">
-      <div class="field"><label>URL to encode</label><input class="inp" id="cc-url" placeholder="https://example.com" spellcheck="false"><div class="val-msg" id="v-cc-url"></div></div>
-    </div>
+    <div class="card"><div class="field"><label>URL to encode</label><input class="inp" id="cc-url" placeholder="https://example.com" spellcheck="false"><div class="val-msg" id="v-cc-url"></div></div></div>
     <div class="card">
       <div class="card-title">Brand Image</div>
-      <div class="src-tabs" id="cc-tabs">
-        <div class="src-tab on" data-t="fav">Favicon</div>
-        <div class="src-tab" data-t="upl">Upload</div>
-        <div class="src-tab" data-t="iu">Image URL</div>
-      </div>
+      <div class="src-tabs" id="cc-tabs"><div class="src-tab on" data-t="fav">Favicon</div><div class="src-tab" data-t="upl">Upload</div><div class="src-tab" data-t="iu">Image URL</div></div>
       <div id="cc-t-fav" class="src-tb on"><p style="font-size:.78rem;color:var(--text3)">Auto-fetches the site's favicon from the URL above.</p></div>
       <div id="cc-t-upl" class="src-tb"><div class="dz" id="cc-dz"><span id="cc-dp">Drop image or tap to browse</span><input type="file" id="cc-fi" accept="image/*"></div></div>
       <div id="cc-t-iu" class="src-tb"><input class="inp" id="cc-iu" placeholder="https://example.com/logo.png" spellcheck="false"></div>
     </div>
     <div class="adv-toggle"><button onclick="document.getElementById('cc-adv').classList.toggle('open')">⚙ Advanced Settings</button></div>
     <div id="cc-adv" class="adv-panel"><div class="card">
-      <div class="row r3">
-        <div class="field"><label>Dot shape</label><select class="inp" id="cc-shp"><option value="circle">Circle</option><option value="rrect">Rounded</option><option value="sq">Square</option></select></div>
-        <div class="field">
-          <label><span class="tip">Error correction <span class="tip-icon">?</span>
-            <span class="tip-text"><strong>Higher = more reliable.</strong> ChromaCode modifies dot sizes and adds ghost dots, so <strong>High (30%)</strong> is strongly recommended. Lower levels give smaller codes but may reduce scan reliability with heavy image blending.<br><br><strong>H (30%)</strong> — Best for ChromaCode. Use this.<br><strong>Q (25%)</strong> — OK for simple logos.<br><strong>M (15%)</strong> — Risky with image blending.</span>
-          </span></label>
-          <select class="inp" id="cc-ecc"><option value="H" selected>High</option><option value="Q">Quartile</option><option value="M">Medium</option></select>
-        </div>
-        <div class="field"><label>Output size</label><select class="inp" id="cc-osz"><option value="800">800px</option><option value="1024" selected>1024px</option><option value="1600">1600px</option><option value="2048">2048px</option></select></div>
-      </div>
+      <div class="row r3"><div class="field"><label>Dot shape</label><select class="inp" id="cc-shp"><option value="circle">Circle</option><option value="rrect">Rounded</option><option value="sq">Square</option></select></div><div class="field"><label><span class="tip">Error correction <span class="tip-icon">?</span><span class="tip-text"><strong>Higher = more reliable.</strong> ChromaCode modifies dots heavily, so <strong>High</strong> is recommended.<br><br><strong>H (30%)</strong> — Best for ChromaCode.<br><strong>Q (25%)</strong> — OK for simple logos.<br><strong>M (15%)</strong> — Risky with blending.</span></span></label><select class="inp" id="cc-ecc"><option value="H" selected>High</option><option value="Q">Quartile</option><option value="M">Medium</option></select></div><div class="field"><label>Output size</label><select class="inp" id="cc-osz"><option value="800">800px</option><option value="1024" selected>1024px</option><option value="1600">1600px</option><option value="2048">2048px</option></select></div></div>
       <hr class="sep">
-      <div class="field"><label>Dark dot range</label>
-        <div class="row r2"><div class="range-row"><input type="range" id="cc-dmn" min="15" max="60" value="30"><span class="rv" id="cc-vdmn">30%</span></div><div class="range-row"><input type="range" id="cc-dmx" min="70" max="110" value="105"><span class="rv" id="cc-vdmx">105%</span></div></div>
-      </div>
+      <div class="field"><label>Dark dot range</label><div class="row r2"><div class="range-row"><input type="range" id="cc-dmn" min="15" max="60" value="30"><span class="rv" id="cc-vdmn">30%</span></div><div class="range-row"><input type="range" id="cc-dmx" min="70" max="110" value="105"><span class="rv" id="cc-vdmx">105%</span></div></div></div>
       <div class="field"><label>Ghost strength</label><div class="range-row"><input type="range" id="cc-gs" min="0" max="80" value="80"><span class="rv" id="cc-vgs">80%</span></div></div>
       <div class="field"><label>Ghost threshold</label><div class="range-row"><input type="range" id="cc-gt" min="0" max="60" value="8"><span class="rv" id="cc-vgt">8%</span></div></div>
       <hr class="sep">
-      <div class="row r2">
-        <div class="field"><label>Background</label><input type="color" class="inp" id="cc-bgc" value="#ffffff"></div>
-        <div class="field"><label>Fallback dark</label><input type="color" class="inp" id="cc-fdc" value="#000000"></div>
-      </div>
+      <div class="row r2"><div class="field"><label>Background</label><input type="color" class="inp" id="cc-bgc" value="#ffffff"></div><div class="field"><label>Fallback dark</label><input type="color" class="inp" id="cc-fdc" value="#000000"></div></div>
       <div class="field" style="margin-top:10px"><label class="chk"><input type="checkbox" id="cc-col" checked> Use image colors</label></div>
     </div></div>
     <button class="gen-btn" id="cc-gen-btn" onclick="generateChroma()">Generate ChromaCode</button>
@@ -405,80 +238,62 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
       </div>
     </div>
   </div>
-</div>
 
+  <!-- ══════ SCANNER ══════ -->
+  <div class="sec" id="sec-scanner">
+    <div class="card">
+      <div class="card-title">Scan QR Code</div>
+      <p style="font-size:.82rem;color:var(--text2);margin-bottom:14px;line-height:1.6">Decode any QR code from your <strong>camera</strong>, an <strong>image file</strong>, or <strong>paste</strong> from clipboard. Everything is processed locally — nothing leaves your browser.</p>
+      <div style="margin-bottom:14px">
+        <button class="gen-btn" id="cam-btn" onclick="toggleCamera()" style="margin-bottom:8px">📷 Open Camera</button>
+        <div id="cam-wrap" style="display:none;position:relative;max-width:440px;margin:0 auto;border-radius:var(--radius-lg);overflow:hidden;background:#000">
+          <video id="cam-video" autoplay playsinline muted style="display:block;width:100%;border-radius:var(--radius-lg)"></video>
+          <canvas id="cam-canvas" style="display:none"></canvas>
+          <div style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none"><div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:65%;height:65%;border:2px solid var(--accent);border-radius:12px;box-shadow:0 0 0 9999px rgba(0,0,0,.4)"></div></div>
+          <div id="cam-status" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);color:#fff;padding:6px 14px;border-radius:20px;font-size:.75rem;font-family:'JetBrains Mono',monospace">Scanning…</div>
+        </div>
+        <div style="font-size:.72rem;color:var(--text3);margin-top:6px;text-align:center">🔒 Camera access stays in your browser. We never record, store, or transmit video.</div>
+      </div>
+      <hr class="sep">
+      <div class="dz" id="scan-dz" style="padding:28px 16px"><div style="font-size:1.4rem;margin-bottom:6px">📁</div><span id="scan-dp">Drop image, tap to browse, or paste (Ctrl+V)</span><input type="file" id="scan-fi" accept="image/*"></div>
+      <canvas id="scan-canvas" style="display:none"></canvas>
+    </div>
+    <div id="scan-result" style="display:none">
+      <div class="card" id="scan-safety-card"><div id="scan-safety"></div></div>
+      <div class="card">
+        <div class="card-title">Decoded Content</div>
+        <div id="scan-type-badge" style="display:inline-block;padding:4px 12px;border-radius:20px;font-size:.72rem;font-weight:600;background:var(--accent);color:#fff;margin-bottom:10px"></div>
+        <div id="scan-content" style="font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--text);word-break:break-all;line-height:1.6;background:var(--bg);padding:14px;border-radius:var(--radius);border:1px solid var(--border);user-select:all"></div>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+          <button class="dl-btn" onclick="copyScanResult()">📋 Copy</button>
+          <button class="dl-btn" id="scan-open-btn" style="display:none">🔗 Open Link</button>
+          <button class="dl-btn" onclick="clearScan()">✕ Clear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
 <div class="footer">
   QR Studio by <a href="https://github.com/deadboy18" target="_blank">deadboy18</a> · ChromaCode algorithm by <a href="https://github.com/TomsNimanis/chromacode" target="_blank">Toms Nimanis / IT Linden</a><br>
   Special thanks to <a href="https://github.com/VenimK" target="_blank">VenimK</a> ❤️
 </div>
-
 <script>
 // ═══════ THEME ═══════
 function setTheme(t){document.documentElement.setAttribute('data-theme',t);document.getElementById('theme-light').classList.toggle('on',t==='light');document.getElementById('theme-dark').classList.toggle('on',t==='dark');try{localStorage.setItem('qr-theme',t)}catch{}}
-(function(){try{const t=localStorage.getItem('qr-theme');if(t)setTheme(t)}catch{}})();
+(()=>{try{const t=localStorage.getItem('qr-theme');if(t)setTheme(t)}catch{}})();
 
 // ═══════ MODE ═══════
-function setMode(m){document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));document.querySelectorAll('.sec').forEach(s=>s.classList.toggle('on',s.id==='sec-'+m))}
+let jsQRLoaded=typeof jsQR!=='undefined';
+function setMode(m){document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));document.querySelectorAll('.sec').forEach(s=>s.classList.toggle('on',s.id==='sec-'+m));if(m!=='scanner'&&typeof stopCamera==='function')stopCamera();if(m==='scanner'&&!jsQRLoaded){const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js';s.onload=()=>{jsQRLoaded=true};document.head.appendChild(s)}}
 
 // ═══════ COUNTRY CODES ═══════
-// Flag emoji from ISO 3166 alpha-2
 function flagEmoji(cc){return String.fromCodePoint(...cc.toUpperCase().split('').map(c=>127397+c.charCodeAt(0)))}
-const CC_RAW=[
-['US','1','USA'],['GB','44','UK'],['CA','1','Canada'],['AU','61','Australia'],
-['AF','93','Afghanistan'],['AL','355','Albania'],['DZ','213','Algeria'],['AD','376','Andorra'],
-['AO','244','Angola'],['AG','1268','Antigua & Barbuda'],['AR','54','Argentina'],['AM','374','Armenia'],
-['AT','43','Austria'],['AZ','994','Azerbaijan'],['BS','1242','Bahamas'],['BH','973','Bahrain'],
-['BD','880','Bangladesh'],['BB','1246','Barbados'],['BY','375','Belarus'],['BE','32','Belgium'],
-['BZ','501','Belize'],['BJ','229','Benin'],['BT','975','Bhutan'],['BO','591','Bolivia'],
-['BA','387','Bosnia'],['BW','267','Botswana'],['BR','55','Brazil'],['BN','673','Brunei'],
-['BG','359','Bulgaria'],['BF','226','Burkina Faso'],['BI','257','Burundi'],['KH','855','Cambodia'],
-['CM','237','Cameroon'],['CV','238','Cape Verde'],['CF','236','Central African Rep.'],['TD','235','Chad'],
-['CL','56','Chile'],['CN','86','China'],['CO','57','Colombia'],['KM','269','Comoros'],
-['CG','242','Congo'],['CD','243','Congo (DRC)'],['CR','506','Costa Rica'],['CI','225','Côte d\'Ivoire'],
-['HR','385','Croatia'],['CU','53','Cuba'],['CY','357','Cyprus'],['CZ','420','Czech Republic'],
-['DK','45','Denmark'],['DJ','253','Djibouti'],['DM','1767','Dominica'],['DO','1809','Dominican Rep.'],
-['EC','593','Ecuador'],['EG','20','Egypt'],['SV','503','El Salvador'],['GQ','240','Equatorial Guinea'],
-['ER','291','Eritrea'],['EE','372','Estonia'],['SZ','268','Eswatini'],['ET','251','Ethiopia'],
-['FJ','679','Fiji'],['FI','358','Finland'],['FR','33','France'],['GA','241','Gabon'],
-['GM','220','Gambia'],['GE','995','Georgia'],['DE','49','Germany'],['GH','233','Ghana'],
-['GR','30','Greece'],['GD','1473','Grenada'],['GT','502','Guatemala'],['GN','224','Guinea'],
-['GW','245','Guinea-Bissau'],['GY','592','Guyana'],['HT','509','Haiti'],['HN','504','Honduras'],
-['HK','852','Hong Kong'],['HU','36','Hungary'],['IS','354','Iceland'],['IN','91','India'],
-['ID','62','Indonesia'],['IR','98','Iran'],['IQ','964','Iraq'],['IE','353','Ireland'],
-['IL','972','Israel'],['IT','39','Italy'],['JM','1876','Jamaica'],['JP','81','Japan'],
-['JO','962','Jordan'],['KZ','7','Kazakhstan'],['KE','254','Kenya'],['KI','686','Kiribati'],
-['KP','850','Korea (North)'],['KR','82','Korea (South)'],['KW','965','Kuwait'],['KG','996','Kyrgyzstan'],
-['LA','856','Laos'],['LV','371','Latvia'],['LB','961','Lebanon'],['LS','266','Lesotho'],
-['LR','231','Liberia'],['LY','218','Libya'],['LI','423','Liechtenstein'],['LT','370','Lithuania'],
-['LU','352','Luxembourg'],['MO','853','Macao'],['MG','261','Madagascar'],['MW','265','Malawi'],
-['MY','60','Malaysia'],['MV','960','Maldives'],['ML','223','Mali'],['MT','356','Malta'],
-['MH','692','Marshall Islands'],['MR','222','Mauritania'],['MU','230','Mauritius'],['MX','52','Mexico'],
-['FM','691','Micronesia'],['MD','373','Moldova'],['MC','377','Monaco'],['MN','976','Mongolia'],
-['ME','382','Montenegro'],['MA','212','Morocco'],['MZ','258','Mozambique'],['MM','95','Myanmar'],
-['NA','264','Namibia'],['NR','674','Nauru'],['NP','977','Nepal'],['NL','31','Netherlands'],
-['NZ','64','New Zealand'],['NI','505','Nicaragua'],['NE','227','Niger'],['NG','234','Nigeria'],
-['MK','389','North Macedonia'],['NO','47','Norway'],['OM','968','Oman'],['PK','92','Pakistan'],
-['PW','680','Palau'],['PS','970','Palestine'],['PA','507','Panama'],['PG','675','Papua New Guinea'],
-['PY','595','Paraguay'],['PE','51','Peru'],['PH','63','Philippines'],['PL','48','Poland'],
-['PT','351','Portugal'],['PR','1787','Puerto Rico'],['QA','974','Qatar'],['RO','40','Romania'],
-['RU','7','Russia'],['RW','250','Rwanda'],['KN','1869','St. Kitts & Nevis'],['LC','1758','St. Lucia'],
-['VC','1784','St. Vincent'],['WS','685','Samoa'],['SM','378','San Marino'],['ST','239','São Tomé'],
-['SA','966','Saudi Arabia'],['SN','221','Senegal'],['RS','381','Serbia'],['SC','248','Seychelles'],
-['SL','232','Sierra Leone'],['SG','65','Singapore'],['SK','421','Slovakia'],['SI','386','Slovenia'],
-['SB','677','Solomon Islands'],['SO','252','Somalia'],['ZA','27','South Africa'],['SS','211','South Sudan'],
-['ES','34','Spain'],['LK','94','Sri Lanka'],['SD','249','Sudan'],['SR','597','Suriname'],
-['SE','46','Sweden'],['CH','41','Switzerland'],['SY','963','Syria'],['TW','886','Taiwan'],
-['TJ','992','Tajikistan'],['TZ','255','Tanzania'],['TH','66','Thailand'],['TL','670','Timor-Leste'],
-['TG','228','Togo'],['TO','676','Tonga'],['TT','1868','Trinidad & Tobago'],['TN','216','Tunisia'],
-['TR','90','Turkey'],['TM','993','Turkmenistan'],['TV','688','Tuvalu'],['UG','256','Uganda'],
-['UA','380','Ukraine'],['AE','971','UAE'],['UY','598','Uruguay'],['UZ','998','Uzbekistan'],
-['VU','678','Vanuatu'],['VA','379','Vatican City'],['VE','58','Venezuela'],['VN','84','Vietnam'],
-['YE','967','Yemen'],['ZM','260','Zambia'],['ZW','263','Zimbabwe']
-];
+const CC_RAW=[['US','1','USA'],['GB','44','UK'],['CA','1','Canada'],['AU','61','Australia'],['AF','93','Afghanistan'],['AL','355','Albania'],['DZ','213','Algeria'],['AD','376','Andorra'],['AO','244','Angola'],['AR','54','Argentina'],['AM','374','Armenia'],['AT','43','Austria'],['AZ','994','Azerbaijan'],['BH','973','Bahrain'],['BD','880','Bangladesh'],['BY','375','Belarus'],['BE','32','Belgium'],['BZ','501','Belize'],['BJ','229','Benin'],['BT','975','Bhutan'],['BO','591','Bolivia'],['BA','387','Bosnia'],['BW','267','Botswana'],['BR','55','Brazil'],['BN','673','Brunei'],['BG','359','Bulgaria'],['KH','855','Cambodia'],['CM','237','Cameroon'],['CL','56','Chile'],['CN','86','China'],['CO','57','Colombia'],['CR','506','Costa Rica'],['HR','385','Croatia'],['CU','53','Cuba'],['CY','357','Cyprus'],['CZ','420','Czech Republic'],['DK','45','Denmark'],['DO','1809','Dominican Rep.'],['EC','593','Ecuador'],['EG','20','Egypt'],['SV','503','El Salvador'],['EE','372','Estonia'],['ET','251','Ethiopia'],['FI','358','Finland'],['FR','33','France'],['GE','995','Georgia'],['DE','49','Germany'],['GH','233','Ghana'],['GR','30','Greece'],['GT','502','Guatemala'],['HT','509','Haiti'],['HN','504','Honduras'],['HK','852','Hong Kong'],['HU','36','Hungary'],['IS','354','Iceland'],['IN','91','India'],['ID','62','Indonesia'],['IR','98','Iran'],['IQ','964','Iraq'],['IE','353','Ireland'],['IL','972','Israel'],['IT','39','Italy'],['JM','1876','Jamaica'],['JP','81','Japan'],['JO','962','Jordan'],['KZ','7','Kazakhstan'],['KE','254','Kenya'],['KR','82','Korea (South)'],['KW','965','Kuwait'],['KG','996','Kyrgyzstan'],['LV','371','Latvia'],['LB','961','Lebanon'],['LY','218','Libya'],['LT','370','Lithuania'],['LU','352','Luxembourg'],['MY','60','Malaysia'],['MV','960','Maldives'],['MT','356','Malta'],['MX','52','Mexico'],['MD','373','Moldova'],['MC','377','Monaco'],['MN','976','Mongolia'],['ME','382','Montenegro'],['MA','212','Morocco'],['MZ','258','Mozambique'],['MM','95','Myanmar'],['NA','264','Namibia'],['NP','977','Nepal'],['NL','31','Netherlands'],['NZ','64','New Zealand'],['NI','505','Nicaragua'],['NG','234','Nigeria'],['MK','389','N. Macedonia'],['NO','47','Norway'],['OM','968','Oman'],['PK','92','Pakistan'],['PS','970','Palestine'],['PA','507','Panama'],['PY','595','Paraguay'],['PE','51','Peru'],['PH','63','Philippines'],['PL','48','Poland'],['PT','351','Portugal'],['PR','1787','Puerto Rico'],['QA','974','Qatar'],['RO','40','Romania'],['RU','7','Russia'],['SA','966','Saudi Arabia'],['SN','221','Senegal'],['RS','381','Serbia'],['SG','65','Singapore'],['SK','421','Slovakia'],['SI','386','Slovenia'],['SO','252','Somalia'],['ZA','27','South Africa'],['ES','34','Spain'],['LK','94','Sri Lanka'],['SD','249','Sudan'],['SE','46','Sweden'],['CH','41','Switzerland'],['TW','886','Taiwan'],['TZ','255','Tanzania'],['TH','66','Thailand'],['TN','216','Tunisia'],['TR','90','Turkey'],['UA','380','Ukraine'],['AE','971','UAE'],['UY','598','Uruguay'],['UZ','998','Uzbekistan'],['VE','58','Venezuela'],['VN','84','Vietnam'],['YE','967','Yemen'],['ZM','260','Zambia'],['ZW','263','Zimbabwe']];
 function fillCC(sel){CC_RAW.forEach(([iso,code,name])=>{const o=document.createElement('option');o.value='+'+code;o.textContent=`${flagEmoji(iso)} +${code} ${name}`;sel.appendChild(o)})}
 ['ph-cc','sms-cc','wa-cc','vc-cc'].forEach(id=>fillCC(document.getElementById(id)));
 
-// ═══════ DATA TYPE PILLS ═══════
+// ═══════ TYPE PILLS ═══════
 document.getElementById('type-pills').onclick=e=>{const p=e.target.closest('.pill');if(!p)return;document.querySelectorAll('.pill').forEach(x=>x.classList.remove('on'));p.classList.add('on');document.querySelectorAll('.dp').forEach(x=>x.classList.remove('on'));document.getElementById('dp-'+p.dataset.type).classList.add('on');liveGenerate()};
 
 // ═══════ LOGO ═══════
@@ -488,106 +303,36 @@ stdLogoDz.onclick=()=>stdLogoFi.click();
 stdLogoFi.onchange=e=>loadStdLogo(e.target.files[0]);
 function loadStdLogo(f){if(!f||!f.type.startsWith('image/'))return;const r=new FileReader();r.onload=e=>{stdLogoData=e.target.result;const img=new Image();img.onload=()=>{stdLogoImg=img;liveGenerate()};img.src=stdLogoData;document.getElementById('std-logo-preview').src=stdLogoData;document.getElementById('std-logo-strip').style.display='flex';document.getElementById('std-logo-prompt').textContent=f.name};r.readAsDataURL(f)}
 function clearStdLogo(){stdLogoData=null;stdLogoImg=null;document.getElementById('std-logo-strip').style.display='none';document.getElementById('std-logo-prompt').textContent='Tap to upload';stdLogoFi.value='';liveGenerate()}
+function toggleWifiEye(){const inp=document.getElementById('wifi-pass');const btn=document.getElementById('wifi-eye');if(inp.type==='password'){inp.type='text';btn.textContent='🙈'}else{inp.type='password';btn.textContent='👁️‍🗨️'}}
 
-// WiFi password eye toggle
-function toggleWifiEye(){const inp=document.getElementById('wifi-pass');const btn=document.getElementById('wifi-eye');if(inp.type==='password'){inp.type='text';btn.textContent='🙈';btn.title='Hide password'}else{inp.type='password';btn.textContent='👁️‍🗨️';btn.title='Show password'}}
-
-// ═══════ COLOR PRESETS + CONTRAST ═══════
+// ═══════ COLORS ═══════
 document.getElementById('color-presets').onclick=e=>{const p=e.target.closest('.preset');if(!p)return;document.getElementById('std-fg').value=p.dataset.fg;document.getElementById('std-bg').value=p.dataset.bg;checkContrast();liveGenerate()};
 document.getElementById('std-fg').addEventListener('input',()=>{checkContrast();liveGenerate()});
 document.getElementById('std-bg').addEventListener('input',()=>{checkContrast();liveGenerate()});
-function checkContrast(){const fg=hexToRgb(document.getElementById('std-fg').value),bg=hexToRgb(document.getElementById('std-bg').value);const l1=relLum(fg),l2=relLum(bg);const ratio=(Math.max(l1,l2)+.05)/(Math.min(l1,l2)+.05);document.getElementById('contrast-warn').classList.toggle('show',ratio<3)}
-function hexToRgb(h){const m=h.match(/[a-f\d]{2}/gi);return m?m.map(x=>parseInt(x,16)):[0,0,0]}
+function checkContrast(){const fg=hexRgb(document.getElementById('std-fg').value),bg=hexRgb(document.getElementById('std-bg').value);const l1=relLum(fg),l2=relLum(bg);const r=(Math.max(l1,l2)+.05)/(Math.min(l1,l2)+.05);document.getElementById('contrast-warn').classList.toggle('show',r<3)}
+function hexRgb(h){const m=h.match(/[a-f\d]{2}/gi);return m?m.map(x=>parseInt(x,16)):[0,0,0]}
 function relLum([r,g,b]){const f=c=>{c/=255;return c<=.03928?c/12.92:Math.pow((c+.055)/1.055,2.4)};return .2126*f(r)+.7152*f(g)+.0722*f(b)}
 
 // ═══════ VALIDATION ═══════
-function vMsg(id,msg,type){const el=document.getElementById(id);if(!el)return;el.textContent=msg;el.className='val-msg'+(type?' '+type:'')}
-function vClear(id){const el=document.getElementById(id);if(el){el.textContent='';el.className='val-msg'}}
+function vMsg(id,msg,type){const el=document.getElementById(id);if(el){el.textContent=msg;el.className='val-msg'+(type?' '+type:'')}}
 function isEmail(s){return/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)}
 function isUrl(s){try{new URL(s);return true}catch{return false}}
 function isPhone(s){return/^\d{4,15}$/.test(s.replace(/[\s\-\(\)]/g,''))}
-function isLatLng(s){const n=parseFloat(s);return!isNaN(n)}
-
 function validateAll(){
-  const type=document.querySelector('.pill.on')?.dataset.type||'url';
-  let valid=true;
-  // Clear all
+  const type=document.querySelector('.pill.on')?.dataset.type||'url';let valid=true;
   document.querySelectorAll('.val-msg').forEach(el=>{el.textContent='';el.className='val-msg'});
   document.querySelectorAll('.inp.invalid,.inp.valid').forEach(el=>el.classList.remove('invalid','valid'));
-
   switch(type){
-    case 'url':{
-      let v=document.getElementById('in-url').value.trim();
-      if(!v){valid=false;break}
-      if(!/^https?:\/\//i.test(v)&&v.includes('.'))v='https://'+v;
-      if(!isUrl(v)){valid=false;vMsg('v-url','Enter a valid URL (e.g. https://example.com)','err');document.getElementById('in-url').classList.add('invalid')}
-      else{document.getElementById('in-url').classList.add('valid')}
-      break}
-    case 'text':{
-      const v=document.getElementById('in-text').value;
-      if(!v.trim()){valid=false}
-      break}
-    case 'wifi':{
-      const ssid=document.getElementById('wifi-ssid').value.trim();
-      const pass=document.getElementById('wifi-pass').value;
-      const enc=document.getElementById('wifi-enc').value;
-      if(!ssid){valid=false;vMsg('v-wifi-ssid','SSID is required','err');document.getElementById('wifi-ssid').classList.add('invalid')}
-      else{document.getElementById('wifi-ssid').classList.add('valid')}
-      if(enc&&pass.length>0&&pass.length<8){valid=false;vMsg('v-wifi-pass','Password must be at least 8 characters','err');document.getElementById('wifi-pass').classList.add('invalid')}
-      else if(enc&&!pass){valid=false;vMsg('v-wifi-pass','Password is required for '+enc,'err');document.getElementById('wifi-pass').classList.add('invalid')}
-      else if(enc&&pass.length>=8){document.getElementById('wifi-pass').classList.add('valid')}
-      break}
-    case 'email':{
-      const to=document.getElementById('em-to').value.trim();
-      if(!to){valid=false;break}
-      if(!isEmail(to)){valid=false;vMsg('v-em-to','Enter a valid email address','err');document.getElementById('em-to').classList.add('invalid')}
-      else{document.getElementById('em-to').classList.add('valid')}
-      break}
-    case 'phone':{
-      const ph=document.getElementById('in-phone').value.trim();
-      if(!ph){valid=false;break}
-      if(!isPhone(ph)){valid=false;vMsg('v-phone','Enter a valid phone number (digits only, 4–15 digits)','err');document.getElementById('in-phone').classList.add('invalid')}
-      else{document.getElementById('in-phone').classList.add('valid')}
-      break}
-    case 'sms':{
-      const ph=document.getElementById('sms-phone').value.trim();
-      if(!ph){valid=false;break}
-      if(!isPhone(ph)){valid=false;vMsg('v-sms-phone','Enter a valid phone number','err');document.getElementById('sms-phone').classList.add('invalid')}
-      else{document.getElementById('sms-phone').classList.add('valid')}
-      break}
-    case 'whatsapp':{
-      const ph=document.getElementById('wa-phone').value.trim();
-      if(!ph){valid=false;break}
-      if(!/^\d{7,15}$/.test(ph.replace(/[\s\-]/g,''))){valid=false;vMsg('v-wa-phone','Enter digits only, 7–15 digits, no + or dashes','err');document.getElementById('wa-phone').classList.add('invalid')}
-      else{document.getElementById('wa-phone').classList.add('valid')}
-      break}
-    case 'location':{
-      const name=document.getElementById('loc-name').value.trim();
-      const lat=document.getElementById('loc-lat').value.trim();
-      const lng=document.getElementById('loc-lng').value.trim();
-      if(!name&&!lat&&!lng){valid=false;break}
-      if(lat&&!isLatLng(lat)){valid=false;vMsg('v-loc','Invalid latitude','err')}
-      if(lng&&!isLatLng(lng)){valid=false;vMsg('v-loc','Invalid longitude','err')}
-      if((lat&&!lng)||(!lat&&lng)){valid=false;vMsg('v-loc','Provide both latitude and longitude, or just a name','warn')}
-      break}
-    case 'calendar':{
-      const title=document.getElementById('cal-title').value.trim();
-      const sd=document.getElementById('cal-sd').value;
-      if(!title){valid=false;vMsg('v-cal-title','Event title is required','err');document.getElementById('cal-title').classList.add('invalid')}
-      else{document.getElementById('cal-title').classList.add('valid')}
-      if(!sd){valid=false;vMsg('v-cal-sd','Start date is required','err')}
-      break}
-    case 'vcard':{
-      const fn=document.getElementById('vc-fn').value.trim();
-      const ln=document.getElementById('vc-ln').value.trim();
-      if(!fn&&!ln){valid=false;vMsg('v-vc-name','At least first or last name is required','err')}
-      const em=document.getElementById('vc-email').value.trim();
-      if(em&&!isEmail(em)){valid=false;vMsg('v-vc-email','Invalid email format','err');document.getElementById('vc-email').classList.add('invalid')}
-      else if(em){document.getElementById('vc-email').classList.add('valid')}
-      const url=document.getElementById('vc-url').value.trim();
-      if(url&&!isUrl(url)&&!(url.includes('.')&&isUrl('https://'+url))){valid=false;vMsg('v-vc-url','Invalid URL','err');document.getElementById('vc-url').classList.add('invalid')}
-      else if(url){document.getElementById('vc-url').classList.add('valid')}
-      break}
+    case 'url':{let v=document.getElementById('in-url').value.trim();if(!v){valid=false;break}if(!/^https?:\/\//i.test(v)&&v.includes('.'))v='https://'+v;if(!isUrl(v)){valid=false;vMsg('v-url','Enter a valid URL','err');document.getElementById('in-url').classList.add('invalid')}else document.getElementById('in-url').classList.add('valid');break}
+    case 'text':if(!document.getElementById('in-text').value.trim())valid=false;break;
+    case 'wifi':{const s=document.getElementById('wifi-ssid').value.trim(),p=document.getElementById('wifi-pass').value,enc=document.getElementById('wifi-enc').value;if(!s){valid=false;vMsg('v-wifi-ssid','SSID required','err');document.getElementById('wifi-ssid').classList.add('invalid')}else document.getElementById('wifi-ssid').classList.add('valid');if(enc&&p.length>0&&p.length<8){valid=false;vMsg('v-wifi-pass','Min 8 characters','err');document.getElementById('wifi-pass').classList.add('invalid')}else if(enc&&!p){valid=false;vMsg('v-wifi-pass','Password required for '+enc,'err');document.getElementById('wifi-pass').classList.add('invalid')}else if(enc&&p.length>=8)document.getElementById('wifi-pass').classList.add('valid');break}
+    case 'email':{const to=document.getElementById('em-to').value.trim();if(!to){valid=false;break}if(!isEmail(to)){valid=false;vMsg('v-em-to','Invalid email','err');document.getElementById('em-to').classList.add('invalid')}else document.getElementById('em-to').classList.add('valid');break}
+    case 'phone':{const ph=document.getElementById('in-phone').value.trim();if(!ph){valid=false;break}if(!isPhone(ph)){valid=false;vMsg('v-phone','4–15 digits required','err');document.getElementById('in-phone').classList.add('invalid')}else document.getElementById('in-phone').classList.add('valid');break}
+    case 'sms':{const ph=document.getElementById('sms-phone').value.trim();if(!ph){valid=false;break}if(!isPhone(ph)){valid=false;vMsg('v-sms-phone','Invalid phone','err');document.getElementById('sms-phone').classList.add('invalid')}else document.getElementById('sms-phone').classList.add('valid');break}
+    case 'whatsapp':{const ph=document.getElementById('wa-phone').value.trim();if(!ph){valid=false;break}if(!/^\d{7,15}$/.test(ph.replace(/[\s\-]/g,''))){valid=false;vMsg('v-wa-phone','7–15 digits, no symbols','err');document.getElementById('wa-phone').classList.add('invalid')}else document.getElementById('wa-phone').classList.add('valid');break}
+    case 'location':{const n=document.getElementById('loc-name').value.trim(),la=document.getElementById('loc-lat').value.trim(),ln=document.getElementById('loc-lng').value.trim();if(!n&&!la&&!ln)valid=false;if((la&&!ln)||(!la&&ln)){valid=false;vMsg('v-loc','Need both lat & lng','warn')}break}
+    case 'calendar':{if(!document.getElementById('cal-title').value.trim()){valid=false;vMsg('v-cal-title','Title required','err')}if(!document.getElementById('cal-sd').value){valid=false;vMsg('v-cal-sd','Date required','err')}break}
+    case 'vcard':{if(!document.getElementById('vc-fn').value.trim()&&!document.getElementById('vc-ln').value.trim()){valid=false;vMsg('v-vc-name','Name required','err')}const em=document.getElementById('vc-email').value.trim();if(em&&!isEmail(em)){valid=false;vMsg('v-vc-email','Invalid email','err')}break}
   }
   return valid;
 }
@@ -598,374 +343,166 @@ function getStdData(){
   switch(type){
     case 'url':{let v=document.getElementById('in-url').value.trim();if(v&&!/^https?:\/\//i.test(v)&&v.includes('.'))v='https://'+v;return v}
     case 'text':return document.getElementById('in-text').value;
-    case 'wifi':{const s=document.getElementById('wifi-ssid').value.trim();if(!s)return'';const p=document.getElementById('wifi-pass').value;const e=document.getElementById('wifi-enc').value;const h=document.getElementById('wifi-hidden').checked;return`WIFI:T:${e};S:${s};P:${p};H:${h?'true':''};`}
+    case 'wifi':{const s=document.getElementById('wifi-ssid').value.trim();if(!s)return'';return`WIFI:T:${document.getElementById('wifi-enc').value};S:${s};P:${document.getElementById('wifi-pass').value};H:${document.getElementById('wifi-hidden').checked?'true':''};`}
     case 'email':{const to=document.getElementById('em-to').value.trim();if(!to)return'';return`mailto:${to}?subject=${encodeURIComponent(document.getElementById('em-sub').value)}&body=${encodeURIComponent(document.getElementById('em-body').value)}`}
-    case 'phone':{const cc=document.getElementById('ph-cc').value;const ph=document.getElementById('in-phone').value.trim().replace(/[\s\-\(\)]/g,'');return ph?`tel:${cc}${ph}`:'';}
-    case 'sms':{const cc=document.getElementById('sms-cc').value;const ph=document.getElementById('sms-phone').value.trim().replace(/[\s\-\(\)]/g,'');if(!ph)return'';const msg=document.getElementById('sms-msg').value;return msg?`sms:${cc}${ph}?body=${encodeURIComponent(msg)}`:`sms:${cc}${ph}`}
-    case 'whatsapp':{const cc=document.getElementById('wa-cc').value.replace('+','');const ph=document.getElementById('wa-phone').value.trim().replace(/[^0-9]/g,'');if(!ph)return'';const msg=document.getElementById('wa-msg').value.trim();let url=`https://wa.me/${cc}${ph}`;if(msg)url+=`?text=${encodeURIComponent(msg)}`;return url}
-    case 'location':{const lat=document.getElementById('loc-lat').value.trim();const lng=document.getElementById('loc-lng').value.trim();const name=document.getElementById('loc-name').value.trim();if(lat&&lng)return`geo:${lat},${lng}`;if(name)return`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}`;return''}
-    case 'calendar':{const title=document.getElementById('cal-title').value.trim();if(!title)return'';const desc=document.getElementById('cal-desc').value;const loc=document.getElementById('cal-loc').value;const allDay=document.getElementById('cal-allday').checked;const sd=document.getElementById('cal-sd').value;const st=document.getElementById('cal-st').value;const ed=document.getElementById('cal-ed').value;const et=document.getElementById('cal-et').value;const fmt=(d,t)=>(d||'').replace(/-/g,'')+(allDay?'':'T'+(t||'0000').replace(/:/g,'')+'00');let ics=`BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:${title}`;if(desc)ics+=`\nDESCRIPTION:${desc}`;if(loc)ics+=`\nLOCATION:${loc}`;if(sd)ics+=`\nDTSTART:${fmt(sd,st)}`;if(ed)ics+=`\nDTEND:${fmt(ed,et)}`;else if(sd)ics+=`\nDTEND:${fmt(sd,et||st)}`;ics+='\nEND:VEVENT\nEND:VCALENDAR';return ics}
-    case 'vcard':{const fn=document.getElementById('vc-fn').value.trim();const ln=document.getElementById('vc-ln').value.trim();if(!fn&&!ln)return'';const cc=document.getElementById('vc-cc').value;let v=`BEGIN:VCARD\nVERSION:3.0\nN:${ln};${fn}\nFN:${fn} ${ln}`;const ph=document.getElementById('vc-phone').value.trim().replace(/[\s\-\(\)]/g,'');const em=document.getElementById('vc-email').value.trim();const org=document.getElementById('vc-org').value.trim();let url=document.getElementById('vc-url').value.trim();if(ph)v+=`\nTEL:${cc}${ph}`;if(em)v+=`\nEMAIL:${em}`;if(org)v+=`\nORG:${org}`;if(url){if(!/^https?:\/\//i.test(url)&&url.includes('.'))url='https://'+url;v+=`\nURL:${url}`}return v+'\nEND:VCARD'}
+    case 'phone':{const ph=document.getElementById('in-phone').value.trim().replace(/[\s\-\(\)]/g,'');return ph?`tel:${document.getElementById('ph-cc').value}${ph}`:'';}
+    case 'sms':{const ph=document.getElementById('sms-phone').value.trim().replace(/[\s\-\(\)]/g,'');if(!ph)return'';const msg=document.getElementById('sms-msg').value;return msg?`sms:${document.getElementById('sms-cc').value}${ph}?body=${encodeURIComponent(msg)}`:`sms:${document.getElementById('sms-cc').value}${ph}`}
+    case 'whatsapp':{const cc=document.getElementById('wa-cc').value.replace('+',''),ph=document.getElementById('wa-phone').value.trim().replace(/[^0-9]/g,'');if(!ph)return'';const msg=document.getElementById('wa-msg').value.trim();let u=`https://wa.me/${cc}${ph}`;if(msg)u+=`?text=${encodeURIComponent(msg)}`;return u}
+    case 'location':{const la=document.getElementById('loc-lat').value.trim(),ln=document.getElementById('loc-lng').value.trim(),n=document.getElementById('loc-name').value.trim();if(la&&ln)return`geo:${la},${ln}`;if(n)return`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(n)}`;return''}
+    case 'calendar':{const t=document.getElementById('cal-title').value.trim();if(!t)return'';const allDay=document.getElementById('cal-allday').checked,sd=document.getElementById('cal-sd').value,st=document.getElementById('cal-st').value,ed=document.getElementById('cal-ed').value,et=document.getElementById('cal-et').value;const fmt=(d,ti)=>(d||'').replace(/-/g,'')+(allDay?'':'T'+(ti||'0000').replace(/:/g,'')+'00');let ics=`BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:${t}`;const desc=document.getElementById('cal-desc').value,loc=document.getElementById('cal-loc').value;if(desc)ics+=`\nDESCRIPTION:${desc}`;if(loc)ics+=`\nLOCATION:${loc}`;if(sd)ics+=`\nDTSTART:${fmt(sd,st)}`;if(ed)ics+=`\nDTEND:${fmt(ed,et)}`;else if(sd)ics+=`\nDTEND:${fmt(sd,et||st)}`;return ics+'\nEND:VEVENT\nEND:VCALENDAR'}
+    case 'vcard':{const fn=document.getElementById('vc-fn').value.trim(),ln=document.getElementById('vc-ln').value.trim();if(!fn&&!ln)return'';let v=`BEGIN:VCARD\nVERSION:3.0\nN:${ln};${fn}\nFN:${fn} ${ln}`;const ph=document.getElementById('vc-phone').value.trim().replace(/[\s\-\(\)]/g,''),em=document.getElementById('vc-email').value.trim(),org=document.getElementById('vc-org').value.trim();let url=document.getElementById('vc-url').value.trim();if(ph)v+=`\nTEL:${document.getElementById('vc-cc').value}${ph}`;if(em)v+=`\nEMAIL:${em}`;if(org)v+=`\nORG:${org}`;if(url){if(!/^https?:\/\//i.test(url)&&url.includes('.'))url='https://'+url;v+=`\nURL:${url}`}return v+'\nEND:VCARD'}
   }
   return'';
 }
 
-// ═══════ LINK DISPLAY ═══════
-function updateLinkBox(data){
-  const box=document.getElementById('std-link-box');
-  const val=document.getElementById('std-link-val');
-  if(!data){box.classList.remove('on');return}
-  val.textContent=data;
-  box.classList.add('on');
-}
-function copyLink(){
-  const val=document.getElementById('std-link-val').textContent;
-  navigator.clipboard.writeText(val).then(()=>{
-    const btn=document.querySelector('#std-link-box .copy-btn');
-    btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy',1500);
-  }).catch(()=>{});
-}
+// ═══════ LINK BOX ═══════
+function updateLinkBox(d){const b=document.getElementById('std-link-box'),v=document.getElementById('std-link-val');if(!d){b.classList.remove('on');return}v.textContent=d;b.classList.add('on')}
+function copyLink(){navigator.clipboard.writeText(document.getElementById('std-link-val').textContent).then(()=>{const b=document.querySelector('#std-link-box .copy-btn');b.textContent='Copied!';setTimeout(()=>b.textContent='Copy',1500)})}
 
-// ═══════ LIVE GENERATE (STANDARD) ═══════
+// ═══════ LIVE GENERATE ═══════
 let _genTimer=null;
 function liveGenerate(){clearTimeout(_genTimer);_genTimer=setTimeout(()=>generateStandard(),80)}
-
 function generateStandard(){
-  const isValid=validateAll();
-  const data=getStdData();
-  updateLinkBox(data);
+  const isValid=validateAll(),data=getStdData();updateLinkBox(data);
   if(!data||!isValid){document.getElementById('std-preview-area').classList.remove('on');return}
-
-  let fg=document.getElementById('std-fg').value;
-  let bg=document.getElementById('std-bg').value;
-  const invert=document.getElementById('std-invert').checked;
-  if(invert)[fg,bg]=[bg,fg];
-  const res=+document.getElementById('std-res').value;
-  const ecc=document.getElementById('std-ecc').value;
-  const stroke=+document.getElementById('std-stroke').value/100;
-  const outline=document.getElementById('std-outline').checked;
-  const tmpl=document.getElementById('std-tmpl').value;
-
-  const qr=qrcode(0,ecc);
-  try{qr.addData(data);qr.make()}catch(e){console.error(e);document.getElementById('std-preview-area').classList.remove('on');return}
-
-  const modules=qr.getModuleCount();
-  const canvas=document.getElementById('std-canvas');
-  const quietModules=Math.round(modules*stroke);
-  const totalModules=modules+quietModules*2;
-  const scale=Math.max(1,Math.floor(res/totalModules));
-  const realSize=totalModules*scale;
-
-  // WiFi info to bake into image
+  let fg=document.getElementById('std-fg').value,bg=document.getElementById('std-bg').value;
+  if(document.getElementById('std-invert').checked)[fg,bg]=[bg,fg];
+  const res=+document.getElementById('std-res').value,ecc=document.getElementById('std-ecc').value,stroke=+document.getElementById('std-stroke').value/100,outline=document.getElementById('std-outline').checked,tmpl=document.getElementById('std-tmpl').value;
+  const qr=qrcode(0,ecc);try{qr.addData(data);qr.make()}catch{document.getElementById('std-preview-area').classList.remove('on');return}
+  const modules=qr.getModuleCount(),canvas=document.getElementById('std-canvas');
+  const quietMod=Math.round(modules*stroke),totalMod=modules+quietMod*2,scale=Math.max(1,Math.floor(res/totalMod)),realSize=totalMod*scale;
   const curType=document.querySelector('.pill.on')?.dataset.type||'url';
   let wifiLines=[];
-  if(curType==='wifi'){
-    if(document.getElementById('wifi-show-ssid').checked){const v=document.getElementById('wifi-ssid').value.trim();if(v)wifiLines.push('📶  '+v)}
-    if(document.getElementById('wifi-show-pass').checked){const v=document.getElementById('wifi-pass').value;if(v)wifiLines.push('🔑  '+v)}
-    if(document.getElementById('wifi-show-enc').checked){const v=document.getElementById('wifi-enc').value||'Open';wifiLines.push('🔒  '+v)}
-  }
-  const lineH=Math.round(realSize*.06);
-  const textPad=wifiLines.length?Math.round(lineH*.6):0;
-  const extraH=wifiLines.length?(wifiLines.length*lineH+textPad*2):0;
-
+  if(curType==='wifi'){if(document.getElementById('wifi-show-ssid').checked){const v=document.getElementById('wifi-ssid').value.trim();if(v)wifiLines.push('📶  '+v)}if(document.getElementById('wifi-show-pass').checked){const v=document.getElementById('wifi-pass').value;if(v)wifiLines.push('🔑  '+v)}if(document.getElementById('wifi-show-enc').checked){wifiLines.push('🔒  '+(document.getElementById('wifi-enc').value||'Open'))}}
+  const lineH=Math.round(realSize*.06),textPad=wifiLines.length?Math.round(lineH*.6):0,extraH=wifiLines.length?(wifiLines.length*lineH+textPad*2):0;
   canvas.width=realSize;canvas.height=realSize+extraH;
-  const ctx=canvas.getContext('2d');
-  ctx.fillStyle=bg;ctx.fillRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle=fg;
-  const offset=quietModules*scale;
+  const ctx=canvas.getContext('2d');ctx.fillStyle=bg;ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle=fg;
+  const offset=quietMod*scale;
   for(let r=0;r<modules;r++)for(let c=0;c<modules;c++)if(qr.isDark(r,c))ctx.fillRect(offset+c*scale,offset+r*scale,scale,scale);
   if(outline){const gap=Math.max(4,Math.round(realSize*.02));ctx.strokeStyle=fg;ctx.lineWidth=Math.max(3,Math.round(realSize*.012));ctx.strokeRect(gap,gap,realSize-gap*2,realSize-gap*2)}
-  if(stdLogoImg){const logoSize=(modules*scale)*.22;const x=offset+(modules*scale-logoSize)/2;const pad=logoSize*.1;ctx.fillStyle=bg;ctx.beginPath();ctx.roundRect(x-pad,x-pad,logoSize+pad*2,logoSize+pad*2,8);ctx.fill();ctx.drawImage(stdLogoImg,x,x,logoSize,logoSize)}
-
-  // Draw WiFi info text onto canvas
-  if(wifiLines.length){
-    const fontSize=Math.round(lineH*.55);
-    ctx.font=`500 ${fontSize}px "DM Sans",system-ui,sans-serif`;
-    ctx.fillStyle=fg;ctx.textAlign='center';ctx.textBaseline='top';
-    // Separator line
-    const sepY=realSize+textPad*.3;
-    ctx.strokeStyle=fg;ctx.globalAlpha=.2;ctx.lineWidth=Math.max(1,Math.round(realSize*.003));
-    ctx.beginPath();ctx.moveTo(realSize*.15,sepY);ctx.lineTo(realSize*.85,sepY);ctx.stroke();
-    ctx.globalAlpha=1;
-    wifiLines.forEach((line,i)=>{
-      ctx.fillText(line,realSize/2,realSize+textPad+i*lineH);
-    });
-  }
-
-  const frame=document.getElementById('std-frame');
-  frame.className='qr-tmpl-frame';
-  if(tmpl!=='classic')frame.classList.add('t-'+tmpl);
+  if(stdLogoImg){const ls=(modules*scale)*.22,x=offset+(modules*scale-ls)/2,pad=ls*.1;ctx.fillStyle=bg;ctx.beginPath();ctx.roundRect(x-pad,x-pad,ls+pad*2,ls+pad*2,8);ctx.fill();ctx.drawImage(stdLogoImg,x,x,ls,ls)}
+  if(wifiLines.length){const fs=Math.round(lineH*.55);ctx.font=`500 ${fs}px "DM Sans",system-ui,sans-serif`;ctx.fillStyle=fg;ctx.textAlign='center';ctx.textBaseline='top';ctx.strokeStyle=fg;ctx.globalAlpha=.2;ctx.lineWidth=Math.max(1,Math.round(realSize*.003));ctx.beginPath();ctx.moveTo(realSize*.15,realSize+textPad*.3);ctx.lineTo(realSize*.85,realSize+textPad*.3);ctx.stroke();ctx.globalAlpha=1;wifiLines.forEach((l,i)=>ctx.fillText(l,realSize/2,realSize+textPad+i*lineH))}
+  const wifiDisp=document.getElementById('wifi-info-display');if(curType==='wifi'&&wifiLines.length){wifiDisp.style.display='block';document.getElementById('wifi-info-items').innerHTML=wifiLines.map(l=>`<div>${l}</div>`).join('')}else wifiDisp.style.display='none';
+  const frame=document.getElementById('std-frame');frame.className='qr-tmpl-frame';if(tmpl!=='classic')frame.classList.add('t-'+tmpl);
   document.getElementById('std-preview-area').classList.add('on');
-
   window._stdCanvas=canvas;window._stdData=data;window._stdFg=fg;window._stdBg=bg;window._stdEcc=ecc;
-
-  // WiFi info display
-  const wifiDisplay=document.getElementById('wifi-info-display');
-  const wifiItems=document.getElementById('wifi-info-items');
-  const type=document.querySelector('.pill.on')?.dataset.type||'url';
-  if(type==='wifi'){
-    const showSSID=document.getElementById('wifi-show-ssid').checked;
-    const showPass=document.getElementById('wifi-show-pass').checked;
-    const showEnc=document.getElementById('wifi-show-enc').checked;
-    if(showSSID||showPass||showEnc){
-      wifiDisplay.style.display='block';
-      let html='';
-      if(showSSID){const v=document.getElementById('wifi-ssid').value.trim();html+=`<div><span style="color:var(--text3)">📶 SSID:</span> <strong>${v||'—'}</strong></div>`}
-      if(showPass){const v=document.getElementById('wifi-pass').value;html+=`<div><span style="color:var(--text3)">🔑 Pass:</span> <strong>${v||'—'}</strong></div>`}
-      if(showEnc){const v=document.getElementById('wifi-enc').value||'Open';html+=`<div><span style="color:var(--text3)">🔒 Type:</span> <strong>${v||'Open'}</strong></div>`}
-      wifiItems.innerHTML=html;
-    }else{wifiDisplay.style.display='none'}
-  }else{wifiDisplay.style.display='none'}
 }
 
-// ═══════ ATTACH LIVE LISTENERS ═══════
-// All data inputs
+// ═══════ LIVE LISTENERS ═══════
 ['in-url','in-text','wifi-ssid','wifi-pass','em-to','em-sub','em-body','in-phone','sms-phone','sms-msg','wa-phone','wa-msg','loc-name','loc-lat','loc-lng','cal-title','cal-desc','cal-loc','cal-sd','cal-st','cal-ed','cal-et','vc-fn','vc-ln','vc-phone','vc-email','vc-org','vc-url'].forEach(id=>{const el=document.getElementById(id);if(el){el.addEventListener('input',liveGenerate);el.addEventListener('change',liveGenerate)}});
-// Selects and checkboxes
-['wifi-enc','ph-cc','sms-cc','wa-cc','vc-cc','std-ecc','std-res','std-tmpl'].forEach(id=>{document.getElementById(id).addEventListener('change',liveGenerate)});
-['wifi-hidden','cal-allday','std-outline','std-invert','wifi-show-ssid','wifi-show-pass','wifi-show-enc'].forEach(id=>{document.getElementById(id).addEventListener('change',liveGenerate)});
+['wifi-enc','ph-cc','sms-cc','wa-cc','vc-cc','std-ecc','std-res','std-tmpl'].forEach(id=>document.getElementById(id).addEventListener('change',liveGenerate));
+['wifi-hidden','cal-allday','std-outline','std-invert','wifi-show-ssid','wifi-show-pass','wifi-show-enc'].forEach(id=>document.getElementById(id).addEventListener('change',liveGenerate));
 document.getElementById('std-stroke').oninput=function(){document.getElementById('stroke-val').textContent=this.value+'%';liveGenerate()};
 
 // ═══════ STANDARD DOWNLOADS ═══════
-function dlStdPNG(){const c=window._stdCanvas;if(!c)return;c.toBlob(blob=>{const a=document.createElement('a');a.download='qr-code.png';a.href=URL.createObjectURL(blob);document.body.appendChild(a);a.click();document.body.removeChild(a)},'image/png')}
-function dlStdSVG(){const data=window._stdData;if(!data)return;const ecc=window._stdEcc||'M';const fg=window._stdFg||'#000000',bg=window._stdBg||'#ffffff';const qr=qrcode(0,ecc);qr.addData(data);qr.make();const sz=qr.getModuleCount(),cell=10,total=sz*cell;let svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${total}" height="${total}" viewBox="0 0 ${total} ${total}"><rect width="${total}" height="${total}" fill="${bg}"/>`;for(let r=0;r<sz;r++)for(let c=0;c<sz;c++)if(qr.isDark(r,c))svg+=`<rect x="${c*cell}" y="${r*cell}" width="${cell}" height="${cell}" fill="${fg}"/>`;svg+='</svg>';const blob=new Blob([svg],{type:'image/svg+xml'});const a=document.createElement('a');a.download='qr-code.svg';a.href=URL.createObjectURL(blob);document.body.appendChild(a);a.click();document.body.removeChild(a)}
-async function shareStd(){const c=window._stdCanvas;if(!c)return;try{const blob=await new Promise(r=>c.toBlob(r,'image/png'));const file=new File([blob],'qr-code.png',{type:'image/png'});if(navigator.canShare?.({files:[file]})){await navigator.share({files:[file],title:'QR Code'});return}}catch{}dlStdPNG()}
+function dlStdPNG(){const c=window._stdCanvas;if(!c)return;c.toBlob(b=>{const a=document.createElement('a');a.download='qr-code.png';a.href=URL.createObjectURL(b);document.body.appendChild(a);a.click();a.remove()},'image/png')}
+function dlStdSVG(){const d=window._stdData;if(!d)return;const ecc=window._stdEcc||'M',fg=window._stdFg||'#000',bg=window._stdBg||'#fff';const qr=qrcode(0,ecc);qr.addData(d);qr.make();const sz=qr.getModuleCount(),cell=10,t=sz*cell;let svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${t}" height="${t}" viewBox="0 0 ${t} ${t}"><rect width="${t}" height="${t}" fill="${bg}"/>`;for(let r=0;r<sz;r++)for(let c=0;c<sz;c++)if(qr.isDark(r,c))svg+=`<rect x="${c*cell}" y="${r*cell}" width="${cell}" height="${cell}" fill="${fg}"/>`;svg+='</svg>';const b=new Blob([svg],{type:'image/svg+xml'});const a=document.createElement('a');a.download='qr-code.svg';a.href=URL.createObjectURL(b);document.body.appendChild(a);a.click();a.remove()}
+async function shareStd(){const c=window._stdCanvas;if(!c)return;try{const b=await new Promise(r=>c.toBlob(r,'image/png'));const f=new File([b],'qr-code.png',{type:'image/png'});if(navigator.canShare?.({files:[f]})){await navigator.share({files:[f]});return}}catch{}dlStdPNG()}
 
 // ═══════════════════════════════════════
-// CHROMACODE (kept same logic, just refs)
+// CHROMACODE
 // ═══════════════════════════════════════
-const CC_VERSIONS=[7,10,13,15,18];
-let CCS={versions:[],selectedIdx:2,img:null,colors:[],label:'',thumb:''};
-let ccUploadedFile=null;
+const CC_VERSIONS=[7,10,13,15,18];let CCS={versions:[],selectedIdx:2,colors:[],label:'',thumb:''};let ccUploadedFile=null;
 document.getElementById('cc-tabs').onclick=e=>{const t=e.target.closest('.src-tab');if(!t)return;document.querySelectorAll('#cc-tabs .src-tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');document.querySelectorAll('.src-tb').forEach(x=>x.classList.remove('on'));document.getElementById('cc-t-'+t.dataset.t).classList.add('on')};
 const ccDz=document.getElementById('cc-dz'),ccFi=document.getElementById('cc-fi');
-ccDz.onclick=()=>ccFi.click();
-ccDz.ondragover=e=>{e.preventDefault();ccDz.classList.add('ov')};
-ccDz.ondragleave=()=>ccDz.classList.remove('ov');
-ccDz.ondrop=e=>{e.preventDefault();ccDz.classList.remove('ov');ccPickFile(e.dataTransfer.files[0])};
-ccFi.onchange=e=>ccPickFile(e.target.files[0]);
+ccDz.onclick=()=>ccFi.click();ccDz.ondragover=e=>{e.preventDefault();ccDz.classList.add('ov')};ccDz.ondragleave=()=>ccDz.classList.remove('ov');ccDz.ondrop=e=>{e.preventDefault();ccDz.classList.remove('ov');ccPickFile(e.dataTransfer.files[0])};ccFi.onchange=e=>ccPickFile(e.target.files[0]);
 function ccPickFile(f){if(!f||!f.type.startsWith('image/'))return;ccUploadedFile=f;const r=new FileReader();r.onload=e=>document.getElementById('cc-dp').innerHTML=`<img class="preview" src="${e.target.result}"><span class="fname">${f.name}</span>`;r.readAsDataURL(f)}
 function ccStatus(m,err){const e=document.getElementById('cc-status');e.textContent=m;e.className='status'+(err?' err':'')}
 function ccActiveTab(){return document.querySelector('#cc-tabs .src-tab.on').dataset.t}
+function ccFetchImg(src){return new Promise(res=>{fetch(src,{signal:AbortSignal.timeout(3000)}).then(r=>r.ok?r.blob():null).then(b=>{if(!b||b.size<50){res(null);return}const u=URL.createObjectURL(b);const i=new Image();i.onload=()=>i.naturalWidth<2?res(null):res(i);i.onerror=()=>{URL.revokeObjectURL(u);res(null)};i.src=u}).catch(()=>res(null))})}
+const MY_PROXY='';
+const CORS_PROXIES=[...(MY_PROXY?[u=>MY_PROXY+'?url='+encodeURIComponent(u)]:[]),u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u),u=>'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(u),u=>'https://corsproxy.io/?'+encodeURIComponent(u)];
+async function ccFetchWithProxies(url){let img=await ccFetchImg(url);if(img)return img;try{return await Promise.any(CORS_PROXIES.map(p=>new Promise(async(res,rej)=>{const i=await ccFetchImg(p(url));i?res(i):rej()})))}catch{return null}}
+function ccImgLoad(src){return new Promise(res=>{const i=new Image();i.crossOrigin='anonymous';i.onload=()=>i.naturalWidth<2?res(null):res(i);i.onerror=()=>res(null);i.src=src;setTimeout(()=>res(null),2500)})}
 async function ccLoadImg(url){const tab=ccActiveTab();if(tab==='upl'){if(!ccUploadedFile)throw'No image uploaded.';return await ccFileToImg(ccUploadedFile)}if(tab==='iu'){const u=document.getElementById('cc-iu').value.trim();if(!u)throw'Enter an image URL.';const img=await ccFetchWithProxies(u);if(img)return img;throw'Cannot load image. Try uploading instead.'}let d;try{d=new URL(url).hostname}catch{throw'Invalid URL'}
-  const sources=[
-    `https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${d}&size=256`,
-    `https://www.google.com/s2/favicons?domain=${d}&sz=256`,
-    `https://icons.duckduckgo.com/ip3/${d}.ico`,
-    `https://logo.clearbit.com/${d}`,
-    `https://favicone.com/${d}?s=256`,
-    `https://${d}/apple-touch-icon.png`,
-    `https://${d}/favicon.ico`
-  ];
-  // Race all sources in parallel — first usable image wins
-  try{
-    const result=await Promise.any(sources.map(s=>new Promise(async(res,rej)=>{
-      // Try Image element first
-      const img=await ccImgLoad(s);
-      if(img){try{const c=document.createElement('canvas');c.width=c.height=2;const cx=c.getContext('2d');cx.drawImage(img,0,0);cx.getImageData(0,0,1,1);return res(img)}catch{}}
-      // Try proxy fetch
-      const fetched=await ccFetchWithProxies(s);
-      fetched?res(fetched):rej();
-    })));
-    return result;
-  }catch{}
-  throw`Cannot load favicon for ${d}. Try the Upload or Image URL tab instead.`}
+const sources=[`https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${d}&size=256`,`https://www.google.com/s2/favicons?domain=${d}&sz=256`,`https://icons.duckduckgo.com/ip3/${d}.ico`,`https://logo.clearbit.com/${d}`,`https://${d}/apple-touch-icon.png`,`https://${d}/favicon.ico`];
+try{return await Promise.any(sources.map(s=>new Promise(async(res,rej)=>{const img=await ccImgLoad(s);if(img){try{const c=document.createElement('canvas');c.width=c.height=2;const cx=c.getContext('2d');cx.drawImage(img,0,0);cx.getImageData(0,0,1,1);return res(img)}catch{}}const f=await ccFetchWithProxies(s);f?res(f):rej()})))}catch{}throw`Cannot load favicon for ${d}. Try Upload or Image URL tab.`}
 function ccFileToImg(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=r.result};r.onerror=rej;r.readAsDataURL(f)})}
-function ccFetchImg(src){return new Promise(res=>{fetch(src,{signal:AbortSignal.timeout(5000)}).then(r=>r.ok?r.blob():null).then(b=>{if(!b||b.size<50){res(null);return}const u=URL.createObjectURL(b);const i=new Image();i.onload=()=>i.naturalWidth<2?res(null):res(i);i.onerror=()=>{URL.revokeObjectURL(u);res(null)};i.src=u}).catch(()=>res(null))})}
-
-// Try multiple CORS proxies
-// ⬇️ SET YOUR CLOUDFLARE WORKER URL HERE (deploy cf-worker.js to workers.cloudflare.com)
-const MY_PROXY = ''; // e.g. 'https://qr-proxy.yourname.workers.dev'
-const CORS_PROXIES=[
-  ...(MY_PROXY ? [url => MY_PROXY + '?url=' + encodeURIComponent(url)] : []),
-  url=>'https://api.allorigins.win/raw?url='+encodeURIComponent(url),
-  url=>'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(url),
-  url=>'https://corsproxy.io/?'+encodeURIComponent(url)
-];
-async function ccFetchWithProxies(url){
-  // Try direct first
-  let img=await ccFetchImg(url);
-  if(img)return img;
-  // Try each proxy
-  for(const proxy of CORS_PROXIES){
-    img=await ccFetchImg(proxy(url));
-    if(img)return img;
-  }
-  return null;
-}
-
-// Try loading image via Image element (for CORS-friendly sources)
-function ccImgLoad(src){return new Promise(res=>{const i=new Image();i.crossOrigin='anonymous';i.onload=()=>i.naturalWidth<2?res(null):res(i);i.onerror=()=>res(null);i.src=src;setTimeout(()=>res(null),2500)})}function ccExtractColors(img){const c=document.createElement('canvas');c.width=c.height=64;const ctx=c.getContext('2d');ctx.drawImage(img,0,0,64,64);const d=ctx.getImageData(0,0,64,64).data;const bk={};for(let i=0;i<d.length;i+=4){if(d[i+3]<128)continue;const k=`${Math.round(d[i]/24)*24},${Math.round(d[i+1]/24)*24},${Math.round(d[i+2]/24)*24}`;bk[k]=(bk[k]||0)+1}return Object.entries(bk).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([k])=>{const[r,g,b]=k.split(',').map(Number);return{r,g,b}})}
+function ccExtractColors(img){const c=document.createElement('canvas');c.width=c.height=64;const ctx=c.getContext('2d');ctx.drawImage(img,0,0,64,64);const d=ctx.getImageData(0,0,64,64).data;const bk={};for(let i=0;i<d.length;i+=4){if(d[i+3]<128)continue;const k=`${Math.round(d[i]/24)*24},${Math.round(d[i+1]/24)*24},${Math.round(d[i+2]/24)*24}`;bk[k]=(bk[k]||0)+1}return Object.entries(bk).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([k])=>{const[r,g,b]=k.split(',').map(Number);return{r,g,b}})}
 function ccImgToGrid(img,sz){const c=document.createElement('canvas');c.width=c.height=sz;const ctx=c.getContext('2d');const iw=img.naturalWidth,ih=img.naturalHeight,sc=Math.max(sz/iw,sz/ih),sw=iw*sc,sh=ih*sc;ctx.drawImage(img,(sz-sw)/2,(sz-sh)/2,sw,sh);return ctx.getImageData(0,0,sz,sz)}
 function ccPx(g,c,r){const i=(r*g.width+c)*4;return{r:g.data[i],g:g.data[i+1],b:g.data[i+2],a:g.data[i+3]}}
 function ccLum(r,g,b){return(.299*r+.587*g+.114*b)/255}
-function ccIsFinder(r,c,sz){const z=[[0,0],[0,sz-7],[sz-7,0]];for(const[pr,pc]of z)if(r>=pr&&r<pr+7&&c>=pc&&c<pc+7)return true;return false}
+function ccIsFinder(r,c,sz){for(const[pr,pc]of[[0,0],[0,sz-7],[sz-7,0]])if(r>=pr&&r<pr+7&&c>=pc&&c<pc+7)return true;return false}
 function ccIsCritical(r,c,sz){if(ccIsFinder(r,c,sz))return true;if((r===7&&(c<8||c>=sz-8))||(r===sz-8&&c<8))return true;if((c===7&&(r<8||r>=sz-8))||(c===sz-8&&r<8))return true;return false}
 function ccHexRgb(h){const m=h.match(/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i);return m?{r:+('0x'+m[1]),g:+('0x'+m[2]),b:+('0x'+m[3])}:{r:0,g:0,b:0}}
-function ccBoostColor(r,g,b,amount){const gray=.299*r+.587*g+.114*b;return{r:Math.min(255,Math.max(0,Math.round(gray+(r-gray)*(1+amount)))),g:Math.min(255,Math.max(0,Math.round(gray+(g-gray)*(1+amount)))),b:Math.min(255,Math.max(0,Math.round(gray+(b-gray)*(1+amount))))}}
-function ccAutoTune(grid,sz){let sumL=0,darkPx=0,lightPx=0,minL=1,maxL=0;for(let r=0;r<sz;r++)for(let c=0;c<sz;c++){const p=ccPx(grid,c,r);const L=ccLum(p.r,p.g,p.b);sumL+=L;if(L<.25)darkPx++;if(L>.75)lightPx++;if(L<minL)minL=L;if(L>maxL)maxL=L}const total=sz*sz,contrast=maxL-minL,lightR=lightPx/total,darkR=darkPx/total;let dm,dx,gh,gt;if(contrast>.6){dm=30;dx=105;gh=80;gt=8}else if(contrast>.35){dm=33;dx=100;gh=70;gt=15}else{dm=38;dx=95;gh=60;gt=22}if(lightR>.5){gh=Math.min(80,gh+8);dm=Math.max(20,dm-3)}if(darkR>.5){gh=Math.max(45,gh-8);gt=Math.min(30,gt+6)}ccSetS('cc-dmn',dm,'cc-vdmn');ccSetS('cc-dmx',dx,'cc-vdmx');ccSetS('cc-gs',gh,'cc-vgs');ccSetS('cc-gt',gt,'cc-vgt')}
+function ccBoostColor(r,g,b,a){const gray=.299*r+.587*g+.114*b;return{r:Math.min(255,Math.max(0,Math.round(gray+(r-gray)*(1+a)))),g:Math.min(255,Math.max(0,Math.round(gray+(g-gray)*(1+a)))),b:Math.min(255,Math.max(0,Math.round(gray+(b-gray)*(1+a))))}}
+function ccAutoTune(grid,sz){let minL=1,maxL=0,darkPx=0,lightPx=0;for(let r=0;r<sz;r++)for(let c=0;c<sz;c++){const p=ccPx(grid,c,r),L=ccLum(p.r,p.g,p.b);if(L<.25)darkPx++;if(L>.75)lightPx++;if(L<minL)minL=L;if(L>maxL)maxL=L}const t=sz*sz,ct=maxL-minL,lr=lightPx/t,dr=darkPx/t;let dm,dx,gh,gt;if(ct>.6){dm=30;dx=105;gh=80;gt=8}else if(ct>.35){dm=33;dx=100;gh=70;gt=15}else{dm=38;dx=95;gh=60;gt=22}if(lr>.5){gh=Math.min(80,gh+8);dm=Math.max(20,dm-3)}if(dr>.5){gh=Math.max(45,gh-8);gt=Math.min(30,gt+6)}ccSetS('cc-dmn',dm,'cc-vdmn');ccSetS('cc-dmx',dx,'cc-vdmx');ccSetS('cc-gs',gh,'cc-vgs');ccSetS('cc-gt',gt,'cc-vgt')}
 function ccSetS(id,v,lid){document.getElementById(id).value=v;document.getElementById(lid).textContent=v+'%'}
-function ccRenderToCanvas(canvas,qr,sz,grid,outPx){const darkMin=+document.getElementById('cc-dmn').value/100,darkMax=+document.getElementById('cc-dmx').value/100;const ghostStr=+document.getElementById('cc-gs').value/100,ghostThresh=+document.getElementById('cc-gt').value/100;const shape=document.getElementById('cc-shp').value,bgColor=document.getElementById('cc-bgc').value;const fd=ccHexRgb(document.getElementById('cc-fdc').value),useColor=document.getElementById('cc-col').checked;const ctx=canvas.getContext('2d');const quiet=2,total=sz+quiet*2,cell=outPx/total,maxR=cell/2;ctx.fillStyle=bgColor;ctx.fillRect(0,0,outPx,outPx);for(let row=0;row<sz;row++){for(let col=0;col<sz;col++){const isDark=qr.isDark(row,col),cx=(col+quiet+.5)*cell,cy=(row+quiet+.5)*cell;const critical=ccIsCritical(row,col,sz),p=ccPx(grid,col,row);const L=ccLum(p.r,p.g,p.b),darkness=1-L;if(isDark){let r,color;if(critical){r=maxR*.92;const dom=CCS.colors[0]||fd;const fc=useColor?{r:Math.round(dom.r*.8),g:Math.round(dom.g*.8),b:Math.round(dom.b*.8)}:fd;color=`rgb(${fc.r},${fc.g},${fc.b})`}else{r=maxR*Math.max(darkMin,Math.min(1.05,darkMin+(darkMax-darkMin)*darkness));if(useColor&&p.a>100){const bc=ccBoostColor(p.r,p.g,p.b,.3);if(L>.78){const m=(L-.78)/.22;color=`rgb(${Math.round(bc.r*(1-m*.75)+fd.r*m*.75)},${Math.round(bc.g*(1-m*.75)+fd.g*m*.75)},${Math.round(bc.b*(1-m*.75)+fd.b*m*.75)})`}else{color=`rgb(${bc.r},${bc.g},${bc.b})`}}else{color=`rgb(${fd.r},${fd.g},${fd.b})`}}ccDot(ctx,cx,cy,r,shape,color)}else if(!critical&&ghostStr>0&&darkness>ghostThresh){const nd=(darkness-ghostThresh)/(1-ghostThresh);const gc=maxR*.35;const r=Math.min(maxR*.04+(gc*ghostStr-maxR*.04)*Math.pow(nd,.55),gc);let color;if(useColor&&p.a>100){const bc=ccBoostColor(p.r,p.g,p.b,.3);color=`rgb(${bc.r},${bc.g},${bc.b})`}else{color=`rgb(${fd.r},${fd.g},${fd.b})`}ccDot(ctx,cx,cy,r,shape,color)}}}}
-function ccDot(ctx,cx,cy,r,shape,color){ctx.fillStyle=color;if(shape==='circle'){ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill()}else if(shape==='rrect'){const rr=r*.35;ctx.beginPath();ctx.moveTo(cx-r+rr,cy-r);ctx.lineTo(cx+r-rr,cy-r);ctx.quadraticCurveTo(cx+r,cy-r,cx+r,cy-r+rr);ctx.lineTo(cx+r,cy+r-rr);ctx.quadraticCurveTo(cx+r,cy+r,cx+r-rr,cy+r);ctx.lineTo(cx-r+rr,cy+r);ctx.quadraticCurveTo(cx-r,cy+r,cx-r,cy+r-rr);ctx.lineTo(cx-r,cy-r+rr);ctx.quadraticCurveTo(cx-r,cy-r,cx-r+rr,cy-r);ctx.closePath();ctx.fill()}else{ctx.fillRect(cx-r,cy-r,r*2,r*2)}}
-async function generateChroma(){
-  let url=document.getElementById('cc-url').value.trim();
-  if(!url){ccStatus('Enter a URL to encode',true);return}
-  if(!/^https?:\/\//i.test(url)&&url.includes('.')){url='https://'+url;document.getElementById('cc-url').value=url}
-  if(!isUrl(url)){ccStatus('Enter a valid URL',true);vMsg('v-cc-url','Invalid URL format','err');return}
-  vClear('v-cc-url');
-  const btn=document.getElementById('cc-gen-btn');btn.disabled=true;btn.innerHTML='<span class="spin"></span> Generating…';ccStatus('Loading image…');
-  try{const sourceImg=await ccLoadImg(url);const colors=ccExtractColors(sourceImg);CCS.colors=colors;CCS.label=(()=>{try{return new URL(url).hostname}catch{return'qr'}})();CCS.thumb=sourceImg.src||'';document.getElementById('cc-sth').src=CCS.thumb;document.getElementById('cc-sn').textContent=CCS.label;const pal=document.getElementById('cc-pal');pal.innerHTML='';colors.forEach(c=>{const d=document.createElement('div');d.className='sw';d.style.background=`rgb(${c.r},${c.g},${c.b})`;pal.appendChild(d)});document.getElementById('cc-srcinfo').style.display='flex';const ecc=document.getElementById('cc-ecc').value;CCS.versions=[];const carousel=document.getElementById('cc-carousel');carousel.innerHTML='';let tuned=false;for(let i=0;i<CC_VERSIONS.length;i++){const ver=CC_VERSIONS[i];let qr;try{qr=qrcode(ver,ecc);qr.addData(url);qr.make()}catch{try{qr=qrcode(0,ecc);qr.addData(url);qr.make()}catch{continue}}const sz=qr.getModuleCount(),grid=ccImgToGrid(sourceImg,sz);if(!tuned){ccAutoTune(grid,sz);tuned=true;let lc=0;for(let r=0;r<sz;r++)for(let c=0;c<sz;c++)if(ccLum(ccPx(grid,c,r).r,ccPx(grid,c,r).g,ccPx(grid,c,r).b)>.85)lc++;if(lc/(sz*sz)>.6)ccStatus('Image is mostly white — crop tightly for best results')}const tc=document.createElement('canvas');tc.width=tc.height=256;ccRenderToCanvas(tc,qr,sz,grid,256);CCS.versions.push({qr,sz,grid,ver,modules:sz});const card=document.createElement('div');card.className='vcard'+(i===CCS.selectedIdx?' sel':'');card.innerHTML=`<div class="vthumb"></div><div class="vlabel">v${ver} · ${sz}×${sz}</div>`;card.querySelector('.vthumb').appendChild(tc);card.onclick=()=>ccSelectVersion(i);carousel.appendChild(card)}CCS.selectedIdx=Math.min(CCS.selectedIdx,CCS.versions.length-1);ccRenderSelected();document.getElementById('cc-preview-area').classList.add('on');if(!document.getElementById('cc-status').textContent)ccStatus('')}catch(e){ccStatus('Error: '+e,true);console.error(e)}finally{btn.disabled=false;btn.textContent='Generate ChromaCode'}}
-function ccSelectVersion(idx){CCS.selectedIdx=idx;document.querySelectorAll('#cc-carousel .vcard').forEach((c,i)=>c.classList.toggle('sel',i===idx));ccRenderSelected()}
-function ccRenderSelected(){const v=CCS.versions[CCS.selectedIdx];if(!v)return;const outPx=+document.getElementById('cc-osz').value;const canvas=document.getElementById('cc-main');canvas.width=canvas.height=outPx;ccRenderToCanvas(canvas,v.qr,v.sz,v.grid,outPx)}
-['cc-dmn','cc-dmx','cc-gs','cc-gt'].forEach(id=>{const vMap={'cc-dmn':'cc-vdmn','cc-dmx':'cc-vdmx','cc-gs':'cc-vgs','cc-gt':'cc-vgt'};document.getElementById(id).oninput=()=>{document.getElementById(vMap[id]).textContent=document.getElementById(id).value+'%';ccRenderSelected()}});
+function ccRenderToCanvas(canvas,qr,sz,grid,outPx){const dMin=+document.getElementById('cc-dmn').value/100,dMax=+document.getElementById('cc-dmx').value/100,gStr=+document.getElementById('cc-gs').value/100,gThr=+document.getElementById('cc-gt').value/100,shape=document.getElementById('cc-shp').value,bgC=document.getElementById('cc-bgc').value,fd=ccHexRgb(document.getElementById('cc-fdc').value),useCol=document.getElementById('cc-col').checked;const ctx=canvas.getContext('2d');const q=2,tot=sz+q*2,cell=outPx/tot,mR=cell/2;ctx.fillStyle=bgC;ctx.fillRect(0,0,outPx,outPx);for(let row=0;row<sz;row++)for(let col=0;col<sz;col++){const isDk=qr.isDark(row,col),cx=(col+q+.5)*cell,cy=(row+q+.5)*cell,crit=ccIsCritical(row,col,sz),p=ccPx(grid,col,row),L=ccLum(p.r,p.g,p.b),dk=1-L;if(isDk){let r,color;if(crit){r=mR*.92;const dom=CCS.colors[0]||fd;const fc=useCol?{r:Math.round(dom.r*.8),g:Math.round(dom.g*.8),b:Math.round(dom.b*.8)}:fd;color=`rgb(${fc.r},${fc.g},${fc.b})`}else{r=mR*Math.max(dMin,Math.min(1.05,dMin+(dMax-dMin)*dk));if(useCol&&p.a>100){const bc=ccBoostColor(p.r,p.g,p.b,.3);if(L>.78){const m=(L-.78)/.22;color=`rgb(${Math.round(bc.r*(1-m*.75)+fd.r*m*.75)},${Math.round(bc.g*(1-m*.75)+fd.g*m*.75)},${Math.round(bc.b*(1-m*.75)+fd.b*m*.75)})`}else color=`rgb(${bc.r},${bc.g},${bc.b})`}else color=`rgb(${fd.r},${fd.g},${fd.b})`}ccDot(ctx,cx,cy,r,shape,color)}else if(!crit&&gStr>0&&dk>gThr){const nd=(dk-gThr)/(1-gThr),gc=mR*.35,r=Math.min(mR*.04+(gc*gStr-mR*.04)*Math.pow(nd,.55),gc);const bc=useCol&&p.a>100?ccBoostColor(p.r,p.g,p.b,.3):{r:fd.r,g:fd.g,b:fd.b};ccDot(ctx,cx,cy,r,shape,`rgb(${bc.r},${bc.g},${bc.b})`)}}}
+function ccDot(ctx,cx,cy,r,shape,color){ctx.fillStyle=color;if(shape==='circle'){ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill()}else if(shape==='rrect'){const rr=r*.35;ctx.beginPath();ctx.moveTo(cx-r+rr,cy-r);ctx.lineTo(cx+r-rr,cy-r);ctx.quadraticCurveTo(cx+r,cy-r,cx+r,cy-r+rr);ctx.lineTo(cx+r,cy+r-rr);ctx.quadraticCurveTo(cx+r,cy+r,cx+r-rr,cy+r);ctx.lineTo(cx-r+rr,cy+r);ctx.quadraticCurveTo(cx-r,cy+r,cx-r,cy+r-rr);ctx.lineTo(cx-r,cy-r+rr);ctx.quadraticCurveTo(cx-r,cy-r,cx-r+rr,cy-r);ctx.closePath();ctx.fill()}else ctx.fillRect(cx-r,cy-r,r*2,r*2)}
+async function generateChroma(){let url=document.getElementById('cc-url').value.trim();if(!url){ccStatus('Enter a URL',true);return}if(!/^https?:\/\//i.test(url)&&url.includes('.')){url='https://'+url;document.getElementById('cc-url').value=url}const btn=document.getElementById('cc-gen-btn');btn.disabled=true;btn.innerHTML='<span class="spin"></span> Generating…';ccStatus('Loading image…');try{const src=await ccLoadImg(url);const colors=ccExtractColors(src);CCS.colors=colors;CCS.label=(()=>{try{return new URL(url).hostname}catch{return'qr'}})();CCS.thumb=src.src||'';document.getElementById('cc-sth').src=CCS.thumb;document.getElementById('cc-sn').textContent=CCS.label;const pal=document.getElementById('cc-pal');pal.innerHTML='';colors.forEach(c=>{const d=document.createElement('div');d.className='sw';d.style.background=`rgb(${c.r},${c.g},${c.b})`;pal.appendChild(d)});document.getElementById('cc-srcinfo').style.display='flex';const ecc=document.getElementById('cc-ecc').value;CCS.versions=[];const car=document.getElementById('cc-carousel');car.innerHTML='';ccStatus('Building QR versions…');let tuned=false;for(let i=0;i<CC_VERSIONS.length;i++){const ver=CC_VERSIONS[i];let qr;try{qr=qrcode(ver,ecc);qr.addData(url);qr.make()}catch{try{qr=qrcode(0,ecc);qr.addData(url);qr.make()}catch{continue}}const sz=qr.getModuleCount(),grid=ccImgToGrid(src,sz);if(!tuned){ccAutoTune(grid,sz);tuned=true}const tc=document.createElement('canvas');tc.width=tc.height=128;ccRenderToCanvas(tc,qr,sz,grid,128);CCS.versions.push({qr,sz,grid,ver});const card=document.createElement('div');card.className='vcard'+(i===CCS.selectedIdx?' sel':'');card.innerHTML=`<div class="vthumb"></div><div class="vlabel">v${ver} · ${sz}×${sz}</div>`;card.querySelector('.vthumb').appendChild(tc);card.onclick=()=>ccSelectVersion(i);car.appendChild(card)}CCS.selectedIdx=Math.min(CCS.selectedIdx,CCS.versions.length-1);ccRenderSelected();document.getElementById('cc-preview-area').classList.add('on');ccStatus('')}catch(e){ccStatus('Error: '+e,true)}finally{btn.disabled=false;btn.textContent='Generate ChromaCode'}}
+function ccSelectVersion(i){CCS.selectedIdx=i;document.querySelectorAll('#cc-carousel .vcard').forEach((c,j)=>c.classList.toggle('sel',j===i));ccRenderSelected()}
+function ccRenderSelected(){const v=CCS.versions[CCS.selectedIdx];if(!v)return;const o=+document.getElementById('cc-osz').value,c=document.getElementById('cc-main');c.width=c.height=o;ccRenderToCanvas(c,v.qr,v.sz,v.grid,o)}
+['cc-dmn','cc-dmx','cc-gs','cc-gt'].forEach(id=>{const vm={'cc-dmn':'cc-vdmn','cc-dmx':'cc-vdmx','cc-gs':'cc-vgs','cc-gt':'cc-vgt'};document.getElementById(id).oninput=()=>{document.getElementById(vm[id]).textContent=document.getElementById(id).value+'%';ccRenderSelected()}});
 ['cc-shp','cc-osz','cc-bgc','cc-fdc','cc-col'].forEach(id=>{const el=document.getElementById(id);el.addEventListener('change',ccRenderSelected);el.addEventListener('input',ccRenderSelected)});
 document.getElementById('cc-ecc').onchange=()=>{if(CCS.versions.length)generateChroma()};
 document.getElementById('cc-url').onkeydown=e=>{if(e.key==='Enter')generateChroma()};
-async function ccDlPNG(){const c=document.getElementById('cc-main');const v=CCS.versions[CCS.selectedIdx];const name=`chromacode-${CCS.label}-v${v?.ver||'x'}.png`;try{const blob=await new Promise(r=>c.toBlob(r,'image/png'));const file=new File([blob],name,{type:'image/png'});if(navigator.canShare?.({files:[file]})){await navigator.share({files:[file],title:name});return}}catch{}const a=document.createElement('a');a.download=name;a.href=c.toDataURL('image/png');document.body.appendChild(a);a.click();document.body.removeChild(a)}
-async function ccDlSVG(){const v=CCS.versions[CCS.selectedIdx];if(!v)return;const svgStr=ccBuildSVG(v);const name=`chromacode-${CCS.label}-v${v.ver}.svg`;const blob=new Blob([svgStr],{type:'image/svg+xml'});try{const file=new File([blob],name,{type:'image/svg+xml'});if(navigator.canShare?.({files:[file]})){await navigator.share({files:[file],title:name});return}}catch{}const a=document.createElement('a');a.download=name;a.href=URL.createObjectURL(blob);document.body.appendChild(a);a.click();document.body.removeChild(a)}
-function ccBuildSVG(v){const{qr,sz,grid}=v;const darkMin=+document.getElementById('cc-dmn').value/100,darkMax=+document.getElementById('cc-dmx').value/100;const ghostStr=+document.getElementById('cc-gs').value/100,ghostThresh=+document.getElementById('cc-gt').value/100;const shape=document.getElementById('cc-shp').value,bgColor=document.getElementById('cc-bgc').value;const fd=ccHexRgb(document.getElementById('cc-fdc').value),useColor=document.getElementById('cc-col').checked;const quiet=2,total=sz+quiet*2,cell=12,svgSz=total*cell,maxR=cell/2;const parts=[`<svg xmlns="http://www.w3.org/2000/svg" width="${svgSz}" height="${svgSz}" viewBox="0 0 ${svgSz} ${svgSz}">`,`<rect width="${svgSz}" height="${svgSz}" fill="${bgColor}"/>`];for(let row=0;row<sz;row++){for(let col=0;col<sz;col++){const isDark=qr.isDark(row,col),cx=(col+quiet+.5)*cell,cy=(row+quiet+.5)*cell;const critical=ccIsCritical(row,col,sz),p=ccPx(grid,col,row),L=ccLum(p.r,p.g,p.b),darkness=1-L;if(isDark){let r,color;if(critical){r=maxR*.92;const dom=CCS.colors[0]||fd;const fc=useColor?{r:Math.round(dom.r*.8),g:Math.round(dom.g*.8),b:Math.round(dom.b*.8)}:fd;color=`rgb(${fc.r},${fc.g},${fc.b})`}else{r=maxR*Math.max(darkMin,Math.min(1.05,darkMin+(darkMax-darkMin)*darkness));if(useColor&&p.a>100){const bc=ccBoostColor(p.r,p.g,p.b,.3);if(L>.78){const m=(L-.78)/.22;color=`rgb(${Math.round(bc.r*(1-m*.75)+fd.r*m*.75)},${Math.round(bc.g*(1-m*.75)+fd.g*m*.75)},${Math.round(bc.b*(1-m*.75)+fd.b*m*.75)})`}else{color=`rgb(${bc.r},${bc.g},${bc.b})`}}else{color=`rgb(${fd.r},${fd.g},${fd.b})`}}if(shape==='circle')parts.push(`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${color}"/>`);else if(shape==='rrect')parts.push(`<rect x="${cx-r}" y="${cy-r}" width="${r*2}" height="${r*2}" rx="${r*.35}" fill="${color}"/>`);else parts.push(`<rect x="${cx-r}" y="${cy-r}" width="${r*2}" height="${r*2}" fill="${color}"/>`)}else if(!critical&&ghostStr>0&&darkness>ghostThresh){const nd=(darkness-ghostThresh)/(1-ghostThresh);const gc=maxR*.35;const r=Math.min(maxR*.04+(gc*ghostStr-maxR*.04)*Math.pow(nd,.55),gc);const bc=useColor&&p.a>100?ccBoostColor(p.r,p.g,p.b,.3):{r:fd.r,g:fd.g,b:fd.b};const color=`rgb(${bc.r},${bc.g},${bc.b})`;if(shape==='circle')parts.push(`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${color}"/>`);else parts.push(`<rect x="${cx-r}" y="${cy-r}" width="${r*2}" height="${r*2}" rx="${r*.2}" fill="${color}"/>`)}}}parts.push('</svg>');return parts.join('\n')}
+async function ccDlPNG(){const c=document.getElementById('cc-main'),v=CCS.versions[CCS.selectedIdx],n=`chromacode-${CCS.label}-v${v?.ver||'x'}.png`;try{const b=await new Promise(r=>c.toBlob(r,'image/png'));const f=new File([b],n,{type:'image/png'});if(navigator.canShare?.({files:[f]})){await navigator.share({files:[f]});return}}catch{}const a=document.createElement('a');a.download=n;a.href=c.toDataURL('image/png');document.body.appendChild(a);a.click();a.remove()}
+async function ccDlSVG(){const v=CCS.versions[CCS.selectedIdx];if(!v)return;const{qr,sz,grid}=v,dMin=+document.getElementById('cc-dmn').value/100,dMax=+document.getElementById('cc-dmx').value/100,gStr=+document.getElementById('cc-gs').value/100,gThr=+document.getElementById('cc-gt').value/100,shape=document.getElementById('cc-shp').value,bgC=document.getElementById('cc-bgc').value,fd=ccHexRgb(document.getElementById('cc-fdc').value),useCol=document.getElementById('cc-col').checked,q=2,tot=sz+q*2,cell=12,svgSz=tot*cell,mR=cell/2;const pts=[`<svg xmlns="http://www.w3.org/2000/svg" width="${svgSz}" height="${svgSz}" viewBox="0 0 ${svgSz} ${svgSz}">`,`<rect width="${svgSz}" height="${svgSz}" fill="${bgC}"/>`];for(let row=0;row<sz;row++)for(let col=0;col<sz;col++){const isDk=qr.isDark(row,col),cx=(col+q+.5)*cell,cy=(row+q+.5)*cell,crit=ccIsCritical(row,col,sz),p=ccPx(grid,col,row),L=ccLum(p.r,p.g,p.b),dk=1-L;if(isDk){let r,color;if(crit){r=mR*.92;const dom=CCS.colors[0]||fd,fc=useCol?{r:Math.round(dom.r*.8),g:Math.round(dom.g*.8),b:Math.round(dom.b*.8)}:fd;color=`rgb(${fc.r},${fc.g},${fc.b})`}else{r=mR*Math.max(dMin,Math.min(1.05,dMin+(dMax-dMin)*dk));if(useCol&&p.a>100){const bc=ccBoostColor(p.r,p.g,p.b,.3);if(L>.78){const m=(L-.78)/.22;color=`rgb(${Math.round(bc.r*(1-m*.75)+fd.r*m*.75)},${Math.round(bc.g*(1-m*.75)+fd.g*m*.75)},${Math.round(bc.b*(1-m*.75)+fd.b*m*.75)})`}else color=`rgb(${bc.r},${bc.g},${bc.b})`}else color=`rgb(${fd.r},${fd.g},${fd.b})`}if(shape==='circle')pts.push(`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${color}"/>`);else if(shape==='rrect')pts.push(`<rect x="${cx-r}" y="${cy-r}" width="${r*2}" height="${r*2}" rx="${r*.35}" fill="${color}"/>`);else pts.push(`<rect x="${cx-r}" y="${cy-r}" width="${r*2}" height="${r*2}" fill="${color}"/>`)}else if(!crit&&gStr>0&&dk>gThr){const nd=(dk-gThr)/(1-gThr),gc=mR*.35,r=Math.min(mR*.04+(gc*gStr-mR*.04)*Math.pow(nd,.55),gc),bc=useCol&&p.a>100?ccBoostColor(p.r,p.g,p.b,.3):{r:fd.r,g:fd.g,b:fd.b};if(shape==='circle')pts.push(`<circle cx="${cx}" cy="${cy}" r="${r}" fill="rgb(${bc.r},${bc.g},${bc.b})"/>`);else pts.push(`<rect x="${cx-r}" y="${cy-r}" width="${r*2}" height="${r*2}" rx="${r*.2}" fill="rgb(${bc.r},${bc.g},${bc.b})"/>`)}}pts.push('</svg>');const blob=new Blob([pts.join('\n')],{type:'image/svg+xml'}),n=`chromacode-${CCS.label}-v${v.ver}.svg`;try{const f=new File([blob],n,{type:'image/svg+xml'});if(navigator.canShare?.({files:[f]})){await navigator.share({files:[f]});return}}catch{}const a=document.createElement('a');a.download=n;a.href=URL.createObjectURL(blob);document.body.appendChild(a);a.click();a.remove()}
+
+// ═══════════════════════════════════════
+// QR SCANNER
+// ═══════════════════════════════════════
+let camStream=null,camRunning=false,scanResultData='';
+
+// Paste support
+document.addEventListener('paste',e=>{if(!document.getElementById('sec-scanner').classList.contains('on'))return;const items=e.clipboardData?.items;if(!items)return;for(const item of items){if(item.type.startsWith('image/')){e.preventDefault();scanFile(item.getAsFile());return}}});
+
+// File/drop
+const scanDz=document.getElementById('scan-dz'),scanFi=document.getElementById('scan-fi');
+scanDz.onclick=()=>scanFi.click();
+scanDz.ondragover=e=>{e.preventDefault();scanDz.classList.add('ov')};
+scanDz.ondragleave=()=>scanDz.classList.remove('ov');
+scanDz.ondrop=e=>{e.preventDefault();scanDz.classList.remove('ov');scanFile(e.dataTransfer.files[0])};
+scanFi.onchange=e=>scanFile(e.target.files[0]);
+
+function scanFile(f){if(!f||!f.type.startsWith('image/'))return;if(typeof jsQR==='undefined'){document.getElementById('scan-dp').innerHTML='<span style="color:var(--warn)">Scanner loading…try again in a moment</span>';return}const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{const c=document.getElementById('scan-canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;const ctx=c.getContext('2d');ctx.drawImage(img,0,0);const id=ctx.getImageData(0,0,c.width,c.height);const code=jsQR(id.data,c.width,c.height,{inversionAttempts:'attemptBoth'});if(code){showScanResult(code.data);document.getElementById('scan-dp').innerHTML=`<img class="preview" src="${r.result}" style="max-width:80px;max-height:80px"><br><span class="fname" style="color:var(--ok)">✓ QR code found</span>`}else document.getElementById('scan-dp').innerHTML=`<span style="color:var(--err)">✕ No QR code detected</span><br><span class="fname">Try a clearer image</span>`};img.src=r.result};r.readAsDataURL(f)}
+
+// Camera
+async function toggleCamera(){if(camRunning){stopCamera();return}try{camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment',width:{ideal:1280},height:{ideal:720}}});document.getElementById('cam-video').srcObject=camStream;document.getElementById('cam-wrap').style.display='block';document.getElementById('cam-btn').textContent='⏹ Close Camera';camRunning=true;requestAnimationFrame(scanFrame)}catch(e){alert(e.name==='NotAllowedError'?'Camera permission denied. QR Studio needs camera access only to scan QR codes — no video is recorded or transmitted.':'Could not access camera: '+e.message)}}
+function stopCamera(){camRunning=false;if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null}document.getElementById('cam-wrap').style.display='none';document.getElementById('cam-btn').textContent='📷 Open Camera'}
+function scanFrame(){if(!camRunning||typeof jsQR==='undefined')return;const v=document.getElementById('cam-video');if(v.readyState!==v.HAVE_ENOUGH_DATA){requestAnimationFrame(scanFrame);return}const c=document.getElementById('cam-canvas');c.width=v.videoWidth;c.height=v.videoHeight;const ctx=c.getContext('2d');ctx.drawImage(v,0,0);const code=jsQR(ctx.getImageData(0,0,c.width,c.height).data,c.width,c.height,{inversionAttempts:'attemptBoth'});if(code){document.getElementById('cam-status').textContent='✓ Found!';document.getElementById('cam-status').style.background='rgba(34,197,94,.85)';showScanResult(code.data);setTimeout(()=>{if(camRunning){document.getElementById('cam-status').textContent='Scanning…';document.getElementById('cam-status').style.background='rgba(0,0,0,.7)';requestAnimationFrame(scanFrame)}},2000)}else requestAnimationFrame(scanFrame)}
+
+function showScanResult(data){scanResultData=data;document.getElementById('scan-result').style.display='block';document.getElementById('scan-content').textContent=data;const type=detectQRType(data);document.getElementById('scan-type-badge').textContent=type.label;const ob=document.getElementById('scan-open-btn');if(type.type==='url'){ob.style.display='inline-flex';ob.textContent='🔗 Open Link';ob.onclick=()=>window.open(data,'_blank')}else if(type.type==='phone'){ob.style.display='inline-flex';ob.textContent='📞 Call';ob.onclick=()=>window.open(data,'_blank')}else if(type.type==='email'){ob.style.display='inline-flex';ob.textContent='✉️ Email';ob.onclick=()=>window.open(data,'_blank')}else if(type.type==='whatsapp'){ob.style.display='inline-flex';ob.textContent='💬 WhatsApp';ob.onclick=()=>window.open(data,'_blank')}else ob.style.display='none';
+const safety=analyzeQRSafety(data,type),el=document.getElementById('scan-safety'),card=document.getElementById('scan-safety-card');
+if(safety.level==='safe'){card.style.borderColor='var(--ok)';el.innerHTML=`<div style="color:var(--ok);font-weight:600;font-size:.9rem">✅ Looks Safe</div><div style="font-size:.78rem;color:var(--text2);margin-top:6px">${safety.detail}</div>`}
+else if(safety.level==='warning'){card.style.borderColor='var(--warn)';el.innerHTML=`<div style="color:var(--warn);font-weight:600;font-size:.9rem">⚠️ Caution</div><div style="font-size:.78rem;color:var(--text2);margin-top:6px">${safety.detail}</div>`}
+else{card.style.borderColor='var(--err)';el.innerHTML=`<div style="color:var(--err);font-weight:600;font-size:.9rem">🚨 Suspicious — Be Careful</div><div style="font-size:.78rem;color:var(--text2);margin-top:6px">${safety.detail}</div>`}
+document.getElementById('scan-result').scrollIntoView({behavior:'smooth',block:'nearest'})}
+
+function detectQRType(d){if(/^https?:\/\/wa\.me\//i.test(d))return{type:'whatsapp',label:'WhatsApp'};if(/^https?:\/\//i.test(d))return{type:'url',label:'URL'};if(/^WIFI:/i.test(d))return{type:'wifi',label:'WiFi'};if(/^mailto:/i.test(d))return{type:'email',label:'Email'};if(/^tel:/i.test(d))return{type:'phone',label:'Phone'};if(/^sms:/i.test(d))return{type:'sms',label:'SMS'};if(/^geo:/i.test(d))return{type:'geo',label:'Location'};if(/^BEGIN:VCARD/i.test(d))return{type:'vcard',label:'vCard'};if(/^BEGIN:VCALENDAR/i.test(d))return{type:'calendar',label:'Calendar'};if(/^bitcoin:/i.test(d))return{type:'crypto',label:'Bitcoin'};if(/^ethereum:/i.test(d))return{type:'crypto',label:'Ethereum'};if(/^00020101/i.test(d))return{type:'emvpay',label:'EMV Payment'};return{type:'text',label:'Text'}}
+
+function analyzeQRSafety(data,type){const w=[],d=[];if(type.type==='url'){try{const u=new URL(data);if(u.protocol==='http:')w.push('Uses HTTP (unencrypted).');if(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(u.hostname))d.push('Raw IP address URL — common in phishing.');if(data.length>500)w.push('Unusually long URL.');const badTLDs=['.zip','.mov','.tk','.ml','.ga','.cf','.gq','.buzz','.top','.xyz'];if(badTLDs.some(t=>u.hostname.endsWith(t)))w.push(`Suspicious domain extension.`);const shorts=['bit.ly','tinyurl.com','t.co','goo.gl','ow.ly','is.gd','rb.gy','short.io','cutt.ly'];if(shorts.some(s=>u.hostname===s||u.hostname==='www.'+s))w.push('Shortened URL — real destination hidden.');if(u.protocol==='data:')d.push('Data URI — can execute code. Do NOT open.');if(u.protocol==='javascript:')d.push('JavaScript injection. Do NOT open.');if(/[^\x00-\x7F]/.test(u.hostname))d.push('Non-ASCII domain (homograph attack).');if(u.username||u.password)d.push('Embedded credentials — likely phishing.');if(data.includes('@')&&type.type==='url')w.push('URL contains @ — may redirect elsewhere.');if(d.length===0&&w.length===0)return{level:'safe',detail:`Domain: <strong>${u.hostname}</strong> · ${u.protocol==='https:'?'HTTPS encrypted':'HTTP unencrypted'} · No threats detected. Verify the domain before entering personal info.`}}catch{}}
+if(type.type==='wifi'){if(/P:;/.test(data)||/T:nopass/i.test(data)||/T:;/.test(data))w.push('Open WiFi — no password.');else return{level:'safe',detail:'Password-protected WiFi. Verify the network name before connecting.'}}
+if(type.type==='vcard')return{level:'safe',detail:'Contact card. Review details before saving.'};
+if(type.type==='calendar')return{level:'safe',detail:'Calendar event. Review before adding.'};
+if(type.type==='phone')return{level:'safe',detail:'Phone number. Verify before calling — premium numbers can charge high fees.'};
+if(type.type==='sms')w.push('SMS can pre-fill messages to premium numbers. Review before sending.');
+if(type.type==='email')return{level:'safe',detail:'Email link. Review recipient and content before sending.'};
+if(type.type==='emvpay')return{level:'warning',detail:'Payment QR. Only use from trusted merchants. Verify amount in your banking app.'};
+if(type.type==='crypto')return{level:'warning',detail:'Crypto address. Double-check every character — transactions are irreversible.'};
+if(type.type==='text'&&!d.length&&!w.length)return{level:'safe',detail:'Plain text. No links or executable content.'};
+if(d.length)return{level:'danger',detail:d.concat(w).map(x=>'• '+x).join('<br>')};
+if(w.length)return{level:'warning',detail:w.map(x=>'• '+x).join('<br>')};
+return{level:'safe',detail:'No threats detected.'}}
+
+function copyScanResult(){navigator.clipboard.writeText(scanResultData).then(()=>{const b=document.querySelector('#scan-result .dl-btn');b.textContent='✓ Copied!';setTimeout(()=>b.textContent='📋 Copy',1500)})}
+function clearScan(){document.getElementById('scan-result').style.display='none';document.getElementById('scan-dp').textContent='Drop image, tap to browse, or paste (Ctrl+V)';document.getElementById('scan-safety-card').style.borderColor='var(--border)';scanResultData='';scanFi.value=''}
 
 // ═══════════════════════════════════════
 // EASTER EGGS
 // ═══════════════════════════════════════
+(()=>{const seq=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];let idx=0;document.addEventListener('keydown',e=>{try{if(!e||!e.key||typeof e.key!=='string')return;const k=e.key.length===1?e.key.toLowerCase():e.key;if(k===seq[idx]){idx++;if(idx===seq.length){idx=0;confettiBurst()}}else idx=k===seq[0]?1:0}catch{}})})();
+function confettiBurst(){const cols=['#06b6d4','#f59e0b','#ec4899','#22c55e','#8b5cf6','#ef4444','#3b82f6'];const c=document.createElement('canvas');Object.assign(c.style,{position:'fixed',top:'0',left:'0',width:'100vw',height:'100vh',pointerEvents:'none',zIndex:'99999'});c.width=window.innerWidth;c.height=window.innerHeight;document.body.appendChild(c);const ctx=c.getContext('2d');const count=window.innerWidth<600?60:150;const ps=[];for(let i=0;i<count;i++)ps.push({x:c.width/2+(Math.random()*200-100),y:c.height/2,vx:(Math.random()-.5)*16,vy:Math.random()*-18-4,s:Math.random()*8+4,c:cols[Math.floor(Math.random()*cols.length)],r:Math.random()*360,rv:(Math.random()-.5)*12,life:1,decay:.008+Math.random()*.008,shape:Math.random()>.5?'r':'c'});function draw(){ctx.clearRect(0,0,c.width,c.height);let alive=false;ps.forEach(p=>{if(p.life<=0)return;alive=true;p.x+=p.vx;p.y+=p.vy;p.vy+=.35;p.vx*=.99;p.r+=p.rv;p.life-=p.decay;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r*Math.PI/180);ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.c;if(p.shape==='r')ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);else{ctx.beginPath();ctx.arc(0,0,p.s/2,0,Math.PI*2);ctx.fill()}ctx.restore()});if(alive)requestAnimationFrame(draw);else c.remove()}draw();const h1=document.querySelector('.hdr h1');let fi=0;const fc=['#ec4899','#f59e0b','#22c55e','#8b5cf6','#06b6d4'];const ti=setInterval(()=>{h1.style.color=fc[fi%fc.length];fi++;if(fi>10){clearInterval(ti);h1.style.color=''}},150)}
+(()=>{let taps=0,timer=null;document.querySelector('.hdr h1').addEventListener('click',()=>{taps++;clearTimeout(timer);timer=setTimeout(()=>taps=0,600);if(taps>=3){taps=0;document.body.classList.toggle('party-mode');confettiBurst()}})})();
+(()=>{let lx=0,ly=0,lz=0,lt=0,sc=0,st=null;window.addEventListener('devicemotion',e=>{const a=e.accelerationIncludingGravity;if(!a)return;const now=Date.now();if(now-lt<100)return;if(Math.abs(a.x-lx)+Math.abs(a.y-ly)+Math.abs(a.z-lz)>35){sc++;clearTimeout(st);st=setTimeout(()=>sc=0,1500);if(sc>=3){sc=0;confettiBurst()}}lx=a.x;ly=a.y;lz=a.z;lt=now})})();
+(()=>{const el=document.getElementById('in-url');el.addEventListener('input',()=>{if(el.value.toLowerCase().trim()==='matrix')matrixRain()})})();
+function matrixRain(){const c=document.createElement('canvas');Object.assign(c.style,{position:'fixed',top:'0',left:'0',width:'100vw',height:'100vh',pointerEvents:'none',zIndex:'99998',opacity:'.85'});c.width=window.innerWidth;c.height=window.innerHeight;document.body.appendChild(c);const ctx=c.getContext('2d');const cols=Math.floor(c.width/14),drops=new Array(cols).fill(1),chars='QRスタジオ01アイウエオカキクケコ日本語ABCDEF';let frames=0;function draw(){ctx.fillStyle='rgba(0,0,0,0.06)';ctx.fillRect(0,0,c.width,c.height);ctx.font='13px JetBrains Mono,monospace';for(let i=0;i<drops.length;i++){ctx.fillStyle=Math.random()>.95?'#fff':'#22c55e';ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*14,drops[i]*14);if(drops[i]*14>c.height&&Math.random()>.975)drops[i]=0;drops[i]++}frames++;if(frames<180)requestAnimationFrame(draw);else{c.style.transition='opacity .5s';c.style.opacity='0';setTimeout(()=>c.remove(),600)}}draw()}
 
-// 1. Konami Code → Confetti burst (works on both desktop & mobile via virtual dpad)
-(function(){
-  const seq=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-  let idx=0;
-  document.addEventListener('keydown',e=>{
-    try{
-      if(!e||!e.key||typeof e.key!=='string')return;
-      const k=e.key.length===1?e.key.toLowerCase():e.key;
-      if(k===seq[idx]){idx++;if(idx===seq.length){idx=0;confettiBurst()}}
-      else{idx=k===seq[0]?1:0}
-    }catch{}
-  });
-})();
-
-function confettiBurst(){
-  const colors=['#06b6d4','#f59e0b','#ec4899','#22c55e','#8b5cf6','#ef4444','#3b82f6'];
-  const c=document.createElement('canvas');
-  Object.assign(c.style,{position:'fixed',top:'0',left:'0',width:'100vw',height:'100vh',pointerEvents:'none',zIndex:'99999'});
-  c.width=window.innerWidth;c.height=window.innerHeight;
-  document.body.appendChild(c);
-  const ctx=c.getContext('2d');
-  const particles=[];
-  for(let i=0;i<150;i++){
-    particles.push({x:c.width/2+Math.random()*200-100,y:c.height/2,vx:(Math.random()-.5)*16,vy:Math.random()*-18-4,
-      s:Math.random()*8+4,c:colors[Math.floor(Math.random()*colors.length)],r:Math.random()*360,
-      rv:(Math.random()-.5)*12,life:1,decay:.008+Math.random()*.008,shape:Math.random()>.5?'r':'c'});
-  }
-  let raf;
-  function draw(){
-    ctx.clearRect(0,0,c.width,c.height);
-    let alive=false;
-    particles.forEach(p=>{
-      if(p.life<=0)return;alive=true;
-      p.x+=p.vx;p.y+=p.vy;p.vy+=.35;p.vx*=.99;p.r+=p.rv;p.life-=p.decay;
-      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r*Math.PI/180);
-      ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.c;
-      if(p.shape==='r'){ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6)}
-      else{ctx.beginPath();ctx.arc(0,0,p.s/2,0,Math.PI*2);ctx.fill()}
-      ctx.restore();
-    });
-    if(alive)raf=requestAnimationFrame(draw);
-    else{cancelAnimationFrame(raf);c.remove()}
-  }
-  draw();
-  // Quick celebratory title flash
-  const h1=document.querySelector('.hdr h1');
-  h1.style.transition='color .3s';
-  let fi=0;const fc=['#ec4899','#f59e0b','#22c55e','#8b5cf6','#06b6d4'];
-  const ti=setInterval(()=>{h1.style.color=fc[fi%fc.length];fi++;if(fi>10){clearInterval(ti);h1.style.color=''}},150);
-}
-
-// 2. Triple-tap/click on title → party mode (rainbow border pulse)
-(function(){
-  let taps=0,timer=null;
-  document.querySelector('.hdr h1').addEventListener('click',()=>{
-    taps++;clearTimeout(timer);
-    timer=setTimeout(()=>taps=0,600);
-    if(taps>=3){taps=0;document.body.classList.toggle('party-mode');confettiBurst()}
-  });
-})();
-
-// 3. Mobile easter egg: shake device → confetti (uses DeviceMotion)
-(function(){
-  let lastX=0,lastY=0,lastZ=0,lastT=0,shakeCount=0,shakeTimer=null;
-  window.addEventListener('devicemotion',e=>{
-    const a=e.accelerationIncludingGravity;if(!a)return;
-    const now=Date.now();if(now-lastT<100)return;
-    const dx=Math.abs(a.x-lastX),dy=Math.abs(a.y-lastY),dz=Math.abs(a.z-lastZ);
-    if(dx+dy+dz>35){shakeCount++;clearTimeout(shakeTimer);shakeTimer=setTimeout(()=>shakeCount=0,1500);
-      if(shakeCount>=3){shakeCount=0;confettiBurst()}}
-    lastX=a.x;lastY=a.y;lastZ=a.z;lastT=now;
-  });
-})();
-
-// 4. Secret: type "matrix" in URL field → matrix rain overlay for 4 seconds
-(function(){
-  const el=document.getElementById('in-url');
-  el.addEventListener('input',()=>{
-    if(el.value.toLowerCase().trim()==='matrix')matrixRain();
-  });
-})();
-
-function matrixRain(){
-  const c=document.createElement('canvas');
-  Object.assign(c.style,{position:'fixed',top:'0',left:'0',width:'100vw',height:'100vh',pointerEvents:'none',zIndex:'99998',opacity:'.85'});
-  c.width=window.innerWidth;c.height=window.innerHeight;
-  document.body.appendChild(c);const ctx=c.getContext('2d');
-  const cols=Math.floor(c.width/14);const drops=new Array(cols).fill(1);
-  const chars='QRスタジオ01アイウエオカキクケコ日本語ABCDEF';
-  let frames=0;const maxFrames=180;
-  function draw(){
-    ctx.fillStyle='rgba(0,0,0,0.06)';ctx.fillRect(0,0,c.width,c.height);
-    ctx.fillStyle='#22c55e';ctx.font='13px JetBrains Mono,monospace';
-    for(let i=0;i<drops.length;i++){
-      const ch=chars[Math.floor(Math.random()*chars.length)];
-      ctx.fillStyle=Math.random()>.95?'#fff':'#22c55e';
-      ctx.fillText(ch,i*14,drops[i]*14);
-      if(drops[i]*14>c.height&&Math.random()>.975)drops[i]=0;
-      drops[i]++;
-    }
-    frames++;
-    if(frames<maxFrames)requestAnimationFrame(draw);
-    else{c.style.transition='opacity .5s';c.style.opacity='0';setTimeout(()=>c.remove(),600)}
-  }
-  draw();
-}
-
-// Party mode CSS (injected)
-(function(){
-  const s=document.createElement('style');
-  s.textContent=`
-    .party-mode .hdr h1{animation:rainbow 2s linear infinite}
-    .party-mode .card,.party-mode .mode-bar{border-image:linear-gradient(90deg,#ec4899,#f59e0b,#22c55e,#3b82f6,#8b5cf6,#ec4899) 1;animation:borderShift 3s linear infinite}
-    .party-mode .gen-btn,.party-mode .mode-btn.on{animation:btnPulse 1s ease-in-out infinite alternate}
-    @keyframes rainbow{0%{color:#ec4899}20%{color:#f59e0b}40%{color:#22c55e}60%{color:#3b82f6}80%{color:#8b5cf6}100%{color:#ec4899}}
-    @keyframes borderShift{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
-    @keyframes btnPulse{from{box-shadow:0 0 8px var(--accent)}to{box-shadow:0 0 24px #ec4899,0 0 48px #8b5cf6}}
-  `;document.head.appendChild(s);
-})();
-
-// Console easter egg hints
-console.log(
-  '%c🎨 QR Studio %cby deadboy18',
-  'font-size:20px;font-weight:bold;color:#06b6d4;text-shadow:0 0 8px rgba(6,182,212,.5);',
-  'font-size:14px;color:#a1a1aa;'
-);
-console.log('%c🥚 Psst... there are hidden easter eggs!','font-size:12px;color:#f59e0b;font-style:italic;');
-console.log(
-  '%c  ⬆⬆⬇⬇⬅➡⬅➡🅱🅰  %c Konami Code → 🎉\n'+
-  '%c  📱 Triple-tap the title   %c → 🌈 Party Mode\n'+
-  '%c  📱 Shake your phone       %c → 🎊 Confetti\n'+
-  '%c  ⌨️  Type "matrix" in URL  %c → 💊 Red pill',
-  'color:#22c55e;font-family:monospace;font-size:11px;','color:#a1a1aa;font-size:11px;',
-  'color:#22c55e;font-family:monospace;font-size:11px;','color:#a1a1aa;font-size:11px;',
-  'color:#22c55e;font-family:monospace;font-size:11px;','color:#a1a1aa;font-size:11px;',
-  'color:#22c55e;font-family:monospace;font-size:11px;','color:#a1a1aa;font-size:11px;'
-);
+// Console
+console.log('%c🎨 QR Studio %cby deadboy18','font-size:20px;font-weight:bold;color:#06b6d4;','font-size:14px;color:#a1a1aa;');
+console.log('%c🥚 Psst... hidden easter eggs!','font-size:12px;color:#f59e0b;font-style:italic;');
+console.log('%c  ⬆⬆⬇⬇⬅➡⬅➡🅱🅰  %cKonami → 🎉\n%c  📱 Triple-tap title   %c→ 🌈 Party\n%c  📱 Shake phone        %c→ 🎊 Confetti\n%c  ⌨️  "matrix" in URL   %c→ 💊 Red pill','color:#22c55e;font-family:monospace;font-size:11px;','color:#a1a1aa;font-size:11px;','color:#22c55e;font-family:monospace;font-size:11px;','color:#a1a1aa;font-size:11px;','color:#22c55e;font-family:monospace;font-size:11px;','color:#a1a1aa;font-size:11px;','color:#22c55e;font-family:monospace;font-size:11px;','color:#a1a1aa;font-size:11px;');
 </script>
 </body>
 </html>
