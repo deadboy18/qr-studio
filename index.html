@@ -157,7 +157,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
   <!-- ══════ STANDARD ══════ -->
   <div class="sec on" id="sec-standard">
     <div class="type-pills" id="type-pills">
-      <div class="pill on" data-type="url">URL</div><div class="pill" data-type="text">Text</div><div class="pill" data-type="wifi">WiFi</div><div class="pill" data-type="email">Email</div><div class="pill" data-type="phone">Phone</div><div class="pill" data-type="sms">SMS</div><div class="pill" data-type="whatsapp">WhatsApp</div><div class="pill" data-type="location">Location</div><div class="pill" data-type="calendar">Calendar</div><div class="pill" data-type="vcard">vCard</div>
+      <div class="pill on" data-type="url">URL</div><div class="pill" data-type="text">Text</div><div class="pill" data-type="wifi">WiFi</div><div class="pill" data-type="email">Email</div><div class="pill" data-type="phone">Phone</div><div class="pill" data-type="sms">SMS</div><div class="pill" data-type="whatsapp">WhatsApp</div><div class="pill" data-type="location">Location</div><div class="pill" data-type="calendar">Calendar</div><div class="pill" data-type="vcard">vCard</div><div class="pill" data-type="duitnow" style="background:linear-gradient(135deg,#ED2E67,#c4235a);color:#fff;border-color:#ED2E67">🇲🇾 DuitNow</div>
     </div>
     <div class="card">
       <div class="dp on" id="dp-url"><div class="field"><input class="inp" id="in-url" placeholder="https://example.com" spellcheck="false"><div class="val-msg" id="v-url"></div></div></div>
@@ -176,6 +176,49 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
       <div class="dp" id="dp-location"><div class="field"><label>Location name or address</label><input class="inp" id="loc-name" placeholder="Eiffel Tower, Paris"><div class="val-msg" id="v-loc"></div></div><div class="row r2"><div class="field"><label>Latitude</label><input class="inp" id="loc-lat" placeholder="48.8584"></div><div class="field"><label>Longitude</label><input class="inp" id="loc-lng" placeholder="2.2945"></div></div></div>
       <div class="dp" id="dp-calendar"><div class="field"><label>Event title</label><input class="inp" id="cal-title" placeholder="Team Meeting"><div class="val-msg" id="v-cal-title"></div></div><div class="field"><label>Description</label><textarea class="inp" id="cal-desc" placeholder="Agenda…"></textarea></div><div class="field"><label>Location</label><input class="inp" id="cal-loc" placeholder="Conference Room A"></div><div class="row r2"><div class="field"><label>Start date</label><input class="inp" type="date" id="cal-sd"><div class="val-msg" id="v-cal-sd"></div></div><div class="field"><label>Start time</label><input class="inp" type="time" id="cal-st"></div></div><div class="row r2"><div class="field"><label>End date</label><input class="inp" type="date" id="cal-ed"></div><div class="field"><label>End time</label><input class="inp" type="time" id="cal-et"></div></div><div class="field"><label class="chk"><input type="checkbox" id="cal-allday"> All-day event</label></div></div>
       <div class="dp" id="dp-vcard"><div class="row r2"><div class="field"><label>First name</label><input class="inp" id="vc-fn" placeholder="Jane"></div><div class="field"><label>Last name</label><input class="inp" id="vc-ln" placeholder="Smith"></div></div><div class="val-msg" id="v-vc-name"></div><div class="field"><label>Phone</label><div class="phone-row"><select class="inp" id="vc-cc"></select><input class="inp" id="vc-phone" placeholder="555 123 4567"></div></div><div class="field"><label>Email</label><input class="inp" id="vc-email" placeholder="jane@example.com"><div class="val-msg" id="v-vc-email"></div></div><div class="field"><label>Organization</label><input class="inp" id="vc-org" placeholder="Acme Inc."></div><div class="field"><label>Website</label><input class="inp" id="vc-url" placeholder="https://example.com"><div class="val-msg" id="v-vc-url"></div></div></div>
+      <div class="dp" id="dp-duitnow">
+        <div style="font-size:.78rem;color:var(--text2);margin-bottom:14px;line-height:1.55;padding:10px 14px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border)">
+          <span style="color:#ED2E67;font-weight:600">🇲🇾 DuitNow QR Generator</span> — Builds structurally valid EMV QR strings per <a href="https://docs.developer.paynet.my/docs/duitNow-QR/integration/QR-generation-specification/merchant-presented-mode/qr-data-object" target="_blank" style="color:var(--accent);text-decoration:none">PayNet QR Spec v1.5</a>.
+          <div style="margin-top:8px;padding:8px 12px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);border-radius:8px;font-size:.72rem;color:var(--warn)">
+            <strong>⚠ This won't process real payments.</strong> The Merchant/QR ID must be a real ID registered with an acquirer bank through PayNet. Generated QR codes have correct format & CRC but are not recognized by the payment network. Useful for developers testing EMV parsers or learning how DuitNow QR is structured. See <a href="https://github.com/natsu90/emvqr/issues/1" target="_blank" style="color:var(--warn);text-decoration:underline">natsu90's research</a>.
+          </div>
+        </div>
+        <div class="field"><label>QR Type</label>
+          <div style="display:flex;gap:6px"><button class="pill on dn-gen-type" data-v="11" onclick="setDnGenType('11')">Static (reusable)</button><button class="pill dn-gen-type" data-v="12" onclick="setDnGenType('12')">Dynamic (one-time)</button></div>
+        </div>
+        <div class="field"><label>Acquirer / Bank <span style="color:#ED2E67">*</span></label>
+          <select class="inp" id="dn-gen-acquirer">
+            <option value="">— Select acquirer —</option>
+            <option value="629295">AEON Bank (629295)</option><option value="501664">Affin Bank (501664)</option><option value="432134">Al Rajhi Bank (432134)</option><option value="504374">Alliance Bank (504374)</option><option value="564169">AmBank (564169)</option><option value="890293">Ampersand Pay (890293)</option><option value="890061">Axiata Digital / Boost (890061)</option><option value="603346">Bank Islam (603346)</option><option value="589267">Bank Rakyat (589267)</option><option value="564167">Bank Muamalat (564167)</option><option value="629188">Bank of America (629188)</option><option value="629152">Bank of China (629152)</option><option value="589373">Agrobank (589373)</option><option value="420709">BSN (420709)</option><option value="890236">Beez Fintech (890236)</option><option value="890012">BigPay (890012)</option><option value="629204">BNP Paribas (629204)</option><option value="629303">Boost Bank (629303)</option><option value="890244">Boost Connect (890244)</option><option value="629261">China Construction Bank (629261)</option><option value="501854">CIMB Bank (501854)</option><option value="589170">Citibank (589170)</option><option value="890160">Curlec (890160)</option><option value="629246">Deutsche Bank (629246)</option><option value="890145">Fass Payment (890145)</option><option value="890020">Fave (890020)</option><option value="890038">Finexus (890038)</option><option value="890103">GHL (890103)</option><option value="890186">Global Payments (890186)</option><option value="890046">GrabPay (890046)</option><option value="629279">GX Bank (629279)</option><option value="588830">Hong Leong Bank (588830)</option><option value="589836">HSBC (589836)</option><option value="629253">ICBC (629253)</option><option value="890178">Instapay (890178)</option><option value="890079">iPay88 (890079)</option><option value="629212">JP Morgan Chase (629212)</option><option value="629311">KAF Investment Bank (629311)</option><option value="890152">KiplePay (890152)</option><option value="890228">Co-opbank Pertama (890228)</option><option value="639406">Kuwait Finance House (639406)</option><option value="588734">Maybank (588734)</option><option value="890301">ManagePay (890301)</option><option value="432310">MBSB Bank (432310)</option><option value="890111">Merchantrade (890111)</option><option value="629220">Mizuho Bank (629220)</option><option value="890210">MobilityOne (890210)</option><option value="890277">Mobiedge (890277)</option><option value="890327">MRuncit (890327)</option><option value="629196">MUFG Bank (629196)</option><option value="504324">OCBC Bank (504324)</option><option value="890269">Paydibs (890269)</option><option value="890194">Payex (890194)</option><option value="564162">Public Bank (564162)</option><option value="890087">Razer Merchant Services (890087)</option><option value="890095">Revenue Solution (890095)</option><option value="564160">RHB Bank (564160)</option><option value="890129">Setel (890129)</option><option value="890004">ShopeePay (890004)</option><option value="890202">SiliconNet / SPayGlobal (890202)</option><option value="539981">Standard Chartered (539981)</option><option value="890137">Stripe (890137)</option><option value="629238">Sumitomo Mitsui (629238)</option><option value="890053">Touch 'n Go eWallet (890053)</option><option value="890251">UniPin (890251)</option><option value="519469">UOB (519469)</option><option value="890319">Wannapay (890319)</option><option value="629287">YTL Digital Bank (629287)</option><option value="890285">2C2P (890285)</option><option value="898989">JomPAY (898989)</option>
+          </select><div class="val-msg" id="v-dn-acquirer"></div>
+        </div>
+        <div class="field"><label>Merchant / QR ID <span style="color:#ED2E67">*</span></label><input class="inp" id="dn-gen-qrid" placeholder="e.g. 123456789 (up to 28 chars)" maxlength="28"><div class="val-msg" id="v-dn-qrid"></div></div>
+        <div class="field"><label>Merchant Name <span style="color:#ED2E67">*</span></label><input class="inp" id="dn-gen-name" placeholder="e.g. KEDAI KOPI ALI (up to 25 chars)" maxlength="25"><div class="val-msg" id="v-dn-name"></div></div>
+        <div class="row r2">
+          <div class="field"><label>City <span style="color:#ED2E67">*</span></label><input class="inp" id="dn-gen-city" placeholder="e.g. KUALA LUMPUR" maxlength="15" value="MY"><div class="val-msg" id="v-dn-city"></div></div>
+          <div class="field"><label>Postal Code</label><input class="inp" id="dn-gen-postal" placeholder="e.g. 59200" maxlength="5"></div>
+        </div>
+        <div class="row r2">
+          <div class="field"><label>Category (MCC)</label>
+            <select class="inp" id="dn-gen-mcc">
+              <option value="0000">0000 — P2P Transfer</option><option value="4111">4111 — Transport</option><option value="4511">4511 — Airlines</option><option value="4812">4812 — Telecom</option><option value="5311">5311 — Department Store</option><option value="5411" selected>5411 — Grocery</option><option value="5462">5462 — Bakery</option><option value="5499">5499 — Food Store</option><option value="5541">5541 — Fuel/Petrol</option><option value="5812">5812 — Restaurant/Cafe</option><option value="5814">5814 — Fast Food</option><option value="5912">5912 — Pharmacy</option><option value="5999">5999 — Retail (General)</option><option value="6010">6010 — POS Cash Out</option><option value="6012">6012 — Banking</option><option value="7011">7011 — Hotel</option><option value="7230">7230 — Beauty/Barber</option><option value="7299">7299 — Services</option><option value="7832">7832 — Cinema</option><option value="8011">8011 — Medical</option><option value="8021">8021 — Dental</option><option value="8099">8099 — Health Services</option><option value="8211">8211 — School</option><option value="8220">8220 — University</option><option value="9999">9999 — Government</option><option value="1111">1111 — Bill Payment</option>
+            </select>
+          </div>
+          <div class="field"><label>Amount (optional)</label><input class="inp" id="dn-gen-amount" placeholder="e.g. 10.00" type="number" step="0.01" min="0"><div class="val-msg" id="v-dn-amount"></div></div>
+        </div>
+        <hr class="sep">
+        <div style="margin-bottom:10px"><button class="pill" style="font-size:.7rem" onclick="document.getElementById('dn-gen-addl').style.display=document.getElementById('dn-gen-addl').style.display==='none'?'block':'none'">⚙ Additional Data (optional)</button></div>
+        <div id="dn-gen-addl" style="display:none">
+          <div class="row r2">
+            <div class="field"><label>Reference Label</label><input class="inp" id="dn-gen-ref" placeholder="Reference" maxlength="25"></div>
+            <div class="field"><label>Terminal Label</label><input class="inp" id="dn-gen-terminal" placeholder="Terminal ID" maxlength="25"></div>
+          </div>
+          <div class="row r2">
+            <div class="field"><label>Bill Number</label><input class="inp" id="dn-gen-bill" placeholder="Invoice #" maxlength="25"></div>
+            <div class="field"><label>Store Label</label><input class="inp" id="dn-gen-store" placeholder="Store #" maxlength="25"></div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="link-box" id="std-link-box"><div class="link-label">Encoded data</div><div class="link-val" id="std-link-val"></div><button class="copy-btn" onclick="copyLink()">Copy</button></div>
     <div class="card">
@@ -243,7 +286,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
   <div class="sec" id="sec-scanner">
     <div class="card">
       <div class="card-title">Scan QR Code</div>
-      <p style="font-size:.82rem;color:var(--text2);margin-bottom:14px;line-height:1.6">Decode any QR code from your <strong>camera</strong>, an <strong>image file</strong>, or <strong>paste</strong> from clipboard. Everything is processed locally — nothing leaves your browser.</p>
+      <p style="font-size:.82rem;color:var(--text2);margin-bottom:14px;line-height:1.6">Decode any QR code from your <strong>camera</strong>, an <strong>image file</strong>, or <strong>paste</strong> from clipboard. Everything is processed locally — nothing leaves your browser.<br><span style="color:var(--accent);font-weight:500">🇲🇾 Full DuitNow QR breakdown</span> — 70 acquirers/banks from PayNet's official registry, CRC verification, tip/fee parsing & clean QR regeneration.</p>
       <div style="margin-bottom:14px">
         <button class="gen-btn" id="cam-btn" onclick="toggleCamera()" style="margin-bottom:8px">📷 Open Camera</button>
         <div id="cam-wrap" style="display:none;position:relative;max-width:440px;margin:0 auto;border-radius:var(--radius-lg);overflow:hidden;background:#000">
@@ -260,6 +303,40 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
     </div>
     <div id="scan-result" style="display:none">
       <div class="card" id="scan-safety-card"><div id="scan-safety"></div></div>
+      <div class="card" id="duitnow-card" style="display:none">
+        <div class="card-title" style="color:var(--accent)">🇲🇾 DuitNow QR Breakdown</div>
+        <div id="duitnow-breakdown" style="font-size:.84rem;line-height:1.8"></div>
+        <div id="duitnow-regen" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+          <div class="card-title" style="color:var(--accent)">🔄 Regenerated QR</div>
+          <div class="field"><label>Merchant Name</label><input class="inp" id="dn-edit-name" oninput="regenDuitNow()" placeholder="Merchant name"></div>
+          <div class="field"><label>Bank / Wallet</label><input class="inp" id="dn-edit-bank" list="dn-bank-list" oninput="regenDuitNow()" placeholder="e.g. Maybank, CIMB, GrabPay">
+          <datalist id="dn-bank-list"><option value="AEON Bank"><option value="Affin Bank"><option value="Agrobank"><option value="Al Rajhi Bank"><option value="Alliance Bank"><option value="AmBank"><option value="Ampersand Pay"><option value="Bank Islam"><option value="Bank Muamalat"><option value="Bank Rakyat"><option value="BigPay"><option value="Boost Bank"><option value="Boost Connect"><option value="BSN"><option value="China Construction Bank"><option value="CIMB Bank"><option value="Citibank"><option value="Co-opbank Pertama"><option value="Curlec"><option value="Fave"><option value="Finexus"><option value="GHL"><option value="GrabPay"><option value="GX Bank"><option value="Hong Leong Bank"><option value="HSBC"><option value="ICBC"><option value="iPay88"><option value="KiplePay"><option value="Kuwait Finance House"><option value="Maybank"><option value="Maybank MAE"><option value="MBSB Bank"><option value="Merchantrade"><option value="OCBC Bank"><option value="Public Bank"><option value="Razer Merchant Services"><option value="RHB Bank"><option value="Setel"><option value="ShopeePay"><option value="Standard Chartered"><option value="Touch 'n Go eWallet"><option value="UOB"><option value="YTL Digital Bank"><option value="2C2P"><option value="JomPAY"></datalist></div>
+          <div class="row r2" style="margin-bottom:14px">
+            <div class="field"><label>Name font size — <span class="rv" id="dn-name-fz-val">100%</span></label><input type="range" id="dn-name-fz" min="50" max="200" value="100" oninput="document.getElementById('dn-name-fz-val').textContent=this.value+'%';regenDuitNow()"></div>
+            <div class="field"><label>Bank font size — <span class="rv" id="dn-bank-fz-val">100%</span></label><input type="range" id="dn-bank-fz" min="50" max="200" value="100" oninput="document.getElementById('dn-bank-fz-val').textContent=this.value+'%';regenDuitNow()"></div>
+          </div>
+          <div class="field"><label>Print Size</label>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">
+              <button class="pill dn-size" data-w="400" onclick="setDnSize(400)">Small</button>
+              <button class="pill dn-size on" data-w="600" onclick="setDnSize(600)">Medium</button>
+              <button class="pill dn-size" data-w="900" onclick="setDnSize(900)">Large</button>
+              <button class="pill dn-size" data-w="1200" onclick="setDnSize(1200)">Counter</button>
+              <button class="pill dn-size" data-w="1800" onclick="setDnSize(1800)">Poster</button>
+              <button class="pill dn-size" data-w="2400" onclick="setDnSize(2400)">A4 Print</button>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center"><span style="font-size:.72rem;color:var(--text3)">Custom:</span><input type="range" id="dn-size-slider" min="300" max="3000" value="600" oninput="setDnSizeSlider(this.value)" style="flex:1"><span class="rv" id="dn-size-val">600px</span></div>
+            <div style="font-size:.68rem;color:var(--text3);margin-top:6px">Small = sticker · Medium = table card · Counter = 10cm display · Poster = A5 · A4 Print = 300dpi full page</div>
+          </div>
+          <div style="background:#fff;border-radius:var(--radius-lg);padding:16px;max-width:400px;margin:0 auto 12px;text-align:center">
+            <canvas id="duitnow-canvas" style="display:block;width:100%;height:auto;border-radius:8px"></canvas>
+            <div id="duitnow-regen-name" style="display:none"></div>
+            <div id="duitnow-regen-bank" style="display:none"></div>
+          </div>
+          <div class="dl-row"><button class="dl-btn" onclick="dlDuitNowPNG()">📥 Download PNG</button><button class="dl-btn" onclick="shareDuitNow()">📤 Share</button></div>
+          <div style="font-size:.68rem;color:var(--text3);text-align:center;margin-top:4px" id="dn-dimensions"></div>
+        </div>
+        <div style="font-size:.68rem;color:var(--text3);margin-top:12px;padding-top:8px;border-top:1px solid var(--border)">EMV QR research by <a href="https://github.com/natsu90/duitnowqr-test" target="_blank" style="color:var(--accent);text-decoration:none">natsu90</a> · Acquirer list from <a href="https://docs.developer.paynet.my/docs/duitNow-QR/integration/QR-generation-specification/merchant-presented-mode/qr-data-object" target="_blank" style="color:var(--accent);text-decoration:none">PayNet QR Spec v1.5</a> · <a href="https://docs.developer.paynet.my/docs" target="_blank" style="color:var(--accent);text-decoration:none">PayNet Developer Docs</a> · DuitNow is a product of <a href="https://www.paynet.my" target="_blank" style="color:var(--accent);text-decoration:none">PayNet Malaysia</a></div>
+      </div>
       <div class="card">
         <div class="card-title">Decoded Content</div>
         <div id="scan-type-badge" style="display:inline-block;padding:4px 12px;border-radius:20px;font-size:.72rem;font-weight:600;background:var(--accent);color:#fff;margin-bottom:10px"></div>
@@ -275,7 +352,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
 
 </div>
 <div class="footer">
-  QR Studio by <a href="https://github.com/deadboy18" target="_blank">deadboy18</a> · ChromaCode algorithm by <a href="https://github.com/TomsNimanis/chromacode" target="_blank">Toms Nimanis / IT Linden</a><br>
+  QR Studio by <a href="https://github.com/deadboy18" target="_blank">deadboy18</a> · ChromaCode by <a href="https://github.com/TomsNimanis/chromacode" target="_blank">Toms Nimanis / IT Linden</a> · DuitNow research by <a href="https://github.com/natsu90/duitnowqr-test" target="_blank">natsu90</a> · <a href="https://docs.developer.paynet.my/docs" target="_blank">PayNet Developer Docs</a><br>
   Special thanks to <a href="https://github.com/VenimK" target="_blank">VenimK</a> ❤️
 </div>
 <script>
@@ -333,6 +410,14 @@ function validateAll(){
     case 'location':{const n=document.getElementById('loc-name').value.trim(),la=document.getElementById('loc-lat').value.trim(),ln=document.getElementById('loc-lng').value.trim();if(!n&&!la&&!ln)valid=false;if((la&&!ln)||(!la&&ln)){valid=false;vMsg('v-loc','Need both lat & lng','warn')}break}
     case 'calendar':{if(!document.getElementById('cal-title').value.trim()){valid=false;vMsg('v-cal-title','Title required','err')}if(!document.getElementById('cal-sd').value){valid=false;vMsg('v-cal-sd','Date required','err')}break}
     case 'vcard':{if(!document.getElementById('vc-fn').value.trim()&&!document.getElementById('vc-ln').value.trim()){valid=false;vMsg('v-vc-name','Name required','err')}const em=document.getElementById('vc-email').value.trim();if(em&&!isEmail(em)){valid=false;vMsg('v-vc-email','Invalid email','err')}break}
+    case 'duitnow':{
+      if(!document.getElementById('dn-gen-acquirer').value){valid=false;vMsg('v-dn-acquirer','Select an acquirer','err')}
+      if(!document.getElementById('dn-gen-qrid').value.trim()){valid=false;vMsg('v-dn-qrid','QR ID required','err')}
+      if(!document.getElementById('dn-gen-name').value.trim()){valid=false;vMsg('v-dn-name','Merchant name required','err')}
+      if(!document.getElementById('dn-gen-city').value.trim()){valid=false;vMsg('v-dn-city','City required','err')}
+      const amt=document.getElementById('dn-gen-amount').value;
+      if(amt&&(isNaN(parseFloat(amt))||parseFloat(amt)<0)){valid=false;vMsg('v-dn-amount','Invalid amount','err')}
+      break}
   }
   return valid;
 }
@@ -351,9 +436,65 @@ function getStdData(){
     case 'location':{const la=document.getElementById('loc-lat').value.trim(),ln=document.getElementById('loc-lng').value.trim(),n=document.getElementById('loc-name').value.trim();if(la&&ln)return`geo:${la},${ln}`;if(n)return`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(n)}`;return''}
     case 'calendar':{const t=document.getElementById('cal-title').value.trim();if(!t)return'';const allDay=document.getElementById('cal-allday').checked,sd=document.getElementById('cal-sd').value,st=document.getElementById('cal-st').value,ed=document.getElementById('cal-ed').value,et=document.getElementById('cal-et').value;const fmt=(d,ti)=>(d||'').replace(/-/g,'')+(allDay?'':'T'+(ti||'0000').replace(/:/g,'')+'00');let ics=`BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:${t}`;const desc=document.getElementById('cal-desc').value,loc=document.getElementById('cal-loc').value;if(desc)ics+=`\nDESCRIPTION:${desc}`;if(loc)ics+=`\nLOCATION:${loc}`;if(sd)ics+=`\nDTSTART:${fmt(sd,st)}`;if(ed)ics+=`\nDTEND:${fmt(ed,et)}`;else if(sd)ics+=`\nDTEND:${fmt(sd,et||st)}`;return ics+'\nEND:VEVENT\nEND:VCALENDAR'}
     case 'vcard':{const fn=document.getElementById('vc-fn').value.trim(),ln=document.getElementById('vc-ln').value.trim();if(!fn&&!ln)return'';let v=`BEGIN:VCARD\nVERSION:3.0\nN:${ln};${fn}\nFN:${fn} ${ln}`;const ph=document.getElementById('vc-phone').value.trim().replace(/[\s\-\(\)]/g,''),em=document.getElementById('vc-email').value.trim(),org=document.getElementById('vc-org').value.trim();let url=document.getElementById('vc-url').value.trim();if(ph)v+=`\nTEL:${document.getElementById('vc-cc').value}${ph}`;if(em)v+=`\nEMAIL:${em}`;if(org)v+=`\nORG:${org}`;if(url){if(!/^https?:\/\//i.test(url)&&url.includes('.'))url='https://'+url;v+=`\nURL:${url}`}return v+'\nEND:VCARD'}
+    case 'duitnow':{return buildDuitNowEMV()}
   }
   return'';
 }
+
+function emvTLV(id,val){return id+val.length.toString().padStart(2,'0')+val}
+function buildDuitNowEMV(){
+  const acq=document.getElementById('dn-gen-acquirer').value;
+  const qrid=document.getElementById('dn-gen-qrid').value.trim();
+  const name=document.getElementById('dn-gen-name').value.trim();
+  const city=document.getElementById('dn-gen-city').value.trim();
+  if(!acq||!qrid||!name||!city)return'';
+  const initMethod=document.querySelector('.dn-gen-type.on')?.dataset.v||'11';
+  const mcc=document.getElementById('dn-gen-mcc').value;
+  const amtRaw=document.getElementById('dn-gen-amount').value;
+  const postal=document.getElementById('dn-gen-postal').value.trim();
+  // Build Merchant Account Info (ID 26)
+  let mai=emvTLV('00','A0000006150001');
+  mai+=emvTLV('01',acq);
+  mai+=emvTLV('02',qrid);
+  // Build Additional Data (ID 62)
+  let addl='';
+  const bill=document.getElementById('dn-gen-bill').value.trim();
+  const store=document.getElementById('dn-gen-store').value.trim();
+  const ref=document.getElementById('dn-gen-ref').value.trim();
+  const terminal=document.getElementById('dn-gen-terminal').value.trim();
+  if(bill)addl+=emvTLV('01',bill);
+  if(store)addl+=emvTLV('03',store);
+  if(ref)addl+=emvTLV('05',ref);
+  if(terminal)addl+=emvTLV('07',terminal);
+  // Build full EMV string
+  let s='';
+  s+=emvTLV('00','02');           // Payload Format
+  s+=emvTLV('01',initMethod);    // Static/Dynamic
+  s+=emvTLV('26',mai);           // Merchant Account Info
+  s+=emvTLV('52',mcc);           // MCC
+  s+=emvTLV('53','458');         // Currency MYR
+  if(amtRaw&&parseFloat(amtRaw)>0){
+    const amt=parseFloat(amtRaw).toFixed(2);
+    s+=emvTLV('54',amt);
+  }
+  s+=emvTLV('58','MY');          // Country
+  s+=emvTLV('59',name);          // Merchant Name
+  s+=emvTLV('60',city);          // City
+  if(postal)s+=emvTLV('61',postal);
+  if(addl)s+=emvTLV('62',addl);
+  // CRC placeholder then calculate
+  s+='6304';
+  const crc=crc16Calc(s);
+  s+=crc;
+  return s;
+}
+function crc16Calc(data){
+  const tbl=[0x0000,0x1021,0x2042,0x3063,0x4084,0x50a5,0x60c6,0x70e7,0x8108,0x9129,0xa14a,0xb16b,0xc18c,0xd1ad,0xe1ce,0xf1ef,0x1231,0x0210,0x3273,0x2252,0x52b5,0x4294,0x72f7,0x62d6,0x9339,0x8318,0xb37b,0xa35a,0xd3bd,0xc39c,0xf3ff,0xe3de,0x2462,0x3443,0x0420,0x1401,0x64e6,0x74c7,0x44a4,0x5485,0xa56a,0xb54b,0x8528,0x9509,0xe5ee,0xf5cf,0xc5ac,0xd58d,0x3653,0x2672,0x1611,0x0630,0x76d7,0x66f6,0x5695,0x46b4,0xb75b,0xa77a,0x9719,0x8738,0xf7df,0xe7fe,0xd79d,0xc7bc,0x48c4,0x58e5,0x6886,0x78a7,0x0840,0x1861,0x2802,0x3823,0xc9cc,0xd9ed,0xe98e,0xf9af,0x8948,0x9969,0xa90a,0xb92b,0x5af5,0x4ad4,0x7ab7,0x6a96,0x1a71,0x0a50,0x3a33,0x2a12,0xdbfd,0xcbdc,0xfbbf,0xeb9e,0x9b79,0x8b58,0xbb3b,0xab1a,0x6ca6,0x7c87,0x4ce4,0x5cc5,0x2c22,0x3c03,0x0c60,0x1c41,0xedae,0xfd8f,0xcdec,0xddcd,0xad2a,0xbd0b,0x8d68,0x9d49,0x7e97,0x6eb6,0x5ed5,0x4ef4,0x3e13,0x2e32,0x1e51,0x0e70,0xff9f,0xefbe,0xdfdd,0xcffc,0xbf1b,0xaf3a,0x9f59,0x8f78,0x9188,0x81a9,0xb1ca,0xa1eb,0xd10c,0xc12d,0xf14e,0xe16f,0x1080,0x00a1,0x30c2,0x20e3,0x5004,0x4025,0x7046,0x6067,0x83b9,0x9398,0xa3fb,0xb3da,0xc33d,0xd31c,0xe37f,0xf35e,0x02b1,0x1290,0x22f3,0x32d2,0x4235,0x5214,0x6277,0x7256,0xb5ea,0xa5cb,0x95a8,0x8589,0xf56e,0xe54f,0xd52c,0xc50d,0x34e2,0x24c3,0x14a0,0x0481,0x7466,0x6447,0x5424,0x4405,0xa7db,0xb7fa,0x8799,0x97b8,0xe75f,0xf77e,0xc71d,0xd73c,0x26d3,0x36f2,0x0691,0x16b0,0x6657,0x7676,0x4615,0x5634,0xd94c,0xc96d,0xf90e,0xe92f,0x99c8,0x89e9,0xb98a,0xa9ab,0x5844,0x4865,0x7806,0x6827,0x18c0,0x08e1,0x3882,0x28a3,0xcb7d,0xdb5c,0xeb3f,0xfb1e,0x8bf9,0x9bd8,0xabbb,0xbb9a,0x4a75,0x5a54,0x6a37,0x7a16,0x0af1,0x1ad0,0x2ab3,0x3a92,0xfd2e,0xed0f,0xdd6c,0xcd4d,0xbdaa,0xad8b,0x9de8,0x8dc9,0x7c26,0x6c07,0x5c64,0x4c45,0x3ca2,0x2c83,0x1ce0,0x0cc1,0xef1f,0xff3e,0xcf5d,0xdf7c,0xaf9b,0xbfba,0x8fd9,0x9ff8,0x6e17,0x7e36,0x4e55,0x5e74,0x2e93,0x3eb2,0x0ed1,0x1ef0];
+  let crc=0xFFFF;
+  for(let i=0;i<data.length;i++){crc=tbl[((data.charCodeAt(i)^(crc>>8))&0xFF)]^(crc<<8);crc&=0xFFFF}
+  return crc.toString(16).toUpperCase().padStart(4,'0');
+}
+function setDnGenType(v){document.querySelectorAll('.dn-gen-type').forEach(b=>b.classList.toggle('on',b.dataset.v===v));liveGenerate()}
 
 // ═══════ LINK BOX ═══════
 function updateLinkBox(d){const b=document.getElementById('std-link-box'),v=document.getElementById('std-link-val');if(!d){b.classList.remove('on');return}v.textContent=d;b.classList.add('on')}
@@ -365,13 +506,18 @@ function liveGenerate(){clearTimeout(_genTimer);_genTimer=setTimeout(()=>generat
 function generateStandard(){
   const isValid=validateAll(),data=getStdData();updateLinkBox(data);
   if(!data||!isValid){document.getElementById('std-preview-area').classList.remove('on');return}
+  const curType=document.querySelector('.pill.on')?.dataset.type||'url';
+  // DuitNow: use branded pink render
+  if(curType==='duitnow'){
+    renderDuitNowGen(data);
+    return;
+  }
   let fg=document.getElementById('std-fg').value,bg=document.getElementById('std-bg').value;
   if(document.getElementById('std-invert').checked)[fg,bg]=[bg,fg];
   const res=+document.getElementById('std-res').value,ecc=document.getElementById('std-ecc').value,stroke=+document.getElementById('std-stroke').value/100,outline=document.getElementById('std-outline').checked,tmpl=document.getElementById('std-tmpl').value;
   const qr=qrcode(0,ecc);try{qr.addData(data);qr.make()}catch{document.getElementById('std-preview-area').classList.remove('on');return}
   const modules=qr.getModuleCount(),canvas=document.getElementById('std-canvas');
   const quietMod=Math.round(modules*stroke),totalMod=modules+quietMod*2,scale=Math.max(1,Math.floor(res/totalMod)),realSize=totalMod*scale;
-  const curType=document.querySelector('.pill.on')?.dataset.type||'url';
   let wifiLines=[];
   if(curType==='wifi'){if(document.getElementById('wifi-show-ssid').checked){const v=document.getElementById('wifi-ssid').value.trim();if(v)wifiLines.push('📶  '+v)}if(document.getElementById('wifi-show-pass').checked){const v=document.getElementById('wifi-pass').value;if(v)wifiLines.push('🔑  '+v)}if(document.getElementById('wifi-show-enc').checked){wifiLines.push('🔒  '+(document.getElementById('wifi-enc').value||'Open'))}}
   const lineH=Math.round(realSize*.06),textPad=wifiLines.length?Math.round(lineH*.6):0,extraH=wifiLines.length?(wifiLines.length*lineH+textPad*2):0;
@@ -389,10 +535,55 @@ function generateStandard(){
 }
 
 // ═══════ LIVE LISTENERS ═══════
-['in-url','in-text','wifi-ssid','wifi-pass','em-to','em-sub','em-body','in-phone','sms-phone','sms-msg','wa-phone','wa-msg','loc-name','loc-lat','loc-lng','cal-title','cal-desc','cal-loc','cal-sd','cal-st','cal-ed','cal-et','vc-fn','vc-ln','vc-phone','vc-email','vc-org','vc-url'].forEach(id=>{const el=document.getElementById(id);if(el){el.addEventListener('input',liveGenerate);el.addEventListener('change',liveGenerate)}});
-['wifi-enc','ph-cc','sms-cc','wa-cc','vc-cc','std-ecc','std-res','std-tmpl'].forEach(id=>document.getElementById(id).addEventListener('change',liveGenerate));
+['in-url','in-text','wifi-ssid','wifi-pass','em-to','em-sub','em-body','in-phone','sms-phone','sms-msg','wa-phone','wa-msg','loc-name','loc-lat','loc-lng','cal-title','cal-desc','cal-loc','cal-sd','cal-st','cal-ed','cal-et','vc-fn','vc-ln','vc-phone','vc-email','vc-org','vc-url','dn-gen-qrid','dn-gen-name','dn-gen-city','dn-gen-postal','dn-gen-amount','dn-gen-bill','dn-gen-store','dn-gen-ref','dn-gen-terminal'].forEach(id=>{const el=document.getElementById(id);if(el){el.addEventListener('input',liveGenerate);el.addEventListener('change',liveGenerate)}});
+['wifi-enc','ph-cc','sms-cc','wa-cc','vc-cc','std-ecc','std-res','std-tmpl','dn-gen-acquirer','dn-gen-mcc'].forEach(id=>document.getElementById(id).addEventListener('change',liveGenerate));
 ['wifi-hidden','cal-allday','std-outline','std-invert','wifi-show-ssid','wifi-show-pass','wifi-show-enc'].forEach(id=>document.getElementById(id).addEventListener('change',liveGenerate));
 document.getElementById('std-stroke').oninput=function(){document.getElementById('stroke-val').textContent=this.value+'%';liveGenerate()};
+
+// ═══════ DUITNOW GENERATOR RENDER ═══════
+function renderDuitNowGen(raw){
+  const DN='#ED2E67';
+  const qr=qrcode(0,'H');
+  try{qr.addData(raw);qr.make()}catch{document.getElementById('std-preview-area').classList.remove('on');return}
+  const modules=qr.getModuleCount();
+  const W=+document.getElementById('std-res').value||512;
+  const sc=W/320;
+  const border=Math.round(10*sc),pad=Math.round(24*sc),r=Math.round(12*sc);
+  const cellSize=Math.max(1,Math.floor((W-border*2-pad*2)/modules));
+  const qrPx=cellSize*modules;
+  const name=document.getElementById('dn-gen-name').value.trim()||'Merchant';
+  const acqEl=document.getElementById('dn-gen-acquirer');
+  const bank=acqEl.options[acqEl.selectedIndex]?.text?.replace(/\s*\(\d+\)\s*$/,'')||'';
+  const nameFz=Math.max(10,Math.round(13*sc)),bankFz=Math.max(8,Math.round(11*sc));
+  const bannerH=Math.round(36*sc),nameH=Math.round(Math.max(50*sc,nameFz+bankFz+16*sc));
+  const totalW=qrPx+pad*2+border*2,totalH=qrPx+pad*2+border*2+nameH+bannerH;
+  const canvas=document.getElementById('std-canvas');
+  canvas.width=totalW;canvas.height=totalH;
+  const ctx=canvas.getContext('2d');
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,totalW,totalH);
+  ctx.fillStyle=DN;
+  ctx.beginPath();ctx.moveTo(0,r);ctx.arcTo(0,0,r,0,r);ctx.lineTo(totalW-r,0);ctx.arcTo(totalW,0,totalW,r,r);ctx.lineTo(totalW,totalH-bannerH);ctx.lineTo(0,totalH-bannerH);ctx.closePath();ctx.fill();
+  const ix=border,iy=border,iw=totalW-border*2,ih=totalH-border*2-bannerH;
+  ctx.fillStyle='#fff';
+  ctx.beginPath();ctx.moveTo(ix+r,iy);ctx.lineTo(ix+iw-r,iy);ctx.arcTo(ix+iw,iy,ix+iw,iy+r,r);ctx.lineTo(ix+iw,iy+ih);ctx.lineTo(ix,iy+ih);ctx.lineTo(ix,iy+r);ctx.arcTo(ix,iy,ix+r,iy,r);ctx.closePath();ctx.fill();
+  ctx.fillStyle=DN;
+  const qrX=border+pad,qrY=border+pad;
+  for(let row=0;row<modules;row++)for(let col=0;col<modules;col++)if(qr.isDark(row,col))ctx.fillRect(qrX+col*cellSize,qrY+row*cellSize,cellSize,cellSize);
+  const nameY=qrY+qrPx+Math.round(8*sc);
+  ctx.fillStyle='#18181b';ctx.font=`bold ${nameFz}px "DM Sans",system-ui,sans-serif`;ctx.textAlign='center';ctx.textBaseline='top';
+  ctx.fillText(name,totalW/2,nameY,iw-20);
+  ctx.fillStyle='#71717a';ctx.font=`${bankFz}px "DM Sans",system-ui,sans-serif`;
+  ctx.fillText(bank,totalW/2,nameY+nameFz+Math.round(4*sc),iw-20);
+  const bannerY=totalH-bannerH;
+  ctx.fillStyle=DN;
+  ctx.beginPath();ctx.moveTo(0,bannerY);ctx.lineTo(totalW,bannerY);ctx.lineTo(totalW,totalH-r);ctx.arcTo(totalW,totalH,totalW-r,totalH,r);ctx.lineTo(r,totalH);ctx.arcTo(0,totalH,0,totalH-r,r);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#fff';ctx.font=`bold ${Math.max(8,Math.round(11*sc))}px "DM Sans",system-ui,sans-serif`;
+  ctx.fillText('MALAYSIA NATIONAL QR',totalW/2,bannerY+Math.round(12*sc));
+  const frame=document.getElementById('std-frame');frame.className='qr-tmpl-frame';
+  document.getElementById('wifi-info-display').style.display='none';
+  document.getElementById('std-preview-area').classList.add('on');
+  window._stdCanvas=canvas;window._stdData=raw;window._stdFg=DN;window._stdBg='#fff';window._stdEcc='H';
+}
 
 // ═══════ STANDARD DOWNLOADS ═══════
 function dlStdPNG(){const c=window._stdCanvas;if(!c)return;c.toBlob(b=>{const a=document.createElement('a');a.download='qr-code.png';a.href=URL.createObjectURL(b);document.body.appendChild(a);a.click();a.remove()},'image/png')}
@@ -463,14 +654,173 @@ async function toggleCamera(){if(camRunning){stopCamera();return}try{camStream=a
 function stopCamera(){camRunning=false;if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null}document.getElementById('cam-wrap').style.display='none';document.getElementById('cam-btn').textContent='📷 Open Camera'}
 function scanFrame(){if(!camRunning||typeof jsQR==='undefined')return;const v=document.getElementById('cam-video');if(v.readyState!==v.HAVE_ENOUGH_DATA){requestAnimationFrame(scanFrame);return}const c=document.getElementById('cam-canvas');c.width=v.videoWidth;c.height=v.videoHeight;const ctx=c.getContext('2d');ctx.drawImage(v,0,0);const code=jsQR(ctx.getImageData(0,0,c.width,c.height).data,c.width,c.height,{inversionAttempts:'attemptBoth'});if(code){document.getElementById('cam-status').textContent='✓ Found!';document.getElementById('cam-status').style.background='rgba(34,197,94,.85)';showScanResult(code.data);setTimeout(()=>{if(camRunning){document.getElementById('cam-status').textContent='Scanning…';document.getElementById('cam-status').style.background='rgba(0,0,0,.7)';requestAnimationFrame(scanFrame)}},2000)}else requestAnimationFrame(scanFrame)}
 
-function showScanResult(data){scanResultData=data;document.getElementById('scan-result').style.display='block';document.getElementById('scan-content').textContent=data;const type=detectQRType(data);document.getElementById('scan-type-badge').textContent=type.label;const ob=document.getElementById('scan-open-btn');if(type.type==='url'){ob.style.display='inline-flex';ob.textContent='🔗 Open Link';ob.onclick=()=>window.open(data,'_blank')}else if(type.type==='phone'){ob.style.display='inline-flex';ob.textContent='📞 Call';ob.onclick=()=>window.open(data,'_blank')}else if(type.type==='email'){ob.style.display='inline-flex';ob.textContent='✉️ Email';ob.onclick=()=>window.open(data,'_blank')}else if(type.type==='whatsapp'){ob.style.display='inline-flex';ob.textContent='💬 WhatsApp';ob.onclick=()=>window.open(data,'_blank')}else ob.style.display='none';
+// ═══════ EMV / DUITNOW DECODER ═══════
+function parseEMV(s){const r={};let i=0;while(i<s.length-4){const id=s.substr(i,2),len=parseInt(s.substr(i+2,2),10);if(isNaN(len)||i+4+len>s.length)break;const val=s.substr(i+4,len);r[id]=val;i+=4+len}return r}
+function parseEMVNested(s){const r={};let i=0;while(i<s.length){const id=s.substr(i,2),len=parseInt(s.substr(i+2,2),10);if(isNaN(len)||i+4+len>s.length)break;r[id]=s.substr(i+4,len);i+=4+len}return r}
+function crc16Verify(s){const full=s.slice(0,-4);const given=s.slice(-4);const tbl=[0x0000,0x1021,0x2042,0x3063,0x4084,0x50a5,0x60c6,0x70e7,0x8108,0x9129,0xa14a,0xb16b,0xc18c,0xd1ad,0xe1ce,0xf1ef,0x1231,0x0210,0x3273,0x2252,0x52b5,0x4294,0x72f7,0x62d6,0x9339,0x8318,0xb37b,0xa35a,0xd3bd,0xc39c,0xf3ff,0xe3de,0x2462,0x3443,0x0420,0x1401,0x64e6,0x74c7,0x44a4,0x5485,0xa56a,0xb54b,0x8528,0x9509,0xe5ee,0xf5cf,0xc5ac,0xd58d,0x3653,0x2672,0x1611,0x0630,0x76d7,0x66f6,0x5695,0x46b4,0xb75b,0xa77a,0x9719,0x8738,0xf7df,0xe7fe,0xd79d,0xc7bc,0x48c4,0x58e5,0x6886,0x78a7,0x0840,0x1861,0x2802,0x3823,0xc9cc,0xd9ed,0xe98e,0xf9af,0x8948,0x9969,0xa90a,0xb92b,0x5af5,0x4ad4,0x7ab7,0x6a96,0x1a71,0x0a50,0x3a33,0x2a12,0xdbfd,0xcbdc,0xfbbf,0xeb9e,0x9b79,0x8b58,0xbb3b,0xab1a,0x6ca6,0x7c87,0x4ce4,0x5cc5,0x2c22,0x3c03,0x0c60,0x1c41,0xedae,0xfd8f,0xcdec,0xddcd,0xad2a,0xbd0b,0x8d68,0x9d49,0x7e97,0x6eb6,0x5ed5,0x4ef4,0x3e13,0x2e32,0x1e51,0x0e70,0xff9f,0xefbe,0xdfdd,0xcffc,0xbf1b,0xaf3a,0x9f59,0x8f78,0x9188,0x81a9,0xb1ca,0xa1eb,0xd10c,0xc12d,0xf14e,0xe16f,0x1080,0x00a1,0x30c2,0x20e3,0x5004,0x4025,0x7046,0x6067,0x83b9,0x9398,0xa3fb,0xb3da,0xc33d,0xd31c,0xe37f,0xf35e,0x02b1,0x1290,0x22f3,0x32d2,0x4235,0x5214,0x6277,0x7256,0xb5ea,0xa5cb,0x95a8,0x8589,0xf56e,0xe54f,0xd52c,0xc50d,0x34e2,0x24c3,0x14a0,0x0481,0x7466,0x6447,0x5424,0x4405,0xa7db,0xb7fa,0x8799,0x97b8,0xe75f,0xf77e,0xc71d,0xd73c,0x26d3,0x36f2,0x0691,0x16b0,0x6657,0x7676,0x4615,0x5634,0xd94c,0xc96d,0xf90e,0xe92f,0x99c8,0x89e9,0xb98a,0xa9ab,0x5844,0x4865,0x7806,0x6827,0x18c0,0x08e1,0x3882,0x28a3,0xcb7d,0xdb5c,0xeb3f,0xfb1e,0x8bf9,0x9bd8,0xabbb,0xbb9a,0x4a75,0x5a54,0x6a37,0x7a16,0x0af1,0x1ad0,0x2ab3,0x3a92,0xfd2e,0xed0f,0xdd6c,0xcd4d,0xbdaa,0xad8b,0x9de8,0x8dc9,0x7c26,0x6c07,0x5c64,0x4c45,0x3ca2,0x2c83,0x1ce0,0x0cc1,0xef1f,0xff3e,0xcf5d,0xdf7c,0xaf9b,0xbfba,0x8fd9,0x9ff8,0x6e17,0x7e36,0x4e55,0x5e74,0x2e93,0x3eb2,0x0ed1,0x1ef0];let crc=0xFFFF;for(let i=0;i<full.length;i++){const c=full.charCodeAt(i);crc=tbl[((c^(crc>>8))&0xFF)]^(crc<<8);crc&=0xFFFF}const calc=crc.toString(16).toUpperCase().padStart(4,'0');return{given,calc,valid:given===calc}}
+
+function parseDuitNow(emv,raw){
+  // Find DuitNow merchant account (IDs 26-51)
+  let acctInfo=null,acctId=null;
+  for(let id=26;id<=51;id++){const k=id.toString().padStart(2,'0');if(emv[k]){const nested=parseEMVNested(emv[k]);if(nested['00']==='A0000006150001'){acctInfo=nested;acctId=k;break}}}
+  if(!acctInfo)return null; // Not DuitNow
+
+  const crc=crc16Verify(raw);
+  const initMethod=emv['01'];
+  const isStatic=initMethod==='11';
+  const isDynamic=initMethod==='12';
+  const currency=emv['53'];
+  const amount=emv['54'];
+  const country=emv['58'];
+  const name=emv['59'];
+  const city=emv['60'];
+  const postal=emv['61'];
+  const mcc=emv['52'];
+  const account=acctInfo['02']||'—';
+  const acquirer=acctInfo['01']||'—';
+  const ref=acctInfo['03']||null;
+
+  // ── Acquirer ID lookup (PayNet official list) ──
+  const ACQUIRER_MAP={
+    '629295':'AEON Bank','501664':'Affin Bank','432134':'Al Rajhi Bank','504374':'Alliance Bank',
+    '564169':'AmBank','890293':'Ampersand Pay','890061':'Axiata Digital (Boost e-Wallet)',
+    '603346':'Bank Islam','589267':'Bank Rakyat','564167':'Bank Muamalat',
+    '629188':'Bank of America','629152':'Bank of China','589373':'Agrobank',
+    '420709':'BSN','890236':'Beez Fintech','890012':'BigPay',
+    '629204':'BNP Paribas','629303':'Boost Bank','890244':'Boost Connect',
+    '629261':'China Construction Bank','501854':'CIMB Bank','589170':'Citibank',
+    '890160':'Curlec','629246':'Deutsche Bank','890145':'Fass Payment',
+    '890020':'Fave','890038':'Finexus','890103':'GHL',
+    '890186':'Global Payments','890046':'GrabPay','629279':'GX Bank',
+    '588830':'Hong Leong Bank','589836':'HSBC','629253':'ICBC',
+    '890178':'Instapay','890079':'iPay88','629212':'JP Morgan Chase',
+    '629311':'KAF Investment Bank','890152':'KiplePay','890228':'Co-opbank Pertama',
+    '639406':'Kuwait Finance House','588734':'Maybank','890301':'ManagePay',
+    '432310':'MBSB Bank','890111':'Merchantrade','629220':'Mizuho Bank',
+    '890210':'MobilityOne','890277':'Mobiedge','890327':'MRuncit',
+    '629196':'MUFG Bank','504324':'OCBC Bank','890269':'Paydibs',
+    '890194':'Payex','564162':'Public Bank','890087':'Razer Merchant Services',
+    '890095':'Revenue Solution','564160':'RHB Bank','890129':'Setel',
+    '890004':'ShopeePay','890202':'SiliconNet (SPayGlobal)','539981':'Standard Chartered',
+    '890137':'Stripe','629238':'Sumitomo Mitsui','890053':'Touch \'n Go eWallet',
+    '890251':'UniPin','519469':'UOB','890319':'Wannapay',
+    '629287':'YTL Digital Bank','890285':'2C2P','898989':'JomPAY'
+  };
+  // Fallback: prefix-based detection on QR ID
+  const PREFIX_MAP={'MAEPP':'Maybank MAE','QRAMB':'AmBank','QRCIMB':'CIMB','QRHLB':'Hong Leong','QRRHB':'RHB','QRBSN':'BSN','QRPBB':'Public Bank','QRAFB':'Alliance Bank','QRBNM':'Bank Negara','QRBKR':'Bank Rakyat','QRMBB':'Maybank','QRBIM':'Bank Islam','QRSCB':'Standard Chartered','QRHSBC':'HSBC','QRUOB':'UOB','QROCBC':'OCBC','GRAB':'GrabPay','TNG':'Touch \'n Go','SETEL':'Setel','SHOPEE':'ShopeePay','BOOST':'Boost'};
+  let wallet=ACQUIRER_MAP[acquirer]||null;
+  if(!wallet){for(const[prefix,wName]of Object.entries(PREFIX_MAP)){if(account.toUpperCase().startsWith(prefix)){wallet=wName;break}}}
+  if(!wallet)wallet='Unknown';
+
+  // MCC lookup (expanded Malaysian categories)
+  const MCC_MAP={'0000':'Not specified (P2P)','4111':'Transport','4121':'Taxi/Ride-hailing','4131':'Bus lines','4214':'Courier/Delivery','4511':'Airlines','4722':'Travel agency','4812':'Telecom','4814':'Telecom services','4816':'Computer network','4829':'Money transfer','4899':'Utilities','4900':'Utilities','5013':'Motor parts','5039':'Construction materials','5045':'Computers/peripherals','5065':'Electronics','5072':'Hardware','5094':'Precious stones','5111':'Office supplies','5131':'Textiles','5137':'Clothing','5192':'Books/periodicals','5193':'Florist supplies','5200':'Home supply','5211':'Building materials','5231':'Glass/paint','5251':'Hardware store','5261':'Nurseries/garden','5271':'Mobile homes','5300':'Wholesale clubs','5309':'Duty free','5310':'Discount stores','5311':'Department store','5331':'Variety store','5399':'General merchandise','5411':'Grocery','5422':'Meat/seafood','5441':'Candy/confectionery','5451':'Dairy store','5462':'Bakery','5499':'Food store','5511':'Auto dealer','5521':'Used auto dealer','5532':'Tyres','5533':'Auto parts','5541':'Fuel/Petrol','5542':'Fuel (automated)','5551':'Boat dealer','5561':'Camper dealer','5571':'Motorcycle dealer','5599':'Auto services','5611':'Men\'s clothing','5621':'Women\'s clothing','5631':'Women\'s accessories','5641':'Children\'s wear','5651':'Family clothing','5655':'Sports apparel','5661':'Shoe store','5681':'Furrier','5691':'Clothing store','5697':'Tailors','5698':'Wig shop','5699':'Misc apparel','5712':'Furniture','5713':'Floor covering','5714':'Drapery/curtain','5715':'Alcoholic beverages','5718':'Fireplace','5719':'Misc home furnishing','5722':'Appliances','5732':'Electronics store','5733':'Musical instruments','5734':'Computer/software','5735':'Music store','5811':'Caterer','5812':'Restaurant/Cafe','5813':'Bar/Lounge','5814':'Fast food','5815':'Digital goods','5816':'Digital games','5817':'Digital apps','5818':'Digital merchandise','5912':'Pharmacy','5921':'Alcohol/Liquor','5931':'Second-hand store','5932':'Antique shop','5933':'Pawnbroker','5935':'Wrecking yard','5937':'Antique reproductions','5940':'Bicycle shop','5941':'Sporting goods','5942':'Book store','5943':'Stationery','5944':'Jewellery/watch','5945':'Hobby/toy shop','5946':'Camera/photo','5947':'Gift/novelty','5948':'Luggage/leather','5949':'Sewing/fabric','5950':'Glassware/crystal','5960':'Direct marketing (insurance)','5961':'Mail/phone order','5962':'Direct selling','5963':'Door-to-door sales','5964':'Catalog merchant','5965':'Direct marketing (combo)','5966':'Outbound telemarketing','5967':'Inbound telemarketing','5968':'Subscription','5969':'Direct marketing (other)','5970':'Art dealer','5971':'Art/craft supplies','5972':'Stamp/coin store','5973':'Religion goods','5975':'Hearing aids','5976':'Orthopaedic goods','5977':'Cosmetics','5978':'Typewriter','5983':'Fuel dealer','5992':'Florist','5993':'Cigar/tobacco','5994':'News/magazine','5995':'Pet shop','5996':'Swimming pool','5997':'Electric razor','5998':'Tent/awning','5999':'Retail','6010':'Financial cash disbursement','6010':'POS Cash Out','6011':'ATM','6012':'Banking','6051':'Non-FI foreign currency','6211':'Securities','6300':'Insurance','6381':'Insurance','6399':'Insurance','6513':'Real estate','7011':'Hotel','7012':'Timeshare','7032':'Recreational/sporting camp','7033':'Trailer park','7210':'Laundry/cleaning','7211':'Laundry','7216':'Dry cleaner','7217':'Carpet cleaning','7221':'Photography','7230':'Beauty/barber','7251':'Shoe repair','7261':'Funeral','7273':'Dating service','7276':'Tax prep','7277':'Counseling','7278':'Buying/shopping','7296':'Clothing rental','7297':'Massage','7298':'Health/beauty spa','7299':'Services','7311':'Advertising','7321':'Consumer credit','7333':'Commercial photography','7338':'Quick copy','7339':'Secretarial','7342':'Pest control','7349':'Cleaning/janitorial','7361':'Employment agency','7372':'Computer programming','7375':'Information retrieval','7379':'Computer maintenance','7392':'Consulting','7393':'Detective/security','7394':'Equipment rental','7395':'Photo developing','7399':'Business services','7511':'Truck stop','7512':'Car rental','7513':'Truck rental','7519':'Motor home rental','7523':'Parking','7531':'Auto body repair','7534':'Tyre shop','7535':'Paint shop','7538':'Auto service','7542':'Car wash','7549':'Towing','7622':'Electronics repair','7623':'AC/Refrigeration','7629':'Appliance repair','7631':'Watch repair','7641':'Upholstery','7692':'Welding','7699':'Repair','7800':'Government lottery','7801':'Online gambling','7802':'Horse racing','7829':'Entertainment production','7832':'Cinema','7841':'DVD rental','7911':'Dance hall','7922':'Theater','7929':'Bands/orchestras','7932':'Billiards','7933':'Bowling','7941':'Sports club/arena','7991':'Tourist attraction','7992':'Golf','7993':'Video game','7994':'Arcade','7995':'Gambling/casino','7996':'Amusement park','7997':'Recreation club','7998':'Aquarium','7999':'Recreation','8011':'Medical','8021':'Dental','8031':'Osteopath','8041':'Chiropractor','8042':'Optometrist','8043':'Optician','8049':'Podiatrist','8050':'Nursing care','8062':'Hospital','8071':'Medical/dental lab','8099':'Health services','8111':'Legal services','8211':'School','8220':'University','8241':'Correspondence school','8244':'Business/secretarial school','8249':'Vocational school','8299':'Education','8351':'Childcare','8398':'Charity','8641':'Association','8651':'Political organization','8661':'Religious organization','8675':'Auto association','8699':'Membership organization','8734':'Testing lab','8911':'Architectural','8931':'Accounting','8999':'Professional services','9211':'Court','9222':'Fines','9223':'Bail/bond','9311':'Tax payments','9399':'Government','9402':'Postal services','9405':'Government (intra)','9700':'Int\'l government','9950':'Int\'l purchase'};
+  const mccLabel=MCC_MAP[mcc]||mcc||'—';
+
+  const currMap={'458':'MYR 🇲🇾','840':'USD 🇺🇸','702':'SGD 🇸🇬','764':'THB 🇹🇭','360':'IDR 🇮🇩','156':'CNY 🇨🇳','826':'GBP 🇬🇧','978':'EUR 🇪🇺','392':'JPY 🇯🇵','036':'AUD 🇦🇺','344':'HKD 🇭🇰','410':'KRW 🇰🇷','901':'TWD 🇹🇼','608':'PHP 🇵🇭','704':'VND 🇻🇳','356':'INR 🇮🇳','048':'BHD 🇧🇭','682':'SAR 🇸🇦','784':'AED 🇦🇪','634':'QAR 🇶🇦','414':'KWD 🇰🇼','512':'OMR 🇴🇲'};
+  const currLabel=currMap[currency]||currency||'—';
+
+  // Tip / Convenience fee (IDs 55, 56, 57)
+  const tipIndicator=emv['55'];
+  const convFeeFixed=emv['56'];
+  const convFeePct=emv['57'];
+
+  // Parse additional data (ID 62) — expanded per PayNet spec
+  let addlHtml='';
+  if(emv['62']){
+    const addl=parseEMVNested(emv['62']);
+    const addlFields={'01':'Bill Number','02':'Mobile Number','03':'Store Label','04':'Loyalty Number','05':'Reference Label','06':'Customer Label','07':'Terminal Label','08':'Purpose of Transaction','09':'Consumer Data Request','10':'Merchant Tax ID','90':'RRN (Ref-1)','91':'RRN2 (Ref-2)','92':'Geo Coordinates'};
+    for(const[k,label]of Object.entries(addlFields)){if(addl[k])addlHtml+=`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--text3)">${label}</span><span style="font-family:'JetBrains Mono',monospace;font-size:.78rem">${addl[k]}</span></div>`}
+    // Decode Merchant Channel (ID 11) per PayNet spec Tables 3-5
+    if(addl['11']){
+      const ch=addl['11'];
+      const mediaMap={'0':'Print — Sticker','1':'Print — Bill/Invoice','2':'Print — Magazine/Poster','3':'Print — Others','4':'Screen — POS/POI','5':'Screen — Website','6':'Screen — App','7':'Screen — Others'};
+      const locMap={'0':'At merchant premises','1':'Not at merchant premises','2':'Remote commerce','3':'Others'};
+      const presMap={'0':'Attended POS','1':'Unattended','2':'Semi-attended (self-checkout)','3':'Others'};
+      let chDesc=[];
+      if(ch[0]&&mediaMap[ch[0]])chDesc.push(mediaMap[ch[0]]);
+      if(ch[1]&&locMap[ch[1]])chDesc.push(locMap[ch[1]]);
+      if(ch[2]&&presMap[ch[2]])chDesc.push(presMap[ch[2]]);
+      addlHtml+=`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--text3)">Merchant Channel</span><span style="font-family:'JetBrains Mono',monospace;font-size:.78rem">${ch} — ${chDesc.join(' · ')||'Unknown'}</span></div>`;
+    }
+  }
+
+  // Data Integrity Check (ID 82)
+  const dataHash=emv['82'];
+  let hashHtml='';
+  if(dataHash){hashHtml=`<div style="margin-top:8px;font-size:.72rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em">Data Integrity</div><div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--text3)">SHA-256 Hash</span><span style="font-family:'JetBrains Mono',monospace;font-size:.68rem;word-break:break-all;max-width:60%;text-align:right;color:var(--ok)">🔒 ${dataHash}</span></div>`}
+
+  // Parse language template (ID 64)
+  let langHtml='';
+  if(emv['64']){
+    const lang=parseEMVNested(emv['64']);
+    if(lang['00']||lang['01']||lang['02']){
+      langHtml='<div style="margin-top:8px;font-size:.72rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em">Alternate Language</div>';
+      if(lang['00'])langHtml+=`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--text3)">Language</span><span style="font-family:'JetBrains Mono',monospace;font-size:.78rem">${lang['00']}</span></div>`;
+      if(lang['01'])langHtml+=`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--text3)">Merchant Name</span><span style="font-family:'JetBrains Mono',monospace;font-size:.78rem">${lang['01']}</span></div>`;
+      if(lang['02'])langHtml+=`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--text3)">Merchant City</span><span style="font-family:'JetBrains Mono',monospace;font-size:.78rem">${lang['02']}</span></div>`;
+    }
+  }
+
+  // Merchant descriptor & mobile from account info
+  const descriptor=acctInfo['03']||null;
+  const merchantMobile=acctInfo['04']||null;
+
+  const row=(label,val,raw,highlight)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)"><span style="color:var(--text3);flex-shrink:0">${label}</span><span style="font-family:'JetBrains Mono',monospace;font-size:.8rem;text-align:right;${highlight?'color:var(--accent);font-weight:600':''}">${val}${raw?` <span style="opacity:.45;font-size:.68rem">(${raw})</span>`:''}</span></div>`;
+
+  let html='';
+  html+=row('QR Type',`<span style="display:inline-block;padding:2px 10px;border-radius:12px;font-size:.72rem;font-weight:600;background:${isStatic?'var(--ok)':'var(--warn)'};color:#fff">${isStatic?'STATIC — reusable':'DYNAMIC — one-time'}</span>`,initMethod);
+  const isJomPAY=acquirer==='898989';
+  html+=row('Payment Network',isJomPAY?'JomPAY 🇲🇾':'DuitNow 🇲🇾','A0000006150001');
+  html+=row('Wallet / Bank',wallet,null,true);
+  html+=row('Merchant Name',name||'—',null,true);
+  html+=row('City',city||'—');
+  if(postal)html+=row('Postal Code',postal);
+  html+=row('Country',country||'—');
+  html+=row('Currency',currLabel,currency);
+  if(amount)html+=row('Amount','RM '+parseFloat(amount).toFixed(2),amount,true);
+  else html+=row('Amount','<span style="color:var(--text3);font-style:italic">Customer enters amount</span>');
+  if(tipIndicator==='01')html+=row('Tip','<span style="color:var(--text3);font-style:italic">Consumer prompted for tip</span>','ID 55=01');
+  if(tipIndicator==='02'&&convFeeFixed)html+=row('Convenience Fee','RM '+parseFloat(convFeeFixed).toFixed(2),'ID 56',true);
+  if(tipIndicator==='03'&&convFeePct)html+=row('Convenience Fee',convFeePct+'%','ID 57');
+  html+=row('Category',mccLabel,mcc);
+  html+=row(isJomPAY?'Biller Code':'Account / QR ID',`<span style="font-size:.72rem;word-break:break-all">${account}</span>`);
+  html+=row('Acquirer',`${wallet!=='Unknown'?wallet+' <span style="opacity:.5;font-size:.68rem">('+acquirer+')</span>':acquirer}`,null,true);
+  if(descriptor)html+=row('Merchant Descriptor',descriptor,'ID 26.03');
+  if(merchantMobile)html+=row('Merchant Mobile',merchantMobile,'ID 26.04');
+  if(ref&&!descriptor)html+=row('Descriptor / Ref',ref,'ID 26.03');
+  html+=row('CRC Checksum',`<span style="color:${crc.valid?'var(--ok)':'var(--err)'};font-weight:600">${crc.given} ${crc.valid?'✓ Valid':'✕ Invalid (expected '+crc.calc+')'}</span>`);
+  if(addlHtml)html+='<div style="margin-top:8px;font-size:.72rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em">Additional Data</div>'+addlHtml;
+  if(langHtml)html+=langHtml;
+  if(hashHtml)html+=hashHtml;
+  html+=`<button class="gen-btn" style="margin-top:16px" onclick="document.getElementById('dn-edit-name').value=window._dnName||'';document.getElementById('dn-edit-bank').value=window._dnWallet||'';regenDuitNow();document.getElementById('duitnow-regen').scrollIntoView({behavior:'smooth',block:'nearest'})">🔄 Regenerate Clean QR Code</button>`;
+
+  // Store for regen
+  window._dnRaw=raw;window._dnName=name;window._dnWallet=wallet;
+
+  return html;
+}
+
+function showScanResult(data){scanResultData=data;document.getElementById('scan-result').style.display='block';document.getElementById('scan-content').textContent=data;const type=detectQRType(data);document.getElementById('scan-type-badge').textContent=type.label;
+
+// DuitNow/EMV breakdown
+const dnCard=document.getElementById('duitnow-card');
+if(type.type==='emvpay'){
+  const emv=parseEMV(data);
+  const dn=parseDuitNow(emv,data);
+  if(dn){
+    dnCard.style.display='block';
+    document.getElementById('duitnow-breakdown').innerHTML=dn;
+  }else dnCard.style.display='none';
+}else dnCard.style.display='none';
+
+const ob=document.getElementById('scan-open-btn');if(type.type==='url'){ob.style.display='inline-flex';ob.textContent='🔗 Open Link';ob.onclick=()=>window.open(data,'_blank')}else if(type.type==='phone'){ob.style.display='inline-flex';ob.textContent='📞 Call';ob.onclick=()=>window.open(data,'_blank')}else if(type.type==='email'){ob.style.display='inline-flex';ob.textContent='✉️ Email';ob.onclick=()=>window.open(data,'_blank')}else if(type.type==='whatsapp'){ob.style.display='inline-flex';ob.textContent='💬 WhatsApp';ob.onclick=()=>window.open(data,'_blank')}else ob.style.display='none';
 const safety=analyzeQRSafety(data,type),el=document.getElementById('scan-safety'),card=document.getElementById('scan-safety-card');
 if(safety.level==='safe'){card.style.borderColor='var(--ok)';el.innerHTML=`<div style="color:var(--ok);font-weight:600;font-size:.9rem">✅ Looks Safe</div><div style="font-size:.78rem;color:var(--text2);margin-top:6px">${safety.detail}</div>`}
 else if(safety.level==='warning'){card.style.borderColor='var(--warn)';el.innerHTML=`<div style="color:var(--warn);font-weight:600;font-size:.9rem">⚠️ Caution</div><div style="font-size:.78rem;color:var(--text2);margin-top:6px">${safety.detail}</div>`}
 else{card.style.borderColor='var(--err)';el.innerHTML=`<div style="color:var(--err);font-weight:600;font-size:.9rem">🚨 Suspicious — Be Careful</div><div style="font-size:.78rem;color:var(--text2);margin-top:6px">${safety.detail}</div>`}
 document.getElementById('scan-result').scrollIntoView({behavior:'smooth',block:'nearest'})}
 
-function detectQRType(d){if(/^https?:\/\/wa\.me\//i.test(d))return{type:'whatsapp',label:'WhatsApp'};if(/^https?:\/\//i.test(d))return{type:'url',label:'URL'};if(/^WIFI:/i.test(d))return{type:'wifi',label:'WiFi'};if(/^mailto:/i.test(d))return{type:'email',label:'Email'};if(/^tel:/i.test(d))return{type:'phone',label:'Phone'};if(/^sms:/i.test(d))return{type:'sms',label:'SMS'};if(/^geo:/i.test(d))return{type:'geo',label:'Location'};if(/^BEGIN:VCARD/i.test(d))return{type:'vcard',label:'vCard'};if(/^BEGIN:VCALENDAR/i.test(d))return{type:'calendar',label:'Calendar'};if(/^bitcoin:/i.test(d))return{type:'crypto',label:'Bitcoin'};if(/^ethereum:/i.test(d))return{type:'crypto',label:'Ethereum'};if(/^00020101/i.test(d))return{type:'emvpay',label:'EMV Payment'};return{type:'text',label:'Text'}}
+function detectQRType(d){if(/^https?:\/\/wa\.me\//i.test(d))return{type:'whatsapp',label:'WhatsApp'};if(/^https?:\/\//i.test(d))return{type:'url',label:'URL'};if(/^WIFI:/i.test(d))return{type:'wifi',label:'WiFi'};if(/^mailto:/i.test(d))return{type:'email',label:'Email'};if(/^tel:/i.test(d))return{type:'phone',label:'Phone'};if(/^sms:/i.test(d))return{type:'sms',label:'SMS'};if(/^geo:/i.test(d))return{type:'geo',label:'Location'};if(/^BEGIN:VCARD/i.test(d))return{type:'vcard',label:'vCard'};if(/^BEGIN:VCALENDAR/i.test(d))return{type:'calendar',label:'Calendar'};if(/^bitcoin:/i.test(d))return{type:'crypto',label:'Bitcoin'};if(/^ethereum:/i.test(d))return{type:'crypto',label:'Ethereum'};if(/^00020101/i.test(d)||/^00020201/i.test(d)){let isDN=false,isJP=false;try{const emv=parseEMV(d);for(let id=26;id<=51;id++){const k=id.toString().padStart(2,'0');if(emv[k]){const n=parseEMVNested(emv[k]);if(n['00']==='A0000006150001'){isDN=true;if(n['01']==='898989')isJP=true}}}}catch{}return{type:'emvpay',label:isJP?'JomPAY 🇲🇾':isDN?'DuitNow 🇲🇾':'EMV Payment'}};return{type:'text',label:'Text'}}
 
 function analyzeQRSafety(data,type){const w=[],d=[];if(type.type==='url'){try{const u=new URL(data);if(u.protocol==='http:')w.push('Uses HTTP (unencrypted).');if(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(u.hostname))d.push('Raw IP address URL — common in phishing.');if(data.length>500)w.push('Unusually long URL.');const badTLDs=['.zip','.mov','.tk','.ml','.ga','.cf','.gq','.buzz','.top','.xyz'];if(badTLDs.some(t=>u.hostname.endsWith(t)))w.push(`Suspicious domain extension.`);const shorts=['bit.ly','tinyurl.com','t.co','goo.gl','ow.ly','is.gd','rb.gy','short.io','cutt.ly'];if(shorts.some(s=>u.hostname===s||u.hostname==='www.'+s))w.push('Shortened URL — real destination hidden.');if(u.protocol==='data:')d.push('Data URI — can execute code. Do NOT open.');if(u.protocol==='javascript:')d.push('JavaScript injection. Do NOT open.');if(/[^\x00-\x7F]/.test(u.hostname))d.push('Non-ASCII domain (homograph attack).');if(u.username||u.password)d.push('Embedded credentials — likely phishing.');if(data.includes('@')&&type.type==='url')w.push('URL contains @ — may redirect elsewhere.');if(d.length===0&&w.length===0)return{level:'safe',detail:`Domain: <strong>${u.hostname}</strong> · ${u.protocol==='https:'?'HTTPS encrypted':'HTTP unencrypted'} · No threats detected. Verify the domain before entering personal info.`}}catch{}}
 if(type.type==='wifi'){if(/P:;/.test(data)||/T:nopass/i.test(data)||/T:;/.test(data))w.push('Open WiFi — no password.');else return{level:'safe',detail:'Password-protected WiFi. Verify the network name before connecting.'}}
@@ -479,7 +829,7 @@ if(type.type==='calendar')return{level:'safe',detail:'Calendar event. Review bef
 if(type.type==='phone')return{level:'safe',detail:'Phone number. Verify before calling — premium numbers can charge high fees.'};
 if(type.type==='sms')w.push('SMS can pre-fill messages to premium numbers. Review before sending.');
 if(type.type==='email')return{level:'safe',detail:'Email link. Review recipient and content before sending.'};
-if(type.type==='emvpay')return{level:'warning',detail:'Payment QR. Only use from trusted merchants. Verify amount in your banking app.'};
+if(type.type==='emvpay'){const emv=parseEMV(data);let isDuitNow=false;for(let id=26;id<=51;id++){const k=id.toString().padStart(2,'0');if(emv[k]){const n=parseEMVNested(emv[k]);if(n['00']==='A0000006150001')isDuitNow=true}}if(isDuitNow){const name=emv['59']||'Unknown';return{level:'warning',detail:`DuitNow payment QR detected. Merchant: <strong>${name}</strong>. Verify this matches the person/business you intend to pay. Check the full breakdown below. Always confirm the amount in your banking app before approving.`}}return{level:'warning',detail:'Payment QR code detected. Only use from trusted merchants. Verify amount in your banking app.'}}
 if(type.type==='crypto')return{level:'warning',detail:'Crypto address. Double-check every character — transactions are irreversible.'};
 if(type.type==='text'&&!d.length&&!w.length)return{level:'safe',detail:'Plain text. No links or executable content.'};
 if(d.length)return{level:'danger',detail:d.concat(w).map(x=>'• '+x).join('<br>')};
@@ -487,7 +837,68 @@ if(w.length)return{level:'warning',detail:w.map(x=>'• '+x).join('<br>')};
 return{level:'safe',detail:'No threats detected.'}}
 
 function copyScanResult(){navigator.clipboard.writeText(scanResultData).then(()=>{const b=document.querySelector('#scan-result .dl-btn');b.textContent='✓ Copied!';setTimeout(()=>b.textContent='📋 Copy',1500)})}
-function clearScan(){document.getElementById('scan-result').style.display='none';document.getElementById('scan-dp').textContent='Drop image, tap to browse, or paste (Ctrl+V)';document.getElementById('scan-safety-card').style.borderColor='var(--border)';scanResultData='';scanFi.value=''}
+function clearScan(){document.getElementById('scan-result').style.display='none';document.getElementById('duitnow-card').style.display='none';document.getElementById('duitnow-regen').style.display='none';document.getElementById('scan-dp').textContent='Drop image, tap to browse, or paste (Ctrl+V)';document.getElementById('scan-safety-card').style.borderColor='var(--border)';scanResultData='';scanFi.value=''}
+
+// ═══════ DUITNOW REGEN (TukarQR) ═══════
+let dnTargetW=600;
+function setDnSize(w){dnTargetW=w;document.getElementById('dn-size-slider').value=w;document.getElementById('dn-size-val').textContent=w+'px';document.querySelectorAll('.dn-size').forEach(b=>b.classList.toggle('on',+b.dataset.w===w));regenDuitNow()}
+function setDnSizeSlider(v){dnTargetW=+v;document.getElementById('dn-size-val').textContent=v+'px';document.querySelectorAll('.dn-size').forEach(b=>b.classList.remove('on'));regenDuitNow()}
+
+function regenDuitNow(){
+  const raw=window._dnRaw;if(!raw)return;
+  const DN='#ED2E67';
+  const qr=qrcode(0,'H');
+  try{qr.addData(raw);qr.make()}catch{return}
+  const modules=qr.getModuleCount();
+  const W=dnTargetW;
+  const sc=W/320; // scale factor (320 = base design width)
+  const nameFzMul=(+document.getElementById('dn-name-fz').value||100)/100;
+  const bankFzMul=(+document.getElementById('dn-bank-fz').value||100)/100;
+  const border=Math.round(10*sc),pad=Math.round(24*sc),r=Math.round(12*sc);
+  const cellSize=Math.max(1,Math.floor((W-border*2-pad*2)/modules));
+  const qrPx=cellSize*modules;
+  const bannerH=Math.round(36*sc);
+  const nameFz=Math.max(10,Math.round(13*sc*nameFzMul)),bankFz=Math.max(8,Math.round(11*sc*bankFzMul));
+  const nameH=Math.round(Math.max(50*sc, nameFz+bankFz+16*sc));
+  const totalW=qrPx+pad*2+border*2,totalH=qrPx+pad*2+border*2+nameH+bannerH;
+  const canvas=document.getElementById('duitnow-canvas');
+  canvas.width=totalW;canvas.height=totalH;
+  const ctx=canvas.getContext('2d');
+  // Read editable fields
+  const name=document.getElementById('dn-edit-name').value||window._dnName||'—';
+  const bank=document.getElementById('dn-edit-bank').value||window._dnWallet||'';
+  // White base
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,totalW,totalH);
+  // Pink border top part
+  ctx.fillStyle=DN;
+  ctx.beginPath();ctx.moveTo(0,r);ctx.arcTo(0,0,r,0,r);ctx.lineTo(totalW-r,0);ctx.arcTo(totalW,0,totalW,r,r);ctx.lineTo(totalW,totalH-bannerH);ctx.lineTo(0,totalH-bannerH);ctx.closePath();ctx.fill();
+  // White inner
+  const ix=border,iy=border,iw=totalW-border*2,ih=totalH-border*2-bannerH;
+  ctx.fillStyle='#fff';
+  ctx.beginPath();ctx.moveTo(ix+r,iy);ctx.lineTo(ix+iw-r,iy);ctx.arcTo(ix+iw,iy,ix+iw,iy+r,r);ctx.lineTo(ix+iw,iy+ih);ctx.lineTo(ix,iy+ih);ctx.lineTo(ix,iy+r);ctx.arcTo(ix,iy,ix+r,iy,r);ctx.closePath();ctx.fill();
+  // QR modules
+  ctx.fillStyle=DN;
+  const qrX=border+pad,qrY=border+pad;
+  for(let row=0;row<modules;row++)for(let col=0;col<modules;col++)if(qr.isDark(row,col))ctx.fillRect(qrX+col*cellSize,qrY+row*cellSize,cellSize,cellSize);
+  // Merchant name
+  const nameY=qrY+qrPx+Math.round(8*sc);
+  ctx.fillStyle='#18181b';ctx.font=`bold ${nameFz}px "DM Sans",system-ui,sans-serif`;ctx.textAlign='center';ctx.textBaseline='top';
+  ctx.fillText(name,totalW/2,nameY,iw-20);
+  ctx.fillStyle='#71717a';ctx.font=`${bankFz}px "DM Sans",system-ui,sans-serif`;
+  ctx.fillText(bank,totalW/2,nameY+nameFz+Math.round(4*sc),iw-20);
+  // Pink banner
+  const bannerY=totalH-bannerH;
+  ctx.fillStyle=DN;
+  ctx.beginPath();ctx.moveTo(0,bannerY);ctx.lineTo(totalW,bannerY);ctx.lineTo(totalW,totalH-r);ctx.arcTo(totalW,totalH,totalW-r,totalH,r);ctx.lineTo(r,totalH);ctx.arcTo(0,totalH,0,totalH-r,r);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#fff';ctx.font=`bold ${Math.max(8,Math.round(11*sc))}px "DM Sans",system-ui,sans-serif`;
+  ctx.fillText('MALAYSIA NATIONAL QR',totalW/2,bannerY+Math.round(12*sc));
+  // Show dimensions
+  const cmW=(totalW/300*2.54).toFixed(1),cmH=(totalH/300*2.54).toFixed(1);
+  document.getElementById('dn-dimensions').textContent=`${totalW} × ${totalH}px · ${cmW} × ${cmH}cm at 300dpi`;
+  document.getElementById('duitnow-regen').style.display='block';
+}
+function dlDuitNowPNG(){const c=document.getElementById('duitnow-canvas');c.toBlob(b=>{const a=document.createElement('a');a.download=`duitnow-${(window._dnName||'qr').replace(/\s+/g,'-').toLowerCase()}.png`;a.href=URL.createObjectURL(b);document.body.appendChild(a);a.click();a.remove()},'image/png')}
+async function shareDuitNow(){const c=document.getElementById('duitnow-canvas');try{const b=await new Promise(r=>c.toBlob(r,'image/png'));const f=new File([b],`duitnow-${(window._dnName||'qr').replace(/\s+/g,'-').toLowerCase()}.png`,{type:'image/png'});if(navigator.canShare?.({files:[f]})){await navigator.share({files:[f],title:'DuitNow QR — '+(window._dnName||'')});return}}catch{}dlDuitNowPNG()}
 
 // ═══════════════════════════════════════
 // EASTER EGGS
